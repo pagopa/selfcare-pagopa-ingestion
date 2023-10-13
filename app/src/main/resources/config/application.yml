@@ -32,8 +32,6 @@ logging:
     additional-info: ",%X{X-Client-Ip:-}]"
 
 app:
-  stopOnError: ${STOP_ON_ERROR:true}
-  source:
-    pageSize: ${SOURCE_PAGE_SIZE:1000}
-  target:
-    parallelism: ${TARGET_PARALLELISM:1}
+  local:
+    csv: ${LOCAL_CSV:true}
+    filename: ${CSV_FILENAME:pippo}

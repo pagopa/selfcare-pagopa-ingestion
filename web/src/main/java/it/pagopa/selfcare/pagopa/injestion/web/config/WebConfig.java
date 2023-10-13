@@ -3,20 +3,22 @@ package it.pagopa.selfcare.pagopa.injestion.web.config;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.pagopa.selfcare.commons.web.config.BaseWebConfig;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NonNull;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import javax.annotation.PostConstruct;
-
 @Configuration
 @Import(BaseWebConfig.class)
-class WebConfig {
-    @Autowired
-    private ObjectMapper objectMapper;
+public class WebConfig implements BeanPostProcessor {
 
-    @PostConstruct
-    void init(){
-        objectMapper.enable(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE);
+    @Override
+    public Object postProcessAfterInitialization(@NonNull Object bean, @NonNull String beanName) throws BeansException {
+        if (bean instanceof ObjectMapper) {
+            ((ObjectMapper) bean).configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
+        }
+        return bean;
     }
+
 }

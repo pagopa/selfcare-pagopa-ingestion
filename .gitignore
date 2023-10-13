@@ -32,4 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-connector-api/src/main/java/it/pagopa/selfcare/party/migration/connector/generated/**
+connector-api/src/main/java/it/pagopa/selfcare/pagopa/injestion/connector/generated/**

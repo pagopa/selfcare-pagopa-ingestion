@@ -1,5 +1,6 @@
 package it.pagopa.selfcare.pagopa.injestion.connector.dao.config;
 
+
 import org.springframework.core.convert.converter.Converter;
 
 import java.time.OffsetDateTime;

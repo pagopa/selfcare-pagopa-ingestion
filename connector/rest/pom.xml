@@ -15,17 +15,6 @@
             <groupId>it.pagopa.selfcare</groupId>
             <artifactId>selc-commons-connector-rest</artifactId>
         </dependency>
-        <dependency>
-            <groupId>it.pagopa.selfcare</groupId>
-            <artifactId>selc-commons-connector-rest</artifactId>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-contract-wiremock</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
 </project>

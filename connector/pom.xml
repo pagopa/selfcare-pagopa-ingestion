@@ -11,6 +11,12 @@
     <artifactId>selc-pagopa-injestion-connector</artifactId>
     <packaging>pom</packaging>
 
+    <modules>
+        <module>azure-storage</module>
+        <module>rest</module>
+        <module>dao</module>
+    </modules>
+
     <dependencies>
         <dependency>
             <groupId>it.pagopa.selfcare</groupId>
@@ -18,8 +24,4 @@
         </dependency>
     </dependencies>
 
-    <modules>
-        <module>rest</module>
-        <module>dao</module>
-    </modules>
 </project>
