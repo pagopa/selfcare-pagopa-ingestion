@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.query.UpdateDefinition;
 import java.util.List;
 
 public interface MongoCustomConnector {
-/*
+
     <O> boolean exists(Query query, Class<O> outputType);
 
     <O> List<O> find(Query query, Class<O> outputType);
@@ -17,5 +17,5 @@ public interface MongoCustomConnector {
     <O> Page<O> find(Query query, Pageable pageable, Class<O> outputType);
 
     <O> O findAndModify(Query query, UpdateDefinition updateDefinition, FindAndModifyOptions findAndModifyOptions, Class<O> outputType);
-*/
+
 }

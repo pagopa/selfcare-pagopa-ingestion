@@ -1,8 +1,8 @@
-package it.pagopa.selfcare.pagopa.injestion.core.mapper;
+package it.pagopa.selfcare.pagopa.injestion.mapper;
 
 
-import it.pagopa.selfcare.pagopa.injestion.model.Role;
-import it.pagopa.selfcare.pagopa.injestion.model.User;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.Role;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.User;
 import it.pagopa.selfcare.pagopa.injestion.model.csv.UserModel;
 
 import java.util.List;

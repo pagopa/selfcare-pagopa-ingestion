@@ -1,6 +1,6 @@
 package it.pagopa.selfcare.pagopa.injestion.api.azure;
 
-import it.pagopa.selfcare.pagopa.injestion.model.Resource;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.Resource;
 
 public interface AzureConnector {
 

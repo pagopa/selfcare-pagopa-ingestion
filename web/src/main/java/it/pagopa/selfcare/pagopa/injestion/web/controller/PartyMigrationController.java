@@ -5,8 +5,9 @@ import it.pagopa.selfcare.pagopa.injestion.core.MigrationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -21,18 +22,13 @@ public class PartyMigrationController {
     }
 
     @PostMapping("/migrateFiles")
-    public ResponseEntity<String> migrateFiles(
-            @RequestParam("ecIntermediarioPT") String ecIntermediarioPTpath,
-            @RequestParam("ec") String ecPath,
-            @RequestParam("pt") String ptPath,
-            @RequestParam("user") String userPath
-    ) {
+    public ResponseEntity<String> migrateFiles() {
         try {
 
-            migrationService.migrateECIntermediarioPTs(ecIntermediarioPTpath);
-            migrationService.migrateECs(ecPath);
-            migrationService.migratePTs(ptPath);
-            migrationService.migrateUsers(userPath);
+            migrationService.migrateECIntermediarioPTs();
+            migrationService.migrateECs();
+            migrationService.migratePTs();
+            migrationService.migrateUsers();
 
             return new ResponseEntity<>("Elaborazione completata con successo", HttpStatus.OK);
         } catch (Exception e) {

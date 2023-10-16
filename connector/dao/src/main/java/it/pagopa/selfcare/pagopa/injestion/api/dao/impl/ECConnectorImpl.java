@@ -1,16 +1,17 @@
 package it.pagopa.selfcare.pagopa.injestion.api.dao.impl;
 
-import it.pagopa.selfcare.pagopa.injestion.api.mongo.ECConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.mapper.ECMapper;
+import it.pagopa.selfcare.pagopa.injestion.api.mongo.ECConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.ECEntity;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.repo.ECRepository;
-import it.pagopa.selfcare.pagopa.injestion.model.EC;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.EC;
 import it.pagopa.selfcare.pagopa.injestion.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -23,32 +24,34 @@ public class ECConnectorImpl implements ECConnector {
         this.repository = repository;
     }
 
-
     @Override
     public List<EC> findAll(int page, int pageSize) {
         PageRequest pageRequest = PageRequest.of(page, pageSize);
-        List<EC> ecs = repository.findAll(pageRequest).stream().map(ECMapper::entityToDto).collect(Collectors.toList());
+        List<EC> ecs = repository.findAll(pageRequest).stream()
+                .map(ECMapper::entityToDto)
+                .collect(Collectors.toList());
         log.info("Trovati {} elementi EC paginati (pagina {}, dimensione {})", ecs.size(), page, pageSize);
         return ecs;
     }
 
     @Override
     public List<EC> findAll() {
-        List<EC> ecs = repository.findAll().stream().map(ECMapper::entityToDto).collect(Collectors.toList());
+        List<EC> ecs = repository.findAll().stream()
+                .map(ECMapper::entityToDto)
+                .collect(Collectors.toList());
         log.info("Trovati {} elementi EC", ecs.size());
         return ecs;
     }
 
     @Override
     public EC findById(String id) {
-        return repository.findById(id)
-                .map(entity -> {
-                    log.info("Trovato EC con id: {}", entity.getId());
-                    return ECMapper.entityToDto(entity);
-                }).orElseThrow(() -> {
-                    log.error("EC non trovato con id: {}", id);
-                    return new ResourceNotFoundException("EC NOT FOUND " + id);
-                });
+        Optional<ECEntity> optionalEntity = repository.findById(id);
+        ECEntity entity = optionalEntity.orElseThrow(() -> {
+            log.error("EC non trovato con id: {}", id);
+            return new ResourceNotFoundException("EC NOT FOUND " + id);
+        });
+        log.info("Trovato EC con id: {}", entity.getId());
+        return ECMapper.entityToDto(entity);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package it.pagopa.selfcare.pagopa.injestion.api.mongo;
 
-import it.pagopa.selfcare.pagopa.injestion.model.EC;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.EC;
 
 import java.util.List;
 

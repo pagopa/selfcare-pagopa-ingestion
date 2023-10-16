@@ -1,4 +1,4 @@
-package it.pagopa.selfcare.pagopa.injestion.model;
+package it.pagopa.selfcare.pagopa.injestion.model.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -34,3 +34,7 @@ logging:
 app:
   local:
     csv: ${LOCAL_CSV:true}
+    ec: ${EC_CSV_PATH}
+    pt: ${PT_CSV_PATH}
+    ecpt: ${EC_PT_CSV_PATH}
+    user: ${USER_CSV_PATH}

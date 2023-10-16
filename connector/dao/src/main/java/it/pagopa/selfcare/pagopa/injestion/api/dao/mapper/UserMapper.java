@@ -1,15 +1,12 @@
 package it.pagopa.selfcare.pagopa.injestion.api.dao.mapper;
 
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.UserEntity;
-import it.pagopa.selfcare.pagopa.injestion.model.Role;
-import it.pagopa.selfcare.pagopa.injestion.model.User;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.Role;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.User;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor(access = AccessLevel.NONE)
 public class UserMapper {
 
     public static User entityToDto(UserEntity entity) {

@@ -5,14 +5,11 @@ import it.pagopa.selfcare.pagopa.injestion.api.dao.model.UserEntity;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.inner.AssistanceContractsEntity;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.inner.BillingDataEntity;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.inner.GeographicTaxonomiesEntity;
-import it.pagopa.selfcare.pagopa.injestion.model.*;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor(access = AccessLevel.NONE)
 public class OnboardingMapper {
 
     public static Onboarding entityToDto(OnboardingEntity entity) {
@@ -32,15 +29,51 @@ public class OnboardingMapper {
         return onboarding;
     }
 
-    private static List<GeographicTaxonomies> entityToDtoG(List<GeographicTaxonomiesEntity> entityList) {
-        return entityList.stream()
-                .map(OnboardingMapper::entityToDto)
-                .collect(Collectors.toList());
+    public static OnboardingEntity dtoToEntity(Onboarding onboarding) {
+        OnboardingEntity onboardingEntity = new OnboardingEntity();
+        onboardingEntity.setInstitutionType(onboarding.getInstitutionType());
+        onboardingEntity.setOrigin(onboarding.getOrigin().name());
+        onboardingEntity.setStatus(onboarding.getStatus().name());
+        onboardingEntity.setBillingData(dtoToEntity(onboarding.getBillingData()));
+        onboardingEntity.setAssistanceContracts(dtoToEntity(onboarding.getAssistanceContracts()));
+        onboardingEntity.setUsers(dtoToEntity(onboarding.getUsers()));
+        onboardingEntity.setGeographicTaxonomies(dtoToEntityG(onboarding.getGeographicTaxonomies()));
+
+        return onboardingEntity;
     }
 
-    private static GeographicTaxonomies entityToDto(GeographicTaxonomiesEntity entity) {
-        GeographicTaxonomies geographicTaxonomies = new GeographicTaxonomies();
-        return geographicTaxonomies;
+    private static BillingData entityToDto(BillingDataEntity entity) {
+        BillingData billingData = new BillingData();
+        billingData.setDigitalAddress(entity.getDigitalAddress());
+        billingData.setTaxCode(entity.getTaxCode());
+        billingData.setZipCode(entity.getZipCode());
+        billingData.setRegisteredOffice(entity.getRegisteredOffice());
+        billingData.setBusinessName(entity.getBusinessName());
+        billingData.setVatNumber(entity.getVatNumber());
+        billingData.setRecipientCode(entity.getRecipientCode());
+        return billingData;
+    }
+
+    private static BillingDataEntity dtoToEntity(BillingData billingData) {
+        BillingDataEntity billingDataEntity = new BillingDataEntity();
+        billingDataEntity.setDigitalAddress(billingData.getDigitalAddress());
+        billingDataEntity.setTaxCode(billingData.getTaxCode());
+        billingDataEntity.setZipCode(billingData.getZipCode());
+        billingDataEntity.setRegisteredOffice(billingData.getRegisteredOffice());
+        billingDataEntity.setBusinessName(billingData.getBusinessName());
+        billingDataEntity.setVatNumber(billingData.getVatNumber());
+        billingDataEntity.setRecipientCode(billingData.getRecipientCode());
+        return billingDataEntity;
+    }
+
+    private static AssistanceContracts entityToDto(AssistanceContractsEntity entity) {
+        AssistanceContracts assistanceContracts = new AssistanceContracts();
+        return assistanceContracts;
+    }
+
+    private static AssistanceContractsEntity dtoToEntity(AssistanceContracts assistanceContracts) {
+        AssistanceContractsEntity assistanceContractsEntity = new AssistanceContractsEntity();
+        return assistanceContractsEntity;
     }
 
     private static List<User> entityToDto(List<UserEntity> entityList) {
@@ -61,58 +94,21 @@ public class OnboardingMapper {
         return user;
     }
 
-    private static AssistanceContracts entityToDto(AssistanceContractsEntity entity) {
-        AssistanceContracts assistanceContracts = new AssistanceContracts();
-        return assistanceContracts;
+    private static List<GeographicTaxonomies> entityToDtoG(List<GeographicTaxonomiesEntity> entityList) {
+        return entityList.stream()
+                .map(OnboardingMapper::entityToDto)
+                .collect(Collectors.toList());
     }
 
-    private static BillingData entityToDto(BillingDataEntity entity) {
-        BillingData billingData = new BillingData();
-        billingData.setDigitalAddress(entity.getDigitalAddress());
-        billingData.setTaxCode(entity.getTaxCode());
-        billingData.setZipCode(entity.getZipCode());
-        billingData.setRegisteredOffice(entity.getRegisteredOffice());
-        billingData.setBusinessName(entity.getBusinessName());
-        billingData.setVatNumber(entity.getVatNumber());
-        billingData.setRecipientCode(entity.getRecipientCode());
-        return billingData;
-    }
-
-
-    public static OnboardingEntity dtoToEntity(Onboarding onboarding) {
-        OnboardingEntity onboardingEntity = new OnboardingEntity();
-        onboardingEntity.setInstitutionType(onboarding.getInstitutionType());
-        onboardingEntity.setOrigin(onboarding.getOrigin().name());
-        onboardingEntity.setStatus(onboarding.getStatus().name());
-        onboardingEntity.setBillingData(dtoToEntity(onboarding.getBillingData()));
-        onboardingEntity.setAssistanceContracts(dtoToEntity(onboarding.getAssistanceContracts()));
-        onboardingEntity.setUsers(dtoToEntity(onboarding.getUsers()));
-        onboardingEntity.setGeographicTaxonomies(dtoToEntityG(onboarding.getGeographicTaxonomies()));
-
-        return onboardingEntity;
-    }
-
-    private static BillingDataEntity dtoToEntity(BillingData billingData) {
-        BillingDataEntity billingDataEntity = new BillingDataEntity();
-        billingDataEntity.setDigitalAddress(billingData.getDigitalAddress());
-        billingDataEntity.setTaxCode(billingData.getTaxCode());
-        billingDataEntity.setZipCode(billingData.getZipCode());
-        billingDataEntity.setRegisteredOffice(billingData.getRegisteredOffice());
-        billingDataEntity.setBusinessName(billingData.getBusinessName());
-        billingDataEntity.setVatNumber(billingData.getVatNumber());
-        billingDataEntity.setRecipientCode(billingData.getRecipientCode());
-        return billingDataEntity;
-    }
-
-    private static AssistanceContractsEntity dtoToEntity(AssistanceContracts assistanceContracts) {
-        AssistanceContractsEntity assistanceContractsEntity = new AssistanceContractsEntity();
-        return assistanceContractsEntity;
+    private static GeographicTaxonomies entityToDto(GeographicTaxonomiesEntity entity) {
+        GeographicTaxonomies geographicTaxonomies = new GeographicTaxonomies();
+        return geographicTaxonomies;
     }
 
     private static List<GeographicTaxonomiesEntity> dtoToEntityG(List<GeographicTaxonomies> geographicTaxonomies) {
         return geographicTaxonomies.stream()
-               .map(OnboardingMapper::dtoToEntity)
-               .collect(Collectors.toList());
+                .map(OnboardingMapper::dtoToEntity)
+                .collect(Collectors.toList());
     }
 
     private static GeographicTaxonomiesEntity dtoToEntity(GeographicTaxonomies geographicTaxonomies) {
@@ -122,8 +118,8 @@ public class OnboardingMapper {
 
     private static List<UserEntity> dtoToEntity(List<User> users) {
         return users.stream()
-              .map(OnboardingMapper::dtoToEntity)
-              .collect(Collectors.toList());
+                .map(OnboardingMapper::dtoToEntity)
+                .collect(Collectors.toList());
     }
 
     private static UserEntity dtoToEntity(User user) {
@@ -137,5 +133,4 @@ public class OnboardingMapper {
         userEntity.setInstitutionTaxCode(user.getInstitutionTaxCode());
         return userEntity;
     }
-
 }

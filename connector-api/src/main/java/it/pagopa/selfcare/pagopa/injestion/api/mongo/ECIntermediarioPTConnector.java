@@ -1,6 +1,6 @@
 package it.pagopa.selfcare.pagopa.injestion.api.mongo;
 
-import it.pagopa.selfcare.pagopa.injestion.model.ECIntermediarioPT;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.ECIntermediarioPT;
 
 import java.util.List;
 

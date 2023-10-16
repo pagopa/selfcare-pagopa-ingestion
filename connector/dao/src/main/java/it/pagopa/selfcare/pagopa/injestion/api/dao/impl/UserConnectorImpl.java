@@ -1,16 +1,20 @@
 package it.pagopa.selfcare.pagopa.injestion.api.dao.impl;
 
-import it.pagopa.selfcare.pagopa.injestion.api.mongo.UserConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.mapper.UserMapper;
-import it.pagopa.selfcare.pagopa.injestion.api.dao.repo.UserRepository;
-import it.pagopa.selfcare.pagopa.injestion.model.User;
-import it.pagopa.selfcare.pagopa.injestion.exception.ResourceNotFoundException;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.UserEntity;
+import it.pagopa.selfcare.pagopa.injestion.api.dao.repo.UserRepository;
+import it.pagopa.selfcare.pagopa.injestion.api.dao.utils.MaskData;
+import it.pagopa.selfcare.pagopa.injestion.api.mongo.UserConnector;
+import it.pagopa.selfcare.pagopa.injestion.exception.ResourceNotFoundException;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -26,7 +30,8 @@ public class UserConnectorImpl implements UserConnector {
     @Override
     public List<User> findAll(int page, int pageSize) {
         PageRequest pageRequest = PageRequest.of(page, pageSize);
-        List<User> userList = repository.findAll(pageRequest).stream()
+        List<User> userList = repository.findAll(pageRequest)
+                .stream()
                 .map(UserMapper::entityToDto)
                 .collect(Collectors.toList());
         log.info("Trovati {} elementi User paginati (pagina {}, dimensione {})", userList.size(), page, pageSize);
@@ -35,7 +40,8 @@ public class UserConnectorImpl implements UserConnector {
 
     @Override
     public List<User> findAll() {
-        List<User> userList = repository.findAll().stream()
+        List<User> userList = repository.findAll()
+                .stream()
                 .map(UserMapper::entityToDto)
                 .collect(Collectors.toList());
         log.info("Trovati {} elementi User", userList.size());
@@ -44,20 +50,15 @@ public class UserConnectorImpl implements UserConnector {
 
     @Override
     public User findById(String id) {
-        return repository.findById(id)
-                .map(entity -> {
-                    log.info("Trovato User con id: {}", entity.getId());
-                    return UserMapper.entityToDto(entity);
-                })
-                .orElseThrow(() -> {
-                    log.error("User non trovato con id: {}", id);
-                    return new ResourceNotFoundException("USER NOT FOUND " + id);
-                });
+        UserEntity entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("USER NOT FOUND " + id));
+        log.info("Trovato User con id: {}", entity.getId());
+        return UserMapper.entityToDto(entity);
     }
 
     @Override
     public User save(User user) {
-        final UserEntity entity = UserMapper.dtoToEntity(user);
+        UserEntity entity = UserMapper.dtoToEntity(user);
         UserEntity savedEntity = repository.save(entity);
         log.info("Salvato User con id: {}", savedEntity.getId());
         return UserMapper.entityToDto(savedEntity);
@@ -83,6 +84,26 @@ public class UserConnectorImpl implements UserConnector {
         UserEntity entity = UserMapper.dtoToEntity(user);
         repository.delete(entity);
         log.info("Eliminato User con id: {}", entity.getId());
+    }
+
+    @Override
+    public Optional<User> findByTaxCode(String taxCode) {
+        Query query = new Query(Criteria.where("taxCode").is(taxCode));
+        return repository.find(query, UserEntity.class)
+                .stream()
+                .map(UserMapper::entityToDto)
+                .findFirst();
+    }
+
+    @Override
+    public List<User> findAllByTaxCode(String taxCode) {
+        Query query = new Query(Criteria.where("taxCode").is(taxCode));
+        List<User> userList = repository.find(query, UserEntity.class)
+                .stream()
+                .map(UserMapper::entityToDto)
+                .collect(Collectors.toList());
+        log.info("Trovati {} elementi User con codice fiscale '{}'", userList.size(), MaskData.maskData(taxCode));
+        return userList;
     }
 
 }

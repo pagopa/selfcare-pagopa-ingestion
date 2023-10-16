@@ -1,14 +1,10 @@
 package it.pagopa.selfcare.pagopa.injestion.api.dao.mapper;
 
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.ECIntermediarioPTEntity;
-import it.pagopa.selfcare.pagopa.injestion.model.ECIntermediarioPT;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.ECIntermediarioPT;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-@NoArgsConstructor(access = AccessLevel.NONE)
 
 public class ECIntermediarioPTMapper {
 

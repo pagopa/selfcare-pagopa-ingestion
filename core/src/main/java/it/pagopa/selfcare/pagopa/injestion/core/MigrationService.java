@@ -2,14 +2,14 @@ package it.pagopa.selfcare.pagopa.injestion.core;
 
 public interface MigrationService {
 
-    void migrateECIntermediarioPTs(String ecIntermediarioPTPath);
+    void migrateECIntermediarioPTs();
 
-    void migrateECs(String ecPath);
+    void migrateECs();
 
-    void migratePTs(String ptPath);
+    void migratePTs();
 
-    void migrateUsers(String usersPath);
+    void migrateUsers();
 
-    void ec();
+    void migrateEC();
 
 }

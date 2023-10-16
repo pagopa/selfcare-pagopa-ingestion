@@ -1,7 +1,7 @@
-package it.pagopa.selfcare.pagopa.injestion.core.mapper;
+package it.pagopa.selfcare.pagopa.injestion.mapper;
 
 import it.pagopa.selfcare.pagopa.injestion.model.csv.ECModel;
-import it.pagopa.selfcare.pagopa.injestion.model.EC;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.EC;
 
 import java.util.List;
 

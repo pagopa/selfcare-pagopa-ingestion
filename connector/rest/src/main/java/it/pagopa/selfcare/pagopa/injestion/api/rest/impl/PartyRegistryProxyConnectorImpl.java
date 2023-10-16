@@ -2,10 +2,14 @@ package it.pagopa.selfcare.pagopa.injestion.api.rest.impl;
 
 import it.pagopa.selfcare.pagopa.injestion.api.rest.PartyRegistryProxyConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.client.PartyRegistryProxyRestClient;
+import it.pagopa.selfcare.pagopa.injestion.api.rest.model.InstitutionResponse;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.model.LegalAddressResponse;
-import it.pagopa.selfcare.pagopa.injestion.model.LegalAddress;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.Institution;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.LegalAddress;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -29,5 +33,30 @@ public class PartyRegistryProxyConnectorImpl implements PartyRegistryProxyConnec
         legalAddress.setZipCode(legalAddressResponse.getZipCode());
         return legalAddress;
     }
+
+    @Override
+    public Institution findInstitution(String taxId, String origin, Optional<String> categories) {
+        try {
+            InstitutionResponse institutionResponse = partyRegistryProxyRestClient.findInstitution(taxId, origin, categories);
+            return toInstitution(institutionResponse);
+        } catch (Exception e) {
+            log.error("Error while fetching institution data: {}", e.getMessage());
+            return null;
+        }
+    }
+
+    private Institution toInstitution(InstitutionResponse institutionResponse) {
+        Institution institution = new Institution();
+        institution.setId(institutionResponse.getId());
+        institution.setTaxCode(institutionResponse.getTaxCode());
+        institution.setCategory(institutionResponse.getCategory());
+        institution.setDescription(institutionResponse.getDescription());
+        institution.setDigitalAddress(institutionResponse.getDigitalAddress());
+        institution.setAddress(institutionResponse.getAddress());
+        institution.setZipCode(institutionResponse.getZipCode());
+        return institution;
+    }
+
+
 
 }

@@ -3,19 +3,20 @@ package it.pagopa.selfcare.pagopa.injestion.core;
 import it.pagopa.selfcare.pagopa.injestion.api.azure.AzureConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.*;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.PartyRegistryProxyConnector;
-import it.pagopa.selfcare.pagopa.injestion.core.mapper.ECIntermediaroPTMapper;
-import it.pagopa.selfcare.pagopa.injestion.core.mapper.ECMapper;
-import it.pagopa.selfcare.pagopa.injestion.core.mapper.PTMapper;
-import it.pagopa.selfcare.pagopa.injestion.core.mapper.UserMapper;
-import it.pagopa.selfcare.pagopa.injestion.model.*;
+import it.pagopa.selfcare.pagopa.injestion.mapper.ECIntermediaroPTMapper;
+import it.pagopa.selfcare.pagopa.injestion.mapper.ECMapper;
+import it.pagopa.selfcare.pagopa.injestion.mapper.PTMapper;
+import it.pagopa.selfcare.pagopa.injestion.mapper.UserMapper;
 import it.pagopa.selfcare.pagopa.injestion.model.csv.ECIntermediarioPTModel;
 import it.pagopa.selfcare.pagopa.injestion.model.csv.ECModel;
 import it.pagopa.selfcare.pagopa.injestion.model.csv.PTModel;
 import it.pagopa.selfcare.pagopa.injestion.model.csv.UserModel;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -32,6 +33,10 @@ class MigrationServiceImpl implements MigrationService {
     private final AzureConnector azureConnector;
     private final PartyRegistryProxyConnector partyRegistryProxyConnector;
     private final boolean local;
+    private final String ecCsvPath;
+    private final String ptCsvPath;
+    private final String ecPtCsvPath;
+    private final String userCsvPath;
 
     public MigrationServiceImpl(
             CsvService csvService,
@@ -42,7 +47,12 @@ class MigrationServiceImpl implements MigrationService {
             OnboardingConnector onboardingConnector,
             AzureConnector azureConnector,
             PartyRegistryProxyConnector partyRegistryProxyConnector,
-            @Value("${app.local.csv}") boolean local) {
+            @Value("${app.local.csv}") boolean local,
+            @Value("${app.local.ec}") String ecCsvPath,
+            @Value("${app.local.pt}") String ptCsvPath,
+            @Value("${app.local.ecPt}") String ecPtCsvPath,
+            @Value("${app.local.user}") String userCsvPath
+    ) {
         this.csvService = csvService;
         this.ecIntermediarioPTConnector = ecIntermediarioPTConnector;
         this.ecConnector = ecConnector;
@@ -52,12 +62,16 @@ class MigrationServiceImpl implements MigrationService {
         this.azureConnector = azureConnector;
         this.partyRegistryProxyConnector = partyRegistryProxyConnector;
         this.local = local;
+        this.ecCsvPath = ecCsvPath;
+        this.ptCsvPath = ptCsvPath;
+        this.ecPtCsvPath = ecPtCsvPath;
+        this.userCsvPath = userCsvPath;
     }
 
     @Override
-    public void migrateECIntermediarioPTs(String path) {
+    public void migrateECIntermediarioPTs() {
         log.info("Starting migration of ECIntermediarioPTs");
-        List<ECIntermediarioPTModel> ecIntermediarioPTModels = getECIntermediarioPTs(path);
+        List<ECIntermediarioPTModel> ecIntermediarioPTModels = getECIntermediarioPTs(ecPtCsvPath);
         saveECIntermediarioPTsParallel(ecIntermediarioPTModels);
         log.info("Completed migration of ECIntermediarioPTs");
     }
@@ -77,11 +91,10 @@ class MigrationServiceImpl implements MigrationService {
         ecIntermediarioPTConnector.save(ECIntermediaroPTMapper.convertModelToDto(ecIntermediarioPTModel));
     }
 
-
     @Override
-    public void migrateECs(String path) {
+    public void migrateECs() {
         log.info("Starting migration of ECs");
-        List<ECModel> ecModels = getECs(path);
+        List<ECModel> ecModels = getECs(ecCsvPath);
         saveECsParallel(ecModels);
         log.info("Completed migration of ECs");
     }
@@ -102,9 +115,9 @@ class MigrationServiceImpl implements MigrationService {
     }
 
     @Override
-    public void migratePTs(String path) {
+    public void migratePTs() {
         log.info("Starting migration of PTs");
-        List<PTModel> ptModels = getPTs(path);
+        List<PTModel> ptModels = getPTs(ptCsvPath);
         savePTsParallel(ptModels);
         log.info("Completed migration of PTs");
     }
@@ -124,12 +137,10 @@ class MigrationServiceImpl implements MigrationService {
         ptConnector.save(PTMapper.convertModelToDto(ptModel));
     }
 
-
-
     @Override
-    public void migrateUsers(String path) {
+    public void migrateUsers() {
         log.info("Starting migration of Users");
-        List<UserModel> userModels = getUsers(path);
+        List<UserModel> userModels = getUsers(userCsvPath);
         saveUsersParallel(userModels);
         log.info("Completed migration of Users");
     }
@@ -150,41 +161,93 @@ class MigrationServiceImpl implements MigrationService {
     }
 
     @Override
-    public void ec(){
+    public void migrateEC() {
+        log.info("Starting migration of EC");
         boolean toNext = true;
         int page = 0;
-        int pageSize = 50; //Var d'ambiente (?)
+        int pageSize = 50; // Var d'ambiente (?)
 
-        while(toNext){
+        while (toNext) {
             List<EC> ecs = ecConnector.findAll(page, pageSize);
-            if(ecs.isEmpty()){
+            if (ecs.isEmpty()) {
                 toNext = false;
-            }
-            else{
+            } else {
                 for (EC ec : ecs) {
-                    Onboarding onboarding = new Onboarding();
-                    String taxId = ec.getTaxCode();
-                    LegalAddress legalAddress = partyRegistryProxyConnector.getLegalAddress(taxId);
-                    if(legalAddress!= null){
-                        String address = legalAddress.getAddress();
-                        String zipCode = legalAddress.getZipCode();
-                        BillingData billingData = new BillingData();
-                        billingData.setDigitalAddress(address);
-                        billingData.setZipCode(zipCode);
-                        billingData.setTaxCode(taxId);
-                        onboarding.setBillingData(billingData);
-                        onboarding.setStatus(Status.TO_SENT);
-                        onboarding.setOrigin(Origin.IPA);
-                        onboarding.setInstitutionType("PA");
-                    }
-                    else{
-                        onboarding.setStatus(Status.TO_BUILDING);
-                    }
-                    onboardingConnector.save(onboarding);
+                    migrateECOnboarding(ec);
                 }
                 page = page + 1;
             }
         }
 
+        log.info("Completed migration of EC");
+    }
+
+    private void migrateECOnboarding(EC ec) {
+        Onboarding onboarding = new Onboarding();
+        String taxId = ec.getTaxCode();
+        BillingData billingData = new BillingData();
+        billingData.setTaxCode(taxId);
+        Institution institution = partyRegistryProxyConnector.findInstitution(taxId, null, java.util.Optional.empty());
+
+        if (institution != null) {
+            fillBillingDataFromInstitution(billingData, institution);
+            onboarding.setStatus(Status.TO_SENT);
+            onboarding.setOrigin(Origin.IPA);
+            onboarding.setInstitutionType("PA");
+            onboarding.setGeographicTaxonomies(new ArrayList<>());
+            onboarding.setAssistanceContracts(new AssistanceContracts());
+            onboarding.setUsers(userConnector.findAllByTaxCode(taxId));
+        } else {
+            onboarding.setStatus(Status.TO_BUILDING);
+        }
+
+        onboarding.setBillingData(billingData);
+        onboardingConnector.save(onboarding);
+    }
+
+    private void fillBillingDataFromInstitution(BillingData billingData, Institution institution) {
+        billingData.setDigitalAddress(institution.getAddress());
+        billingData.setZipCode(institution.getZipCode());
+    }
+
+    public void continueEc() {
+        log.info("Continuing migration of EC");
+        boolean toNext = true;
+        int page = 0;
+        int pageSize = 50; // Var d'ambiente (?)
+
+        while (toNext) {
+            List<Onboarding> onboardings = onboardingConnector.findAllByStatus(page, pageSize, Status.TO_BUILDING.name());
+            if (onboardings.isEmpty()) {
+                toNext = false;
+            } else {
+                for (Onboarding onboarding : onboardings) {
+                    continueEcOnboarding(onboarding);
+                }
+            }
+        }
+
+        log.info("Completed continuing migration of EC");
+    }
+
+    private void continueEcOnboarding(Onboarding onboarding) {
+        String taxId = onboarding.getBillingData().getTaxCode();
+        LegalAddress legalAddress = partyRegistryProxyConnector.getLegalAddress(taxId);
+
+        if (legalAddress != null) {
+            fillBillingDataFromLegalAddress(onboarding.getBillingData(), legalAddress);
+            onboarding.setStatus(Status.DONE);
+            onboarding.setOrigin(Origin.INFOCAMERE);
+            onboarding.setInstitutionType("PA");
+            onboarding.setGeographicTaxonomies(new ArrayList<>());
+            onboarding.setAssistanceContracts(new AssistanceContracts());
+            onboarding.setUsers(userConnector.findAllByTaxCode(taxId));
+            onboardingConnector.save(onboarding);
+        }
+    }
+
+    private void fillBillingDataFromLegalAddress(BillingData billingData, LegalAddress legalAddress) {
+        billingData.setDigitalAddress(legalAddress.getAddress());
+        billingData.setZipCode(legalAddress.getZipCode());
     }
 }

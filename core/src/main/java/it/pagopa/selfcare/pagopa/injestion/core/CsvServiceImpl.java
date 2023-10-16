@@ -23,14 +23,17 @@ public class CsvServiceImpl implements CsvService {
 
     @Override
     public <T> List<T> readItemsFromCsv(Class<T> csvClass, byte[] file, int skipLines) {
-        StringReader stringReader = new StringReader(new String(file, StandardCharsets.UTF_8));
-        CsvToBeanBuilder<T> csvToBeanBuilder = new CsvToBeanBuilder<>(stringReader);
-        csvToBeanBuilder.withSeparator(';');
-        csvToBeanBuilder.withSkipLines(skipLines);
-        csvToBeanBuilder.withType(csvClass);
-
-        List<T> parsedItems = csvToBeanBuilder.build().parse();
-        return new ArrayList<>(parsedItems);
+        try (StringReader stringReader = new StringReader(new String(file, StandardCharsets.UTF_8))) {
+            return new CsvToBeanBuilder<T>(stringReader)
+                    .withSeparator(';')
+                    .withSkipLines(skipLines)
+                    .withType(csvClass)
+                    .build()
+                    .parse();
+        } catch (Exception e) {
+            log.error("Error during CSV reading: {}", e.getMessage());
+            throw new SelfCarePagoPaInjectionException("Error during CSV reading: " + e.getMessage(), "0000");
+        }
     }
 
     @Override
@@ -40,11 +43,12 @@ public class CsvServiceImpl implements CsvService {
                     .withQuotechar('"')
                     .withSeparator(';')
                     .build();
+
             beanToCsv.write(items);
             writer.flush();
         } catch (IOException | CsvDataTypeMismatchException | CsvRequiredFieldEmptyException e) {
-            log.error("Errore durante la scrittura csv nameFile: {} - directoryPath: {} - itemsSize: {}", nameFile, directoryPath, items.size());
-            throw new SelfCarePagoPaInjectionException("ERRORE: " + e.getMessage(), "0000");
+            log.error("Error during CSV writing: nameFile: {} - directoryPath: {} - itemsSize: {}", nameFile, directoryPath, items.size());
+            throw new SelfCarePagoPaInjectionException("Error: " + e.getMessage(), "0000");
         }
     }
 }

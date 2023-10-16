@@ -13,10 +13,11 @@ class DaoConfig{
 
     @Bean
     public MongoCustomConversions customConversions() {
-        return new MongoCustomConversions(Arrays.asList(
-                new OffsetDateTimeToStringConverter(),
-                new StringToOffsetDateTimeConverter()
-        ));
+        return new MongoCustomConversions(
+                Arrays.asList(
+                        new OffsetDateTimeToStringConverter(),
+                        new StringToOffsetDateTimeConverter()
+                ));
     }
 
 }

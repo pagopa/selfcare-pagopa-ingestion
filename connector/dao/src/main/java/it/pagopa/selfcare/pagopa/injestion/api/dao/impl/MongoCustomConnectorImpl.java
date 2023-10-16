@@ -14,22 +14,20 @@ import java.util.List;
 
 public class MongoCustomConnectorImpl implements MongoCustomConnector {
 
-    /*
     private final MongoOperations mongoOperations;
 
     public MongoCustomConnectorImpl(MongoOperations mongoOperations) {
         this.mongoOperations = mongoOperations;
     }
 
+    @Override
+    public <O> List<O> find(Query query, Class<O> outputType) {
+        return mongoOperations.find(query, outputType);
+    }
 
     @Override
     public <O> boolean exists(Query query, Class<O> outputType) {
         return mongoOperations.exists(query, outputType);
-    }
-
-    @Override
-    public <O> List<O> find(Query query, Class<O> outputType) {
-        return mongoOperations.find(query, outputType);
     }
 
     @Override
@@ -46,6 +44,4 @@ public class MongoCustomConnectorImpl implements MongoCustomConnector {
     public <O> O findAndModify(Query query, UpdateDefinition updateDefinition, FindAndModifyOptions findAndModifyOptions, Class<O> outputType) {
         return mongoOperations.findAndModify(query, updateDefinition, findAndModifyOptions, outputType);
     }
-
-     */
 }

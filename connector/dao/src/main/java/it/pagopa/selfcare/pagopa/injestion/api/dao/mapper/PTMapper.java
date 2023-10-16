@@ -1,14 +1,11 @@
 package it.pagopa.selfcare.pagopa.injestion.api.dao.mapper;
 
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.PTEntity;
-import it.pagopa.selfcare.pagopa.injestion.model.PT;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.PT;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor(access = AccessLevel.NONE)
 public class PTMapper {
 
     public static PT entityToDto(PTEntity entity) {
