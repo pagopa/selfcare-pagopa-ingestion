@@ -1,41 +1,59 @@
 {
-  "openapi" : "3.0.3",
-  "info" : {
-    "title" : "selc-pagopa-injestion",
-    "version" : "1.0-SNAPSHOT"
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Party Migration API",
+    "version": "1.0.0-SNAPSHOT",
+    "description": "API for migrating party-related data"
   },
-  "servers" : [ {
-    "url" : "{url}:{port}{basePath}",
-    "variables" : {
-      "url" : {
-        "default" : "http://localhost"
-      },
-      "port" : {
-        "default" : "80"
-      },
-      "basePath" : {
-        "default" : ""
-      }
+  "tags": [
+    {
+      "name": "migration",
+      "description": "API endpoints for data migration"
     }
-  } ],
-  "tags" : [ {
-    "name" : "Delegation"
-  }, {
-    "name" : "External"
-  }, {
-    "name" : "Institution"
-  }, {
-    "name" : "Management"
-  }, {
-    "name" : "Onboarding"
-  } ],
-  "components" : {
-    "securitySchemes" : {
-      "bearerAuth" : {
-        "type" : "http",
-        "description" : "A bearer token in the format of a JWS and conformed to the specifications included in [RFC8725](https://tools.ietf.org/html/RFC8725)",
-        "scheme" : "bearer",
-        "bearerFormat" : "JWT"
+  ],
+  "paths": {
+    "/migration/ECIntermediarioPTs": {
+      "get": {
+        "summary": "Migrate EC Intermediario PTs",
+        "operationId": "migrateECIntermediarioPTs",
+        "responses": {
+          "200": {
+            "description": "Migration completed successfully"
+          }
+        }
+      }
+    },
+    "/migration/ECs": {
+      "get": {
+        "summary": "Migrate ECs",
+        "operationId": "migrateECs",
+        "responses": {
+          "200": {
+            "description": "Migration completed successfully"
+          }
+        }
+      }
+    },
+    "/migration/PTs": {
+      "get": {
+        "summary": "Migrate PTs",
+        "operationId": "migratePTs",
+        "responses": {
+          "200": {
+            "description": "Migration completed successfully"
+          }
+        }
+      }
+    },
+    "/migration/Users": {
+      "get": {
+        "summary": "Migrate Users",
+        "operationId": "migrateUsers",
+        "responses": {
+          "200": {
+            "description": "Migration completed successfully"
+          }
+        }
       }
     }
   }

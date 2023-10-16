@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import java.util.Arrays;
 
 @Configuration
-@PropertySource("classpath:config/dao-confing.properties")
+@PropertySource("classpath:config/dao-config.properties")
 class DaoConfig{
 
     @Bean

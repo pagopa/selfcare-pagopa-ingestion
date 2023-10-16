@@ -6,8 +6,8 @@
         <groupId>it.pagopa.selfcare</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
+    <modelVersion>4.0.0</modelVersion>
     <artifactId>selc-pagopa-injestion-connector</artifactId>
     <packaging>pom</packaging>
 

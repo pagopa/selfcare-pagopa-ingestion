@@ -57,7 +57,7 @@ class MigrationServiceImpl implements MigrationService {
     }
 
     private List<ECIntermediarioPTModel> getECIntermediarioPTs(String file) {
-        return local ? csvService.readItemsFromCsv(ECIntermediarioPTModel.class, file.getBytes(), 1) : csvService.readItemsFromCsv(ECIntermediarioPTModel.class, azureConnector.readCsv(file).getBytes(), 1);
+        return local ? csvService.readItemsFromCsv(ECIntermediarioPTModel.class, file.getBytes(), 1) : csvService.readItemsFromCsv(ECIntermediarioPTModel.class, azureConnector.readCsv(file).getData(), 1);
     }
 
     private void saveECIntermediarioPTsParallel(List<ECIntermediarioPTModel> ecIntermediarioPTModels) {
@@ -81,7 +81,7 @@ class MigrationServiceImpl implements MigrationService {
     }
 
     private List<ECModel> getECs(String file) {
-        return local ? csvService.readItemsFromCsv(ECModel.class, file.getBytes(), 1) : csvService.readItemsFromCsv(ECModel.class, azureConnector.readCsv(file).getBytes(), 1);
+        return local ? csvService.readItemsFromCsv(ECModel.class, file.getBytes(), 1) : csvService.readItemsFromCsv(ECModel.class, azureConnector.readCsv(file).getData(), 1);
     }
 
     private void saveECsParallel(List<ECModel> ecModels) {
@@ -104,7 +104,7 @@ class MigrationServiceImpl implements MigrationService {
     }
 
     private List<PTModel> getPTs(String file) {
-        return local ? csvService.readItemsFromCsv(PTModel.class, file.getBytes(), 1) : csvService.readItemsFromCsv(PTModel.class, azureConnector.readCsv(file).getBytes(), 1);
+        return local ? csvService.readItemsFromCsv(PTModel.class, file.getBytes(), 1) : csvService.readItemsFromCsv(PTModel.class, azureConnector.readCsv(file).getData(), 1);
     }
 
     private void savePTsParallel(List<PTModel> ptModels) {
@@ -129,7 +129,7 @@ class MigrationServiceImpl implements MigrationService {
     }
 
     private List<UserModel> getUsers(String file) {
-        return local ? csvService.readItemsFromCsv(UserModel.class, file.getBytes(), 1) : csvService.readItemsFromCsv(UserModel.class, azureConnector.readCsv(file).getBytes(), 1);
+        return local ? csvService.readItemsFromCsv(UserModel.class, file.getBytes(), 1) : csvService.readItemsFromCsv(UserModel.class, azureConnector.readCsv(file).getData(), 1);
     }
 
     private void saveUsersParallel(List<UserModel> userModels) {
