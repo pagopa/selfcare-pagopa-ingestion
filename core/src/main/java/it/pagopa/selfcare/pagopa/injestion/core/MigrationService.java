@@ -10,4 +10,6 @@ public interface MigrationService {
 
     void migrateUsers(String usersPath);
 
+    void ec();
+
 }

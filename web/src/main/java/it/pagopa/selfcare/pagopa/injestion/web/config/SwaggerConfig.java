@@ -3,7 +3,7 @@ package it.pagopa.selfcare.pagopa.injestion.web.config;
 import com.fasterxml.classmate.TypeResolver;
 import it.pagopa.selfcare.commons.web.swagger.EmailAnnotationSwaggerPluginConfig;
 import it.pagopa.selfcare.commons.web.swagger.ServerSwaggerConfig;
-import it.pagopa.selfcare.pagopa.injestion.dto.Problem;
+import it.pagopa.selfcare.pagopa.injestion.model.error.Problem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

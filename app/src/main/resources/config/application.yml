@@ -34,4 +34,3 @@ logging:
 app:
   local:
     csv: ${LOCAL_CSV:true}
-    filename: ${CSV_FILENAME:pippo}

@@ -1,14 +1,17 @@
 package it.pagopa.selfcare.pagopa.injestion.core;
 
-import it.pagopa.selfcare.pagopa.injestion.api.*;
+import it.pagopa.selfcare.pagopa.injestion.api.azure.AzureConnector;
+import it.pagopa.selfcare.pagopa.injestion.api.mongo.*;
+import it.pagopa.selfcare.pagopa.injestion.api.rest.PartyRegistryProxyConnector;
 import it.pagopa.selfcare.pagopa.injestion.core.mapper.ECIntermediaroPTMapper;
 import it.pagopa.selfcare.pagopa.injestion.core.mapper.ECMapper;
 import it.pagopa.selfcare.pagopa.injestion.core.mapper.PTMapper;
 import it.pagopa.selfcare.pagopa.injestion.core.mapper.UserMapper;
-import it.pagopa.selfcare.pagopa.injestion.core.model.ECIntermediarioPTModel;
-import it.pagopa.selfcare.pagopa.injestion.core.model.ECModel;
-import it.pagopa.selfcare.pagopa.injestion.core.model.PTModel;
-import it.pagopa.selfcare.pagopa.injestion.core.model.UserModel;
+import it.pagopa.selfcare.pagopa.injestion.model.*;
+import it.pagopa.selfcare.pagopa.injestion.model.csv.ECIntermediarioPTModel;
+import it.pagopa.selfcare.pagopa.injestion.model.csv.ECModel;
+import it.pagopa.selfcare.pagopa.injestion.model.csv.PTModel;
+import it.pagopa.selfcare.pagopa.injestion.model.csv.UserModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -25,7 +28,9 @@ class MigrationServiceImpl implements MigrationService {
     private final ECConnector ecConnector;
     private final PTConnector ptConnector;
     private final UserConnector userConnector;
+    private final OnboardingConnector onboardingConnector;
     private final AzureConnector azureConnector;
+    private final PartyRegistryProxyConnector partyRegistryProxyConnector;
     private final boolean local;
 
     public MigrationServiceImpl(
@@ -34,14 +39,18 @@ class MigrationServiceImpl implements MigrationService {
             ECConnector ecConnector,
             PTConnector ptConnector,
             UserConnector userConnector,
+            OnboardingConnector onboardingConnector,
             AzureConnector azureConnector,
+            PartyRegistryProxyConnector partyRegistryProxyConnector,
             @Value("${app.local.csv}") boolean local) {
         this.csvService = csvService;
         this.ecIntermediarioPTConnector = ecIntermediarioPTConnector;
         this.ecConnector = ecConnector;
         this.ptConnector = ptConnector;
         this.userConnector = userConnector;
+        this.onboardingConnector = onboardingConnector;
         this.azureConnector = azureConnector;
+        this.partyRegistryProxyConnector = partyRegistryProxyConnector;
         this.local = local;
     }
 
@@ -140,4 +149,42 @@ class MigrationServiceImpl implements MigrationService {
         userConnector.save(UserMapper.convertModelToDto(userModel));
     }
 
+    @Override
+    public void ec(){
+        boolean toNext = true;
+        int page = 0;
+        int pageSize = 50; //Var d'ambiente (?)
+
+        while(toNext){
+            List<EC> ecs = ecConnector.findAll(page, pageSize);
+            if(ecs.isEmpty()){
+                toNext = false;
+            }
+            else{
+                for (EC ec : ecs) {
+                    Onboarding onboarding = new Onboarding();
+                    String taxId = ec.getTaxCode();
+                    LegalAddress legalAddress = partyRegistryProxyConnector.getLegalAddress(taxId);
+                    if(legalAddress!= null){
+                        String address = legalAddress.getAddress();
+                        String zipCode = legalAddress.getZipCode();
+                        BillingData billingData = new BillingData();
+                        billingData.setDigitalAddress(address);
+                        billingData.setZipCode(zipCode);
+                        billingData.setTaxCode(taxId);
+                        onboarding.setBillingData(billingData);
+                        onboarding.setStatus(Status.TO_SENT);
+                        onboarding.setOrigin(Origin.IPA);
+                        onboarding.setInstitutionType("PA");
+                    }
+                    else{
+                        onboarding.setStatus(Status.TO_BUILDING);
+                    }
+                    onboardingConnector.save(onboarding);
+                }
+                page = page + 1;
+            }
+        }
+
+    }
 }

@@ -1,7 +1,8 @@
 package it.pagopa.selfcare.pagopa.injestion.api.dao.mapper;
 
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.UserEntity;
-import it.pagopa.selfcare.pagopa.injestion.dto.User;
+import it.pagopa.selfcare.pagopa.injestion.model.Role;
+import it.pagopa.selfcare.pagopa.injestion.model.User;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -19,7 +20,7 @@ public class UserMapper {
         User user = new User();
         user.setEmail(entity.getEmail());
         user.setName(entity.getName());
-        user.setRole(entity.getRole());
+        user.setRole(Role.valueOf(entity.getRole()));
         user.setSurname(entity.getSurname());
         user.setStatus(entity.getStatus());
         user.setInstitutionTaxCode(entity.getInstitutionTaxCode());
@@ -35,7 +36,7 @@ public class UserMapper {
         UserEntity entity = new UserEntity();
         entity.setEmail(user.getEmail());
         entity.setName(user.getName());
-        entity.setRole(user.getRole());
+        entity.setRole(user.getRole().name());
         entity.setSurname(user.getSurname());
         entity.setStatus(user.getStatus());
         entity.setInstitutionTaxCode(user.getInstitutionTaxCode());

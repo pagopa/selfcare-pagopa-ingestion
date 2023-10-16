@@ -1,7 +1,7 @@
 package it.pagopa.selfcare.pagopa.injestion.api.dao.mapper;
 
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.ECEntity;
-import it.pagopa.selfcare.pagopa.injestion.dto.EC;
+import it.pagopa.selfcare.pagopa.injestion.model.EC;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

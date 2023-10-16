@@ -1,8 +1,8 @@
 package it.pagopa.selfcare.pagopa.injestion.core.mapper;
 
 
-import it.pagopa.selfcare.pagopa.injestion.core.model.ECIntermediarioPTModel;
-import it.pagopa.selfcare.pagopa.injestion.dto.ECIntermediarioPT;
+import it.pagopa.selfcare.pagopa.injestion.model.csv.ECIntermediarioPTModel;
+import it.pagopa.selfcare.pagopa.injestion.model.ECIntermediarioPT;
 
 import java.util.List;
 

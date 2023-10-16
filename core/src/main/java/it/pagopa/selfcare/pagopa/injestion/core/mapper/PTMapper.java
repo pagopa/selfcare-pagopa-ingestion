@@ -1,8 +1,8 @@
 package it.pagopa.selfcare.pagopa.injestion.core.mapper;
 
 
-import it.pagopa.selfcare.pagopa.injestion.core.model.PTModel;
-import it.pagopa.selfcare.pagopa.injestion.dto.PT;
+import it.pagopa.selfcare.pagopa.injestion.model.csv.PTModel;
+import it.pagopa.selfcare.pagopa.injestion.model.PT;
 
 import java.util.List;
 

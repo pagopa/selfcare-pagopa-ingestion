@@ -14,6 +14,7 @@ import java.util.List;
 
 public class MongoCustomConnectorImpl implements MongoCustomConnector {
 
+    /*
     private final MongoOperations mongoOperations;
 
     public MongoCustomConnectorImpl(MongoOperations mongoOperations) {
@@ -45,4 +46,6 @@ public class MongoCustomConnectorImpl implements MongoCustomConnector {
     public <O> O findAndModify(Query query, UpdateDefinition updateDefinition, FindAndModifyOptions findAndModifyOptions, Class<O> outputType) {
         return mongoOperations.findAndModify(query, updateDefinition, findAndModifyOptions, outputType);
     }
+
+     */
 }
