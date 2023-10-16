@@ -1,6 +1,6 @@
 package it.pagopa.selfcare.pagopa.injestion.core;
 
-import it.pagopa.selfcare.pagopa.injestion.connector.*;
+import it.pagopa.selfcare.pagopa.injestion.api.*;
 import it.pagopa.selfcare.pagopa.injestion.core.mapper.ECIntermediaroPTMapper;
 import it.pagopa.selfcare.pagopa.injestion.core.mapper.ECMapper;
 import it.pagopa.selfcare.pagopa.injestion.core.mapper.PTMapper;
@@ -27,7 +27,6 @@ class MigrationServiceImpl implements MigrationService {
     private final UserConnector userConnector;
     private final AzureConnector azureConnector;
     private final boolean local;
-    private final String fileName;
 
     public MigrationServiceImpl(
             CsvService csvService,
@@ -36,8 +35,7 @@ class MigrationServiceImpl implements MigrationService {
             PTConnector ptConnector,
             UserConnector userConnector,
             AzureConnector azureConnector,
-            @Value("${app.local.csv}") boolean local,
-            @Value("${app.local.filename}") String fileName) {
+            @Value("${app.local.csv}") boolean local) {
         this.csvService = csvService;
         this.ecIntermediarioPTConnector = ecIntermediarioPTConnector;
         this.ecConnector = ecConnector;
@@ -45,13 +43,12 @@ class MigrationServiceImpl implements MigrationService {
         this.userConnector = userConnector;
         this.azureConnector = azureConnector;
         this.local = local;
-        this.fileName = fileName;
     }
 
     @Override
-    public void migrateECIntermediarioPTs() {
+    public void migrateECIntermediarioPTs(String path) {
         log.info("Starting migration of ECIntermediarioPTs");
-        List<ECIntermediarioPTModel> ecIntermediarioPTModels = getECIntermediarioPTs(fileName);
+        List<ECIntermediarioPTModel> ecIntermediarioPTModels = getECIntermediarioPTs(path);
         saveECIntermediarioPTsParallel(ecIntermediarioPTModels);
         log.info("Completed migration of ECIntermediarioPTs");
     }
@@ -73,9 +70,9 @@ class MigrationServiceImpl implements MigrationService {
 
 
     @Override
-    public void migrateECs() {
+    public void migrateECs(String path) {
         log.info("Starting migration of ECs");
-        List<ECModel> ecModels = getECs(fileName);
+        List<ECModel> ecModels = getECs(path);
         saveECsParallel(ecModels);
         log.info("Completed migration of ECs");
     }
@@ -96,9 +93,9 @@ class MigrationServiceImpl implements MigrationService {
     }
 
     @Override
-    public void migratePTs() {
+    public void migratePTs(String path) {
         log.info("Starting migration of PTs");
-        List<PTModel> ptModels = getPTs(fileName);
+        List<PTModel> ptModels = getPTs(path);
         savePTsParallel(ptModels);
         log.info("Completed migration of PTs");
     }
@@ -121,9 +118,9 @@ class MigrationServiceImpl implements MigrationService {
 
 
     @Override
-    public void migrateUsers() {
+    public void migrateUsers(String path) {
         log.info("Starting migration of Users");
-        List<UserModel> userModels = getUsers(fileName);
+        List<UserModel> userModels = getUsers(path);
         saveUsersParallel(userModels);
         log.info("Completed migration of Users");
     }
