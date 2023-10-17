@@ -214,7 +214,7 @@ class MigrationServiceImpl implements MigrationService {
 
     private void migrateECOnboardingWithLegalAddress(EC ec, LegalAddress legalAddress) {
         String taxId = ec.getTaxCode();
-        Onboarding onboarding = createOnboarding(taxId, legalAddress.getAddress(), legalAddress.getZipCode(), ec, Origin.IPA.name());
+        Onboarding onboarding = createOnboarding(taxId, legalAddress.getAddress(), legalAddress.getZipCode(), ec, Origin.INFOCAMERE.name());
         processMigrateEC(ec, taxId, onboarding);
     }
 
