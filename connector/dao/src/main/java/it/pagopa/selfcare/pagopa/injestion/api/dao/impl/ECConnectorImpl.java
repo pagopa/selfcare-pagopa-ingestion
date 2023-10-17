@@ -1,11 +1,11 @@
 package it.pagopa.selfcare.pagopa.injestion.api.dao.impl;
 
 import it.pagopa.selfcare.pagopa.injestion.api.dao.mapper.ECMapper;
-import it.pagopa.selfcare.pagopa.injestion.api.mongo.ECConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.ECEntity;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.repo.ECRepository;
-import it.pagopa.selfcare.pagopa.injestion.model.dto.EC;
+import it.pagopa.selfcare.pagopa.injestion.api.mongo.ECConnector;
 import it.pagopa.selfcare.pagopa.injestion.exception.ResourceNotFoundException;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.EC;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
@@ -40,6 +40,17 @@ public class ECConnectorImpl implements ECConnector {
                 .map(ECMapper::entityToDto)
                 .collect(Collectors.toList());
         log.info("Trovati {} elementi EC", ecs.size());
+        return ecs;
+    }
+
+    @Override
+    public List<EC> findAllByStatus(int page, int pageSize, String status) {
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        List<EC> ecs = repository.findAllByStatus(status, pageRequest)
+                .stream()
+                .map(ECMapper::entityToDto)
+                .collect(Collectors.toList());
+        log.info("Trovati {} elementi MigrazioneEC con workStatus '{}'", ecs.size(), status);
         return ecs;
     }
 

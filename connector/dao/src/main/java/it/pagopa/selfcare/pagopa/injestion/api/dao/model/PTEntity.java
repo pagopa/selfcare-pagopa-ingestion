@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Sharded;
 
 @Data
 @NoArgsConstructor
-@Document("PT")
+@Document("MigrazionePT")
 @Sharded(shardKey = {"id"})
 @FieldNameConstants(asEnum = true)
 public class PTEntity {
@@ -22,5 +22,6 @@ public class PTEntity {
     private String zipCode;
     private String digitalAddress;
     private String vatNumber;
+    private String workStatus;
 
 }

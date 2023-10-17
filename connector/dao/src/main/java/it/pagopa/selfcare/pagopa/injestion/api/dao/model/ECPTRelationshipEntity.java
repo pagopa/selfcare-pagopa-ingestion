@@ -9,10 +9,10 @@ import org.springframework.data.mongodb.core.mapping.Sharded;
 
 @Data
 @NoArgsConstructor
-@Document("ECIntermediarioPT")
+@Document("MigrazioneECPTRelationship")
 @Sharded(shardKey = {"id"})
 @FieldNameConstants(asEnum = true)
-public class ECIntermediarioPTEntity {
+public class ECPTRelationshipEntity {
 
     @Id
     private String id;
@@ -20,5 +20,6 @@ public class ECIntermediarioPTEntity {
     private String enteIndirettoCF;
     private String intermediarioPTRagioneSociale;
     private String intermediarioPTCF;
+    private String workStatus;
 
 }

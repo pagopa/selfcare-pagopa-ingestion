@@ -19,5 +19,6 @@ public class User {
     private Boolean status;
     private String institutionTaxCode;
     private String productRole;
+    private WorkStatus workStatus;
 
 }

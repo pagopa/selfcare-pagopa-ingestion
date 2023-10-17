@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ECIntermediarioPTModel {
+public class ECPTRelationshipModel {
 
     @CsvBindByPosition(position = 0)
     private String enteIndirettoRagioneSociale;

@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Sharded;
 
 @Data
-@Document("EC")
+@Document("MigrazioneEC")
 @Sharded(shardKey = {"id"})
 @FieldNameConstants(asEnum = true)
 public class ECEntity {
@@ -21,6 +21,6 @@ public class ECEntity {
     private String digitalAddress;
     private String vatNumber;
     private String recipientCode;
-    private String status;
+    private String workStatus;
 
 }

@@ -3,6 +3,7 @@ package it.pagopa.selfcare.pagopa.injestion.api.dao.mapper;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.UserEntity;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.Role;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.User;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.WorkStatus;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ public class UserMapper {
         user.setSurname(entity.getSurname());
         user.setStatus(entity.getStatus());
         user.setInstitutionTaxCode(entity.getInstitutionTaxCode());
+        user.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
 
         return user;
     }
@@ -37,6 +39,7 @@ public class UserMapper {
         entity.setSurname(user.getSurname());
         entity.setStatus(user.getStatus());
         entity.setInstitutionTaxCode(user.getInstitutionTaxCode());
+        entity.setWorkStatus(user.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : user.getWorkStatus().name());
 
         return entity;
     }

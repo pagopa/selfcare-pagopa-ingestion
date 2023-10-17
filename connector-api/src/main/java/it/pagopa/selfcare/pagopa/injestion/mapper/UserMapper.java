@@ -1,9 +1,9 @@
 package it.pagopa.selfcare.pagopa.injestion.mapper;
 
 
+import it.pagopa.selfcare.pagopa.injestion.model.csv.UserModel;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.Role;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.User;
-import it.pagopa.selfcare.pagopa.injestion.model.csv.UserModel;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class UserMapper {
             user.setName(userModel.getName());
             user.setSurname(userModel.getSurname());
             user.setRole(Role.valueOf(userModel.getRole()));
-            user.setStatus(userModel.getStatus());
+            user.setStatus(Boolean.valueOf(userModel.getStatus()));
             user.setEmail(userModel.getEmail());
             user.setTaxCode(userModel.getTaxCode());
         }
@@ -32,7 +32,7 @@ public class UserMapper {
             userModel.setName(user.getName());
             userModel.setSurname(user.getSurname());
             userModel.setRole(user.getRole().name());
-            userModel.setStatus(user.getStatus());
+            userModel.setStatus(String.valueOf(user.getStatus()));
             userModel.setEmail(user.getEmail());
             userModel.setTaxCode(user.getTaxCode());
         }

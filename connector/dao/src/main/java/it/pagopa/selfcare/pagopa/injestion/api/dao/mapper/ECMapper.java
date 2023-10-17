@@ -2,7 +2,7 @@ package it.pagopa.selfcare.pagopa.injestion.api.dao.mapper;
 
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.ECEntity;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.EC;
-import it.pagopa.selfcare.pagopa.injestion.model.dto.Status;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.WorkStatus;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +22,7 @@ public class ECMapper {
         ec.setVatNumber(entity.getVatNumber());
         ec.setZipCode(entity.getZipCode());
         ec.setRegisteredOffice(entity.getRegisteredOffice());
+        ec.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
 
         return ec;
     }
@@ -39,7 +40,7 @@ public class ECMapper {
         entity.setVatNumber(ec.getVatNumber());
         entity.setZipCode(ec.getZipCode());
         entity.setRegisteredOffice(ec.getRegisteredOffice());
-        entity.setStatus(ec.getStatus() == null ? Status.TO_WORK.name() : ec.getStatus().name());
+        entity.setWorkStatus(ec.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : ec.getWorkStatus().name());
 
         return entity;
     }

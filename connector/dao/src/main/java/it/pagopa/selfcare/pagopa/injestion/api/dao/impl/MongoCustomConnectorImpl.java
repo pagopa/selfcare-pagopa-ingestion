@@ -1,16 +1,7 @@
 package it.pagopa.selfcare.pagopa.injestion.api.dao.impl;
 
 import it.pagopa.selfcare.pagopa.injestion.api.dao.repo.MongoCustomConnector;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.UpdateDefinition;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MongoCustomConnectorImpl implements MongoCustomConnector {
 
@@ -20,6 +11,7 @@ public class MongoCustomConnectorImpl implements MongoCustomConnector {
         this.mongoOperations = mongoOperations;
     }
 
+    /*
     @Override
     public <O> List<O> find(Query query, Class<O> outputType) {
         return mongoOperations.find(query, outputType);
@@ -29,6 +21,7 @@ public class MongoCustomConnectorImpl implements MongoCustomConnector {
     public <O> boolean exists(Query query, Class<O> outputType) {
         return mongoOperations.exists(query, outputType);
     }
+
 
     @Override
     public <O> Page<O> find(Query query, Pageable pageable, Class<O> outputType) {
@@ -44,4 +37,6 @@ public class MongoCustomConnectorImpl implements MongoCustomConnector {
     public <O> O findAndModify(Query query, UpdateDefinition updateDefinition, FindAndModifyOptions findAndModifyOptions, Class<O> outputType) {
         return mongoOperations.findAndModify(query, updateDefinition, findAndModifyOptions, outputType);
     }
+
+     */
 }

@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class ECIntermediarioPT {
+public class ECPTRelationship {
 
     private String enteIndirettoRagioneSociale;
     private String enteIndirettoCF;
     private String intermediarioPTRagioneSociale;
     private String intermediarioPTCF;
+    private WorkStatus workStatus;
 
 }

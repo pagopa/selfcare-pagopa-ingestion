@@ -10,6 +10,8 @@ public interface ECConnector {
 
     List<EC> findAll();
 
+    List<EC> findAllByStatus(int page, int pageSize, String status);
+
     EC findById(String id);
 
     EC save(EC ec);

@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Sharded;
 
 @Data
 @NoArgsConstructor
-@Document("User")
+@Document("MigrazioneUser")
 @Sharded(shardKey = {"id"})
 @FieldNameConstants(asEnum = true)
 public class UserEntity {
@@ -23,5 +23,6 @@ public class UserEntity {
     private Boolean status;
     private String institutionTaxCode;
     private String role;
+    private String workStatus;
 
 }

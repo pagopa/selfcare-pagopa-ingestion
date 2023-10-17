@@ -5,16 +5,16 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.Arrays;
 
-public enum Status {
-    TO_WORK("TO_WORK"),
-    TO_SENT("TO_SENT"),
+public enum WorkStatus {
+    NOT_WORKED("NOT_WORKED"),
+    TO_SEND("TO_SEND"),
     TO_BUILDING("TO_BUILDING"),
     ERROR("ERROR"),
     DONE("DONE");
 
     private final String value;
 
-    Status(String value) {
+    WorkStatus(String value) {
         this.value = value;
     }
 
@@ -25,7 +25,7 @@ public enum Status {
     }
 
     @JsonCreator
-    public static Status fromValue(String value) {
+    public static WorkStatus fromValue(String value) {
         return Arrays.stream(values())
                 .filter(origin -> origin.toString().equals(value))
                 .findAny()

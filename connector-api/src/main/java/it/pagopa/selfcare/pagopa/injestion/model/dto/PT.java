@@ -15,5 +15,6 @@ public class PT {
     private String zipCode;
     private String digitalAddress;
     private String vatNumber;
+    private WorkStatus workStatus;
 
 }

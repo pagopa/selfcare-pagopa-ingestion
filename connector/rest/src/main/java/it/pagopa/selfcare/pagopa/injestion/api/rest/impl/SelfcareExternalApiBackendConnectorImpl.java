@@ -6,10 +6,7 @@ import it.pagopa.selfcare.pagopa.injestion.api.rest.model.selfcare_external_api_
 import it.pagopa.selfcare.pagopa.injestion.model.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 

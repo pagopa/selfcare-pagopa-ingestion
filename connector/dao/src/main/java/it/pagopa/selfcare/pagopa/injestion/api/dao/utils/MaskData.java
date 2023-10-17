@@ -2,6 +2,7 @@ package it.pagopa.selfcare.pagopa.injestion.api.dao.utils;
 
 public class MaskData {
 
+
     public static String maskData(String taxId) {
         if (taxId == null || taxId.length() < 5) {
             return taxId;
@@ -10,7 +11,6 @@ public class MaskData {
         StringBuilder censoredCodiceFiscale = new StringBuilder();
         censoredCodiceFiscale.append(taxId, 0, 3);
 
-        // Censura i caratteri intermedi
         for (int i = 3; i < taxId.length() - 1; i++) {
             censoredCodiceFiscale.append('*');
         }

@@ -2,6 +2,7 @@ package it.pagopa.selfcare.pagopa.injestion.api.dao.mapper;
 
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.PTEntity;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.PT;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.WorkStatus;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ public class PTMapper {
         pt.setBusinessName(entity.getBusinessName());
         pt.setVatNumber(entity.getVatNumber());
         pt.setRegisteredOffice(entity.getRegisteredOffice());
+        pt.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
 
         return pt;
     }
@@ -36,6 +38,7 @@ public class PTMapper {
         entity.setBusinessName(pt.getBusinessName());
         entity.setVatNumber(pt.getVatNumber());
         entity.setRegisteredOffice(pt.getRegisteredOffice());
+        entity.setWorkStatus(pt.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : pt.getWorkStatus().name());
 
         return entity;
     }

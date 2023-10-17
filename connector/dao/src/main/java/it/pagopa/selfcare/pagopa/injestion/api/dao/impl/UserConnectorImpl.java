@@ -9,12 +9,9 @@ import it.pagopa.selfcare.pagopa.injestion.exception.ResourceNotFoundException;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -86,19 +83,11 @@ public class UserConnectorImpl implements UserConnector {
         log.info("Eliminato User con id: {}", entity.getId());
     }
 
-    @Override
-    public Optional<User> findByTaxCode(String taxCode) {
-        Query query = new Query(Criteria.where("taxCode").is(taxCode));
-        return repository.find(query, UserEntity.class)
-                .stream()
-                .map(UserMapper::entityToDto)
-                .findFirst();
-    }
 
     @Override
     public List<User> findAllByTaxCode(String taxCode) {
-        Query query = new Query(Criteria.where("taxCode").is(taxCode));
-        List<User> userList = repository.find(query, UserEntity.class)
+        //Query query = new Query(Criteria.where("taxCode").is(taxCode));
+        List<User> userList = repository.findAllByTaxCode(taxCode)
                 .stream()
                 .map(UserMapper::entityToDto)
                 .collect(Collectors.toList());

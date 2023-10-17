@@ -23,7 +23,7 @@ public class UserModel {
     private String taxCode;
 
     @CsvBindByPosition(position = 4)
-    private Boolean status;
+    private String status;
 
     @CsvBindByPosition(position = 5)
     private String institutionTaxCode;

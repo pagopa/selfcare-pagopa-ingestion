@@ -1,5 +1,7 @@
 package it.pagopa.selfcare.pagopa.injestion.core;
 
+import com.opencsv.CSVReader;
+import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
@@ -9,12 +11,8 @@ import it.pagopa.selfcare.pagopa.injestion.exception.SelfCarePagoPaInjectionExce
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,14 +20,38 @@ import java.util.List;
 public class CsvServiceImpl implements CsvService {
 
     @Override
-    public <T> List<T> readItemsFromCsv(Class<T> csvClass, byte[] file, int skipLines) {
-        try (StringReader stringReader = new StringReader(new String(file, StandardCharsets.UTF_8))) {
-            return new CsvToBeanBuilder<T>(stringReader)
-                    .withSeparator(';')
-                    .withSkipLines(skipLines)
+    public <T> List<T> readItemsFromCsv(Class<T> csvClass, byte[] csvData, int skipLines) {
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(csvData);
+             InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+             CSVReader csvReader = new CSVReader(reader)) {
+
+            CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(csvReader)
                     .withType(csvClass)
-                    .build()
-                    .parse();
+                    .withSkipLines(skipLines)
+                    .withSeparator(',')
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .build();
+
+            return csvToBean.parse();
+        } catch (Exception e) {
+            log.error("Error during CSV reading: {}", e.getMessage());
+            throw new SelfCarePagoPaInjectionException("Error during CSV reading: " + e.getMessage(), "0000");
+        }
+    }
+
+    @Override
+    public <T> List<T> readItemsFromCsv(Class<T> csvClass, String filePath, int skipLines) {
+        try (FileReader fileReader = new FileReader(filePath+".csv");
+             CSVReader csvReader = new CSVReader(fileReader)) {
+
+            CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(csvReader)
+                    .withType(csvClass)
+                    .withSkipLines(skipLines)
+                    .withSeparator(',')
+                    .withIgnoreLeadingWhiteSpace(true)
+                    .build();
+
+            return csvToBean.parse();
         } catch (Exception e) {
             log.error("Error during CSV reading: {}", e.getMessage());
             throw new SelfCarePagoPaInjectionException("Error during CSV reading: " + e.getMessage(), "0000");
