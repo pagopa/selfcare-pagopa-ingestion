@@ -7,9 +7,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class GeographicTaxonomies {
+public class CompanyInformation {
 
-    private String code;
-    private String desc;
+    private String rea;
+
+    private String shareCapital;
+
+    private String businessRegisterPlace;
 
 }

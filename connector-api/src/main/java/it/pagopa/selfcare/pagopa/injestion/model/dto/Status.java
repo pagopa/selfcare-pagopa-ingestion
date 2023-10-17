@@ -6,8 +6,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 
 public enum Status {
+    TO_WORK("TO_WORK"),
     TO_SENT("TO_SENT"),
     TO_BUILDING("TO_BUILDING"),
+    ERROR("ERROR"),
     DONE("DONE");
 
     private final String value;

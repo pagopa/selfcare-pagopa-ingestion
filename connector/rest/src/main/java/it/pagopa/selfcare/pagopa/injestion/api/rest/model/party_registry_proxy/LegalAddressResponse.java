@@ -1,4 +1,4 @@
-package it.pagopa.selfcare.pagopa.injestion.api.rest.model;
+package it.pagopa.selfcare.pagopa.injestion.api.rest.model.party_registry_proxy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

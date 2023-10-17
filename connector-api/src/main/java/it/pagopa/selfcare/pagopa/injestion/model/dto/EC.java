@@ -16,5 +16,6 @@ public class EC {
     private String digitalAddress;
     private String vatNumber;
     private String recipientCode;
+    private Status status;
 
 }

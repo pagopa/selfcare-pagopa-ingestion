@@ -10,10 +10,12 @@ import lombok.NoArgsConstructor;
 public class BillingData {
 
     private String businessName;
-    private String digitalAddress;
-    private String recipientCode;
     private String registeredOffice;
+    private String digitalAddress;
+    private String zipCode;
     private String taxCode;
     private String vatNumber;
-    private String zipCode;
+    private String recipientCode;
+    private Boolean publicServices;
+
 }

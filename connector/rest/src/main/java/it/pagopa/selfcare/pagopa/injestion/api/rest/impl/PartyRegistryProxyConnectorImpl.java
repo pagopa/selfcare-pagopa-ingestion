@@ -2,8 +2,8 @@ package it.pagopa.selfcare.pagopa.injestion.api.rest.impl;
 
 import it.pagopa.selfcare.pagopa.injestion.api.rest.PartyRegistryProxyConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.client.PartyRegistryProxyRestClient;
-import it.pagopa.selfcare.pagopa.injestion.api.rest.model.InstitutionResponse;
-import it.pagopa.selfcare.pagopa.injestion.api.rest.model.LegalAddressResponse;
+import it.pagopa.selfcare.pagopa.injestion.api.rest.model.party_registry_proxy.InstitutionResponse;
+import it.pagopa.selfcare.pagopa.injestion.api.rest.model.party_registry_proxy.LegalAddressResponse;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.Institution;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.LegalAddress;
 import lombok.extern.slf4j.Slf4j;

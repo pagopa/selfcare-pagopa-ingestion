@@ -1,5 +1,6 @@
 package it.pagopa.selfcare.pagopa.injestion.model.dto;
 
+import it.pagopa.selfcare.commons.base.security.PartyRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,12 @@ public class User {
 
     private String name;
     private String surname;
-    private String email;
     private String taxCode;
+    private Role role;
+    private PartyRole partyRole;
+    private String email;
     private Boolean status;
     private String institutionTaxCode;
-    private Role role;
+    private String productRole;
 
 }
