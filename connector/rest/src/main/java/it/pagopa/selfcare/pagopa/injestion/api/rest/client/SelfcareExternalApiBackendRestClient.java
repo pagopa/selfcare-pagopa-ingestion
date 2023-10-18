@@ -11,7 +11,7 @@ import javax.validation.Valid;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@FeignClient(name = "${rest-client.selfcare-external-api-backend.serviceCode}", url = "${rest-client.selfcare-external-api-backend.serviceUrl}")
+@FeignClient(name = "${rest-client.selfcare-external-api-backend.serviceCode}", url = "${rest-client.selfcare-external-api-backend.base-url}")
 public interface SelfcareExternalApiBackendRestClient {
 
     @PostMapping(value = "${rest-client.selfcare-external-api-backend.onboarding.autoApprovalOnboarding.path}", consumes = APPLICATION_JSON_VALUE)

@@ -4,7 +4,6 @@ import it.pagopa.selfcare.commons.base.utils.InstitutionType;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.utils.MaskData;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.ECConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.UserConnector;
-import it.pagopa.selfcare.pagopa.injestion.api.rest.NationalRegistriesConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.PartyRegistryProxyConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.SelfcareExternalApiBackendConnector;
 import it.pagopa.selfcare.pagopa.injestion.mapper.ECMapper;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -27,7 +27,6 @@ class MigrationECServiceImpl implements MigrationECService {
     private final UserConnector userConnector;
     private final PartyRegistryProxyConnector partyRegistryProxyConnector;
     private final SelfcareExternalApiBackendConnector selfcareExternalApiBackendConnector;
-    private final NationalRegistriesConnector nationalRegistriesConnector;
 
     @Value("${app.local.ec}")
     private String csvPath;
@@ -40,15 +39,13 @@ class MigrationECServiceImpl implements MigrationECService {
             ECConnector ecConnector,
             UserConnector userConnector,
             PartyRegistryProxyConnector partyRegistryProxyConnector,
-            SelfcareExternalApiBackendConnector selfcareExternalApiBackendConnector,
-            NationalRegistriesConnector nationalRegistriesConnector
+            SelfcareExternalApiBackendConnector selfcareExternalApiBackendConnector
     ) {
         this.migrationService = migrationService;
         this.ecConnector = ecConnector;
         this.userConnector = userConnector;
         this.partyRegistryProxyConnector = partyRegistryProxyConnector;
         this.selfcareExternalApiBackendConnector = selfcareExternalApiBackendConnector;
-        this.nationalRegistriesConnector = nationalRegistriesConnector;
     }
 
     @Override
@@ -94,6 +91,7 @@ class MigrationECServiceImpl implements MigrationECService {
     }
 
     private void migrateECOnboardingWithIpa(EC ec, InstitutionProxyInfo institution) {
+        ec.setRegisteredOffice(institution.getAddress());
         ec.setDigitalAddress(institution.getDigitalAddress());
         ec.setZipCode(institution.getZipCode());
         ec.setWorkStatus(WorkStatus.TO_SEND_IPA);
@@ -103,12 +101,12 @@ class MigrationECServiceImpl implements MigrationECService {
     }
 
     private void migrateECOnboardingWithSedeLegale(EC ec) {
-        LegalAddress legalAddress = nationalRegistriesConnector.getLegalAddress(ec.getTaxCode());
+        LegalAddress legalAddress = partyRegistryProxyConnector.getLegalAddress(ec.getTaxCode());
 
         if (isLegalAddressValid(legalAddress)) {
-            ec.setDigitalAddress(legalAddress.getProfessionalAddress().getAddress());
-            ec.setZipCode(legalAddress.getProfessionalAddress().getZip());
-            ec.setWorkStatus(WorkStatus.TO_SEND_INIPEC);
+            ec.setRegisteredOffice(legalAddress.getAddress());
+            ec.setZipCode(legalAddress.getZip());
+            ec.setWorkStatus(WorkStatus.TO_SEND_INFOCAMERE);
             ecConnector.save(ec);
             Onboarding onboarding = createOnboarding(ec, Origin.INFOCAMERE.name());
             processMigrateEC(ec, onboarding);
@@ -120,8 +118,8 @@ class MigrationECServiceImpl implements MigrationECService {
 
     private boolean isLegalAddressValid(LegalAddress legalAddress) {
         return legalAddress != null &&
-                isStringValid(legalAddress.getProfessionalAddress().getAddress()) &&
-                isStringValid(legalAddress.getProfessionalAddress().getZip());
+                isStringValid(legalAddress.getAddress()) &&
+                isStringValid(legalAddress.getZip());
     }
 
     private boolean isStringValid(String str) {
@@ -157,11 +155,22 @@ class MigrationECServiceImpl implements MigrationECService {
 
     private Onboarding createOnboarding(EC ec, String origin) {
         Onboarding onboarding = new Onboarding();
-        onboarding.setUsers(userConnector.findAllByTaxCode(ec.getTaxCode()));
         onboarding.setBillingData(fillBillingDataFromInstitutionAndEC(ec.getDigitalAddress(), ec.getZipCode(), ec));
         onboarding.setInstitutionType(InstitutionType.PA);
-        onboarding.setOrigin(origin);
         onboarding.setGeographicTaxonomies(List.of());
+        onboarding.setOrigin(origin);
+        List<User> users = userConnector.findAllByTaxCode(ec.getTaxCode()).stream()
+                        .map(user -> {
+                            User userToSend = new User();
+                            userToSend.setTaxCode(user.getTaxCode());
+                            userToSend.setName(user.getName());
+                            userToSend.setSurname(user.getSurname());
+                            userToSend.setEmail(user.getEmail());
+                            userToSend.setRole(user.getRole() == Role.RT ? Role.OPERATORE : Role.ADMINISTRATORE);
+                            return userToSend;
+                        }).collect(Collectors.toList());
+
+        onboarding.setUsers(users);
         onboarding.setAssistanceContacts(new AssistanceContacts());
         return onboarding;
     }
@@ -181,7 +190,7 @@ class MigrationECServiceImpl implements MigrationECService {
     @Override
     public void autoComplete() {
         autoComplete(WorkStatus.TO_SEND_IPA.name());
-        autoComplete(WorkStatus.TO_SEND_INIPEC.name());
+        autoComplete(WorkStatus.TO_SEND_INFOCAMERE.name());
     }
 
     private void autoComplete(String workStatus) {

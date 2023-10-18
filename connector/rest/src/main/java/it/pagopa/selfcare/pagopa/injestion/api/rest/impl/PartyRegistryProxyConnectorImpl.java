@@ -3,10 +3,11 @@ package it.pagopa.selfcare.pagopa.injestion.api.rest.impl;
 import feign.FeignException;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.PartyRegistryProxyConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.client.PartyRegistryProxyRestClient;
+import it.pagopa.selfcare.pagopa.injestion.api.rest.model.party_registry_proxy.NationalRegistriesProfessionalAddress;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.model.party_registry_proxy.ProxyInstitutionResponse;
-import it.pagopa.selfcare.pagopa.injestion.exception.ResourceNotFoundException;
 import it.pagopa.selfcare.pagopa.injestion.exception.SelfCarePagoPaInjectionException;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.InstitutionProxyInfo;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.LegalAddress;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class PartyRegistryProxyConnectorImpl implements PartyRegistryProxyConnec
         try {
             ProxyInstitutionResponse response = partyRegistryProxyRestClient.getInstitutionById(id);
             if (response == null) {
-                throw new ResourceNotFoundException(String.format("INSTITUTION NOT FOUND: %s", id));
+                return null;
             }
             return convertInstitutionProxyInfo(response);
         } catch (FeignException e) {
@@ -51,6 +52,27 @@ public class PartyRegistryProxyConnectorImpl implements PartyRegistryProxyConnec
         info.setOrigin(response.getOrigin());
         info.setIstatCode(response.getIstatCode());
         return info;
+    }
+
+    @Override
+    public LegalAddress getLegalAddress(String taxId) {
+        try {
+            NationalRegistriesProfessionalAddress address = partyRegistryProxyRestClient.getLegalAddress(taxId);
+            if(address == null){
+                return null;
+            }
+            return toLegalAddress(address);
+        } catch (FeignException e) {
+            log.error("LegalAddress not found for taxId {}", taxId);
+            throw new SelfCarePagoPaInjectionException(e.getMessage(), String.valueOf(e.status()));
+        }
+    }
+
+    private LegalAddress toLegalAddress(NationalRegistriesProfessionalAddress address){
+        LegalAddress legalAddress = new LegalAddress();
+        legalAddress.setAddress(address.getAddress());
+        legalAddress.setZip(address.getZip());
+        return legalAddress;
     }
 
 }

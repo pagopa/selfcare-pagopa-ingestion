@@ -4,7 +4,6 @@ import it.pagopa.selfcare.commons.base.utils.InstitutionType;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.utils.MaskData;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.PTConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.UserConnector;
-import it.pagopa.selfcare.pagopa.injestion.api.rest.NationalRegistriesConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.PartyRegistryProxyConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.SelfcareExternalApiBackendConnector;
 import it.pagopa.selfcare.pagopa.injestion.mapper.PTMapper;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -27,7 +27,6 @@ class MigrationPTServiceImpl implements MigrationPTService {
     private final UserConnector userConnector;
     private final PartyRegistryProxyConnector partyRegistryProxyConnector;
     private final SelfcareExternalApiBackendConnector selfcareExternalApiBackendConnector;
-    private final NationalRegistriesConnector nationalRegistriesConnector;
 
     @Value("${app.local.ec}")
     private String csvPath;
@@ -40,15 +39,13 @@ class MigrationPTServiceImpl implements MigrationPTService {
             PTConnector ptConnector,
             UserConnector userConnector,
             PartyRegistryProxyConnector partyRegistryProxyConnector,
-            SelfcareExternalApiBackendConnector selfcareExternalApiBackendConnector,
-            NationalRegistriesConnector nationalRegistriesConnector
+            SelfcareExternalApiBackendConnector selfcareExternalApiBackendConnector
     ) {
         this.migrationService = migrationService;
         this.ptConnector = ptConnector;
         this.userConnector = userConnector;
         this.partyRegistryProxyConnector = partyRegistryProxyConnector;
         this.selfcareExternalApiBackendConnector = selfcareExternalApiBackendConnector;
-        this.nationalRegistriesConnector = nationalRegistriesConnector;
     }
 
     @Override
@@ -96,6 +93,7 @@ class MigrationPTServiceImpl implements MigrationPTService {
     }
 
     private void migratePTOnboardingWithIpa(PT pt, InstitutionProxyInfo institution) {
+        pt.setRegisteredOffice(institution.getAddress());
         pt.setDigitalAddress(institution.getDigitalAddress());
         pt.setZipCode(institution.getZipCode());
         pt.setWorkStatus(WorkStatus.TO_SEND_IPA);
@@ -105,12 +103,12 @@ class MigrationPTServiceImpl implements MigrationPTService {
     }
 
     private void migratePTOnboardingWithSedeLegale(PT pt) {
-        LegalAddress legalAddress = nationalRegistriesConnector.getLegalAddress(pt.getTaxCode());
+        LegalAddress legalAddress = partyRegistryProxyConnector.getLegalAddress(pt.getTaxCode());
 
         if (isLegalAddressValid(legalAddress)) {
-            pt.setDigitalAddress(legalAddress.getProfessionalAddress().getAddress());
-            pt.setZipCode(legalAddress.getProfessionalAddress().getZip());
-            pt.setWorkStatus(WorkStatus.TO_SEND_INIPEC);
+            pt.setRegisteredOffice(legalAddress.getAddress());
+            pt.setZipCode(legalAddress.getZip());
+            pt.setWorkStatus(WorkStatus.TO_SEND_INFOCAMERE);
             ptConnector.save(pt);
             Onboarding onboarding = createOnboarding(pt, Origin.INFOCAMERE.name());
             processMigratePT(pt, onboarding);
@@ -122,8 +120,8 @@ class MigrationPTServiceImpl implements MigrationPTService {
 
     private boolean isLegalAddressValid(LegalAddress legalAddress) {
         return legalAddress != null &&
-                isStringValid(legalAddress.getProfessionalAddress().getAddress()) &&
-                isStringValid(legalAddress.getProfessionalAddress().getZip());
+                isStringValid(legalAddress.getAddress()) &&
+                isStringValid(legalAddress.getZip());
     }
 
 
@@ -160,11 +158,22 @@ class MigrationPTServiceImpl implements MigrationPTService {
 
     private Onboarding createOnboarding(PT pt, String origin) {
         Onboarding onboarding = new Onboarding();
-        onboarding.setUsers(userConnector.findAllByTaxCode(pt.getTaxCode()));
         onboarding.setBillingData(fillBillingDataFromInstitutionAndEC(pt.getDigitalAddress(), pt.getZipCode(), pt));
         onboarding.setInstitutionType(InstitutionType.PA);
-        onboarding.setOrigin(origin);
         onboarding.setGeographicTaxonomies(List.of());
+        onboarding.setOrigin(origin);
+        List<User> users = userConnector.findAllByTaxCode(pt.getTaxCode()).stream()
+                .map(user -> {
+                    User userToSend = new User();
+                    userToSend.setTaxCode(user.getTaxCode());
+                    userToSend.setName(user.getName());
+                    userToSend.setSurname(user.getSurname());
+                    userToSend.setEmail(user.getEmail());
+                    userToSend.setRole(user.getRole() == Role.RT ? Role.OPERATORE : Role.ADMINISTRATORE);
+                    return userToSend;
+                }).collect(Collectors.toList());
+
+        onboarding.setUsers(users);
         onboarding.setAssistanceContacts(new AssistanceContacts());
         return onboarding;
     }
@@ -184,7 +193,7 @@ class MigrationPTServiceImpl implements MigrationPTService {
     @Override
     public void autoComplete() {
         autoComplete(WorkStatus.TO_SEND_IPA.name());
-        autoComplete(WorkStatus.TO_SEND_INIPEC.name());
+        autoComplete(WorkStatus.TO_SEND_INFOCAMERE.name());
     }
 
     private void autoComplete(String workStatus) {

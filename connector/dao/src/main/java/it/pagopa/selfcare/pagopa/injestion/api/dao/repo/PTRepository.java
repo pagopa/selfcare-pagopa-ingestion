@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface PTRepository extends MongoRepository<PTEntity, String>, MongoCustomConnector {
 
-    @Query(value = "{'workStatus': ?2}")
+    @Query(value = "{'workStatus': ?0}")
     List<PTEntity> findAllByStatus(String workStatus, Pageable pageable);
 }

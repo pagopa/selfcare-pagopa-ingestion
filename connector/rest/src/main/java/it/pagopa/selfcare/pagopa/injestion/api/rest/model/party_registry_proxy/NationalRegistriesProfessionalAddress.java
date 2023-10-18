@@ -1,10 +1,10 @@
-package it.pagopa.selfcare.pagopa.injestion.api.rest.model.national_registries;
+package it.pagopa.selfcare.pagopa.injestion.api.rest.model.party_registry_proxy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class ProfessionalAddressDto {
+public class NationalRegistriesProfessionalAddress {
     @JsonProperty("description")
     private String description;
 

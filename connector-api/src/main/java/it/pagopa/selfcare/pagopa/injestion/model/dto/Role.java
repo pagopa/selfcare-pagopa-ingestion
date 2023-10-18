@@ -8,7 +8,9 @@ import java.util.Arrays;
 
 public enum Role {
     RT("RT"),
-    RP("RP");
+    RP("RP"),
+    OPERATORE("Operatore"),
+    ADMINISTRATORE("Amministratore");
 
     private final String value;
 

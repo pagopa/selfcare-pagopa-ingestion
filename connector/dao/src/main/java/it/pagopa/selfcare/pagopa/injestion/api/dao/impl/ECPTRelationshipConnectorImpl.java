@@ -46,6 +46,17 @@ public class ECPTRelationshipConnectorImpl implements ECPTRelationshipConnector 
     }
 
     @Override
+    public List<ECPTRelationship> findAllByStatus(int page, int pageSize, String status) {
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        List<ECPTRelationship> ecptRelationships = repository.findAllByStatus(status, pageRequest)
+                .stream()
+                .map(ECPTRelationshipMapper::entityToDto)
+                .collect(Collectors.toList());
+        log.info("Trovati {} elementi ECPTRelationship con workStatus '{}'", ecptRelationships.size(), status);
+        return ecptRelationships;
+    }
+
+    @Override
     public ECPTRelationship findById(String id) {
         Optional<ECPTRelationshipEntity> optionalEntity = repository.findById(id);
         ECPTRelationshipEntity entity = optionalEntity.orElseThrow(() -> new ResourceNotFoundException("ECINTERMEDIARIOPT NOT FOUND " + id));

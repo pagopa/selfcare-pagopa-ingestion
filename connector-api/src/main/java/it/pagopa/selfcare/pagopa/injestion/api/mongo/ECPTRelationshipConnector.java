@@ -10,6 +10,8 @@ public interface ECPTRelationshipConnector {
 
     List<ECPTRelationship> findAll();
 
+    List<ECPTRelationship> findAllByStatus(int page, int pageSize, String status);
+
     ECPTRelationship findById(String id);
 
     ECPTRelationship save(ECPTRelationship ecptRelationship);

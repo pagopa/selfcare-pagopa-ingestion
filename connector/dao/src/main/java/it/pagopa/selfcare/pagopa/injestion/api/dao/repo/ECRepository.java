@@ -10,9 +10,9 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.List;
 
 @Repository
-public interface ECRepository extends MongoRepository<ECEntity, String> {
+public interface ECRepository extends MongoRepository<ECEntity, String>, MongoCustomConnector {
 
-    @Query(value = "{'workStatus': ?2}")
+    @Query(value = "{'workStatus': ?0}")
     List<ECEntity> findAllByStatus(String workStatus, Pageable pageable);
 
 }

@@ -6,4 +6,7 @@ public interface SelfcareExternalApiBackendConnector {
 
     void autoApprovalOnboarding(String externalInstitutionId, String productId, Onboarding request);
 
+    //TO DO
+    //void autoApprovalDeletagion(String externalInstitutionId, String productId, Onboarding request, String token);
+
 }
