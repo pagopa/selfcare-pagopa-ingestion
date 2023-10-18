@@ -4,4 +4,6 @@ public interface MigrationECPTRelationshipService {
 
     void persistECPTRelationship();
 
+    void migrateECPTRelationship();
+
 }

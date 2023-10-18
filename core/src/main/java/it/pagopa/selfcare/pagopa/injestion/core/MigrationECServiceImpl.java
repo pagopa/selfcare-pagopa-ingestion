@@ -67,7 +67,7 @@ class MigrationECServiceImpl implements MigrationECService {
             }
 
             ecs.forEach(this::migrateECOnboarding);
-            page++;
+
         }
 
         log.info("Completed migration of EC");

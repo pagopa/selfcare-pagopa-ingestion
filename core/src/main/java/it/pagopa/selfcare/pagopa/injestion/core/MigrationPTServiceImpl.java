@@ -68,7 +68,6 @@ class MigrationPTServiceImpl implements MigrationPTService {
             }
 
             pts.forEach(this::migratePTOnboarding);
-            page++;
         }
 
         log.info("Completed migration of PT");

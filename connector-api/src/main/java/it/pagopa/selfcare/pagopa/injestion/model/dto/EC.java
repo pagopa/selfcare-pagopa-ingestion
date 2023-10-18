@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class EC {
 
+    private String id;
     private String businessName;
     private String taxCode;
     private String registeredOffice;

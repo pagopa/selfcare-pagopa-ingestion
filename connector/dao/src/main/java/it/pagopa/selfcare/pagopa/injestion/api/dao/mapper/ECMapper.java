@@ -15,6 +15,7 @@ public class ECMapper {
         }
 
         EC ec = new EC();
+        ec.setId(entity.getId());
         ec.setBusinessName(entity.getBusinessName());
         ec.setRecipientCode(entity.getRecipientCode());
         ec.setDigitalAddress(entity.getDigitalAddress());
@@ -33,6 +34,7 @@ public class ECMapper {
         }
 
         ECEntity entity = new ECEntity();
+        entity.setId(ec.getId());
         entity.setBusinessName(ec.getBusinessName());
         entity.setRecipientCode(ec.getRecipientCode());
         entity.setDigitalAddress(ec.getDigitalAddress());

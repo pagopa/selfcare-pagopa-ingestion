@@ -15,6 +15,7 @@ public class PTMapper {
         }
 
         PT pt = new PT();
+        pt.setId(entity.getId());
         pt.setTaxCode(entity.getTaxCode());
         pt.setZipCode(entity.getZipCode());
         pt.setDigitalAddress(entity.getDigitalAddress());
@@ -32,6 +33,7 @@ public class PTMapper {
         }
 
         PTEntity entity = new PTEntity();
+        entity.setId(pt.getId());
         entity.setTaxCode(pt.getTaxCode());
         entity.setZipCode(pt.getZipCode());
         entity.setDigitalAddress(pt.getDigitalAddress());

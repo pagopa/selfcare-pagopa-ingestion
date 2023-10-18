@@ -12,7 +12,6 @@ import it.pagopa.selfcare.pagopa.injestion.exception.SelfCarePagoPaInjectionExce
 import it.pagopa.selfcare.pagopa.injestion.model.dto.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +27,6 @@ import java.security.InvalidKeyException;
 public class AzureBlobClient implements AzureConnector {
 
     private static final String ERROR_DURING_DOWNLOAD_FILE_MESSAGE = "Error during download file %s";
-    private static final String ERROR_DURING_DOWNLOAD_FILE_CODE = "0000";
 
     private final CloudBlobClient blobClient;
     private final String containerReference;
@@ -61,9 +59,9 @@ public class AzureBlobClient implements AzureConnector {
             if (e.getHttpStatusCode() == 404) {
                 throw new ResourceNotFoundException(String.format(ERROR_DURING_DOWNLOAD_FILE_MESSAGE, fileName));
             }
-            throw new SelfCarePagoPaInjectionException(String.format(ERROR_DURING_DOWNLOAD_FILE_MESSAGE, fileName), ERROR_DURING_DOWNLOAD_FILE_CODE);
+            throw new SelfCarePagoPaInjectionException(String.format(ERROR_DURING_DOWNLOAD_FILE_MESSAGE, fileName), e.getHttpStatusCode());
         } catch (URISyntaxException | IOException e) {
-            throw new SelfCarePagoPaInjectionException(String.format(ERROR_DURING_DOWNLOAD_FILE_MESSAGE, fileName), ERROR_DURING_DOWNLOAD_FILE_CODE);
+            throw new SelfCarePagoPaInjectionException(String.format(ERROR_DURING_DOWNLOAD_FILE_MESSAGE, fileName), 400);
         }
     }
 }

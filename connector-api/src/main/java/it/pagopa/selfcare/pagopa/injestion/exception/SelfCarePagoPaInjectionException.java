@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class SelfCarePagoPaInjectionException extends RuntimeException {
 
-    private final String code;
+    private final int code;
 
-    public SelfCarePagoPaInjectionException(String message, String code){
+    public SelfCarePagoPaInjectionException(String message, int code){
         super(message);
         this.code = code;
     }

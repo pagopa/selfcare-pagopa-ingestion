@@ -100,4 +100,17 @@ public class PartyMigrationController {
         }
     }
 
+    @PostMapping("/ECPT")
+    public ResponseEntity<String> migrationECPT() {
+        try {
+
+            migrationECPTRelationshipService.migrateECPTRelationship();
+
+            return new ResponseEntity<>(COMPLETE, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Errore durante la migrazione PT", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }

@@ -1,12 +1,12 @@
 package it.pagopa.selfcare.pagopa.injestion.api.rest;
 
+import it.pagopa.selfcare.pagopa.injestion.model.dto.Delegation;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.Onboarding;
 
 public interface SelfcareExternalApiBackendConnector {
 
     void autoApprovalOnboarding(String externalInstitutionId, String productId, Onboarding request);
 
-    //TO DO
-    //void autoApprovalDeletagion(String externalInstitutionId, String productId, Onboarding request, String token);
+    void createDelegation(Delegation delegation);
 
 }

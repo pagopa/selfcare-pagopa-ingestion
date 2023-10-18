@@ -15,6 +15,7 @@ public class ECPTRelationshipMapper {
         }
 
         ECPTRelationship ecptRelationship = new ECPTRelationship();
+        ecptRelationship.setId(entity.getId());
         ecptRelationship.setIntermediarioPTCF(entity.getIntermediarioPTCF());
         ecptRelationship.setIntermediarioPTRagioneSociale(entity.getIntermediarioPTRagioneSociale());
         ecptRelationship.setEnteIndirettoCF(entity.getEnteIndirettoCF());
@@ -30,6 +31,7 @@ public class ECPTRelationshipMapper {
         }
 
         ECPTRelationshipEntity entity = new ECPTRelationshipEntity();
+        entity.setId(ecptRelationship.getId());
         entity.setEnteIndirettoCF(ecptRelationship.getEnteIndirettoCF());
         entity.setIntermediarioPTCF(ecptRelationship.getIntermediarioPTCF());
         entity.setIntermediarioPTRagioneSociale(ecptRelationship.getIntermediarioPTRagioneSociale());

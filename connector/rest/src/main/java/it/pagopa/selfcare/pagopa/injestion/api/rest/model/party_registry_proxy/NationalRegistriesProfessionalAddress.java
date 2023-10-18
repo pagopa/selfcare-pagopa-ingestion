@@ -17,6 +17,6 @@ public class NationalRegistriesProfessionalAddress {
     @JsonProperty("address")
     private String address;
 
-    @JsonProperty("zip")
-    private String zip;
+    @JsonProperty("zipCode")
+    private String zipCode;
 }

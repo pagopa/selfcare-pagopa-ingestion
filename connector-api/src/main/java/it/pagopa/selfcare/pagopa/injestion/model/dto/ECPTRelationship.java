@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class ECPTRelationship {
 
+    private String id;
     private String enteIndirettoRagioneSociale;
     private String enteIndirettoCF;
     private String intermediarioPTRagioneSociale;

@@ -50,12 +50,14 @@ class MigrationECPTRelationshipServiceImpl implements MigrationECPTRelationshipS
     }
 
 
+    @Override
     public void migrateECPTRelationship() {
         log.info("Starting migration of ECPTRelationship");
 
         int page = 0;
 
         while (true) {
+
             List<ECPTRelationship> ecptRelationships = ecptRelationshipConnector.findAllByStatus(page, pageSize, WorkStatus.NOT_WORKED.name());
 
             if (ecptRelationships.isEmpty()) {
@@ -63,7 +65,7 @@ class MigrationECPTRelationshipServiceImpl implements MigrationECPTRelationshipS
             }
 
             ecptRelationships.forEach(this::migrateECPTRelationship);
-            page++;
+
         }
 
         log.info("Completed migration of EC");

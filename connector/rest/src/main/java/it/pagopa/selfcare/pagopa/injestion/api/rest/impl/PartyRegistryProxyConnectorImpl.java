@@ -32,7 +32,10 @@ public class PartyRegistryProxyConnectorImpl implements PartyRegistryProxyConnec
             }
             return convertInstitutionProxyInfo(response);
         } catch (FeignException e) {
-            throw new SelfCarePagoPaInjectionException(e.getMessage(), String.valueOf(e.status()));
+            if(e.status() == 404){
+                return null;
+            }
+            throw new SelfCarePagoPaInjectionException(e.getMessage(), e.status());
         }
     }
 
@@ -63,15 +66,18 @@ public class PartyRegistryProxyConnectorImpl implements PartyRegistryProxyConnec
             }
             return toLegalAddress(address);
         } catch (FeignException e) {
+            if(e.status() == 404){
+                return null;
+            }
             log.error("LegalAddress not found for taxId {}", taxId);
-            throw new SelfCarePagoPaInjectionException(e.getMessage(), String.valueOf(e.status()));
+            throw new SelfCarePagoPaInjectionException(e.getMessage(), e.status());
         }
     }
 
     private LegalAddress toLegalAddress(NationalRegistriesProfessionalAddress address){
         LegalAddress legalAddress = new LegalAddress();
         legalAddress.setAddress(address.getAddress());
-        legalAddress.setZip(address.getZip());
+        legalAddress.setZip(address.getZipCode());
         return legalAddress;
     }
 

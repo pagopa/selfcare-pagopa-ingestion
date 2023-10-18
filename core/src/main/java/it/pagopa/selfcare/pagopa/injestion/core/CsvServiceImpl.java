@@ -32,7 +32,7 @@ public class CsvServiceImpl implements CsvService {
             return csvToBean.parse();
         } catch (Exception e) {
             log.error("Error during CSV reading: {}", e.getMessage());
-            throw new SelfCarePagoPaInjectionException("Error during CSV reading: " + e.getMessage(), "0000");
+            throw new SelfCarePagoPaInjectionException("Error during CSV reading: " + e.getMessage(), 400);
         }
     }
 
@@ -52,7 +52,7 @@ public class CsvServiceImpl implements CsvService {
             return csvToBean.parse();
         } catch (Exception e) {
             log.error("Error during CSV reading: {}", e.getMessage());
-            throw new SelfCarePagoPaInjectionException("Error during CSV reading: " + e.getMessage(), "0000");
+            throw new SelfCarePagoPaInjectionException("Error during CSV reading: " + e.getMessage(), 400);
         }
     }
 
@@ -68,7 +68,7 @@ public class CsvServiceImpl implements CsvService {
             writer.flush();
         } catch (IOException | CsvDataTypeMismatchException | CsvRequiredFieldEmptyException e) {
             log.error("Error during CSV writing: nameFile: {} - directoryPath: {} - itemsSize: {}", nameFile, directoryPath, items.size());
-            throw new SelfCarePagoPaInjectionException("Error: " + e.getMessage(), "0000");
+            throw new SelfCarePagoPaInjectionException("Error: " + e.getMessage(), 400);
         }
     }
 }

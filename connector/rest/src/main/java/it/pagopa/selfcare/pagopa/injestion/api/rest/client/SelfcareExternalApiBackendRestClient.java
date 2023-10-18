@@ -1,5 +1,7 @@
 package it.pagopa.selfcare.pagopa.injestion.api.rest.client;
 
+import it.pagopa.selfcare.pagopa.injestion.api.rest.model.selfcare_external_api_backend.DelegationRequest;
+import it.pagopa.selfcare.pagopa.injestion.api.rest.model.selfcare_external_api_backend.DelegationResponse;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.model.selfcare_external_api_backend.OnboardingRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,5 +19,9 @@ public interface SelfcareExternalApiBackendRestClient {
     @PostMapping(value = "${rest-client.selfcare-external-api-backend.onboarding.autoApprovalOnboarding.path}", consumes = APPLICATION_JSON_VALUE)
     @ResponseBody
     void autoApprovalOnboarding(@PathVariable("externalInstitutionId") String externalInstitutionId, @PathVariable("productId") String productId, @RequestBody @Valid OnboardingRequest request);
+
+    @PostMapping(value = "${rest-client.selfcare-external-api-backend.onboarding.createDelegation.path}", consumes = APPLICATION_JSON_VALUE)
+    @ResponseBody
+    DelegationResponse createDelegation(@RequestBody @Valid DelegationRequest request);
 
 }

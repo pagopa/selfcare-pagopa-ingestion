@@ -21,6 +21,22 @@ public class SelfcareExternalApiBackendConnectorImpl implements SelfcareExternal
     }
 
     @Override
+    public void createDelegation(Delegation delegation){
+        selfcareExternalApiBackendRestClient.createDelegation(toDelegationRequest(delegation));
+    }
+
+    private DelegationRequest toDelegationRequest(Delegation delegation){
+        DelegationRequest delegationRequest = new DelegationRequest();
+        delegationRequest.setTo(delegation.getTo());
+        delegationRequest.setFrom(delegation.getFrom());
+        delegationRequest.setInstitutionToName(delegation.getInstitutionToName());
+        delegationRequest.setInstitutionFromName(delegation.getInstitutionFromName());
+        delegationRequest.setType(delegation.getType());
+        delegationRequest.setProductId(delegation.getProductId());
+        return delegationRequest;
+    }
+
+    @Override
     public void autoApprovalOnboarding(String externalInstitutionId, String productId, Onboarding request) {
         log.info("autoApprovalOnboarding");
         selfcareExternalApiBackendRestClient.autoApprovalOnboarding(externalInstitutionId, productId, toOnboardingRequest(request));
