@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Institution{
-
+public class InstitutionProxyInfo {
     private String id;
     private String originId;
     private String o;
@@ -20,7 +19,6 @@ public class Institution{
     private String digitalAddress;
     private String address;
     private String zipCode;
-    private Origin origin;
+    private String origin;
     private String istatCode;
-
 }

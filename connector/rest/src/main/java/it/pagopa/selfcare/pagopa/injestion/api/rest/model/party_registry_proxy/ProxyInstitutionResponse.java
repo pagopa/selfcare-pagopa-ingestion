@@ -1,11 +1,10 @@
-package it.pagopa.selfcare.pagopa.injestion.api.rest.model.selfcare_ms_core;
+package it.pagopa.selfcare.pagopa.injestion.api.rest.model.party_registry_proxy;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import it.pagopa.selfcare.pagopa.injestion.model.dto.Origin;
 import lombok.Data;
 
 @Data
-public class InstitutionResponse {
+public class ProxyInstitutionResponse {
 
     @JsonProperty("id")
     private String id;
@@ -41,9 +40,8 @@ public class InstitutionResponse {
     private String zipCode;
 
     @JsonProperty("origin")
-    private Origin origin;
+    private String origin;
 
     @JsonProperty("istatCode")
     private String istatCode;
-
 }

@@ -1,4 +1,5 @@
 Name,Surname,Email,TaxCode,Status,Institution TaxCode,Role
 Vincenzo,Adinolfi,vincenzo.adinolfi@codexon.it,DNLVCN90L07A717K,true,CF_Azienda_A,RT
-Vincenzo,Adinolfi,vincenzo.adinolfi@codexon.it,DNLVCN90L07A717K,true,CF_Azienda_B,RP
-Vincenzo,Adinolfi,vincenzo.adinolfi@codexon.it,DNLVCN90L07A717K,true,CF_Azienda_B,RP
+Laura,Rossi,laura.rossi@email.com,ABCPQR12M34Z567T,false,CF_Azienda_B,Employee
+Giovanni,Bianchi,giovanni.bianchi@email.com,XYZ12345QWERTY,true,CF_Azienda_C,Manager
+Maria,Verdi,maria.verdi@email.com,LMNOP67890ABCDE,false,CF_Azienda_D,Consultant

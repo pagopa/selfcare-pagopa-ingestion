@@ -86,7 +86,6 @@ public class UserConnectorImpl implements UserConnector {
 
     @Override
     public List<User> findAllByTaxCode(String taxCode) {
-        //Query query = new Query(Criteria.where("taxCode").is(taxCode));
         List<User> userList = repository.findAllByTaxCode(taxCode)
                 .stream()
                 .map(UserMapper::entityToDto)

@@ -4,4 +4,8 @@ public interface MigrationPTService {
 
     void persistPT();
 
+    void migratePT();
+
+    void autoComplete();
+
 }

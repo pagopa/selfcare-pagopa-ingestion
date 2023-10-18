@@ -20,15 +20,13 @@ import java.util.List;
 public class CsvServiceImpl implements CsvService {
 
     @Override
-    public <T> List<T> readItemsFromCsv(Class<T> csvClass, byte[] csvData, int skipLines) {
-        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(csvData);
-             InputStreamReader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
-             CSVReader csvReader = new CSVReader(reader)) {
+    public <T> List<T> readItemsFromCsv(Class<T> csvClass, byte[] csvData) {
+        try (Reader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(csvData)))) {
 
-            CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(csvReader)
+            CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(reader)
                     .withType(csvClass)
-                    .withSkipLines(skipLines)
                     .withSeparator(',')
+                    .withSkipLines(1)
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
 
@@ -40,13 +38,14 @@ public class CsvServiceImpl implements CsvService {
     }
 
     @Override
-    public <T> List<T> readItemsFromCsv(Class<T> csvClass, String filePath, int skipLines) {
+    public <T> List<T> readItemsFromCsv(Class<T> csvClass, String filePath) {
         try (FileReader fileReader = new FileReader(filePath+".csv");
              CSVReader csvReader = new CSVReader(fileReader)) {
 
+            csvReader.readNext();
+
             CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(csvReader)
                     .withType(csvClass)
-                    .withSkipLines(skipLines)
                     .withSeparator(',')
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();

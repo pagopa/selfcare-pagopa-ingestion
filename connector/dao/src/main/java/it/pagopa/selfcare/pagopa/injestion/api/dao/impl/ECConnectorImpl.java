@@ -50,7 +50,7 @@ public class ECConnectorImpl implements ECConnector {
                 .stream()
                 .map(ECMapper::entityToDto)
                 .collect(Collectors.toList());
-        log.info("Trovati {} elementi MigrazioneEC con workStatus '{}'", ecs.size(), status);
+        log.info("Trovati {} elementi EC con workStatus '{}'", ecs.size(), status);
         return ecs;
     }
 

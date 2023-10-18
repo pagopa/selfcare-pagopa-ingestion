@@ -1,19 +1,22 @@
 package it.pagopa.selfcare.pagopa.injestion.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class LegalAddress {
 
-    @JsonProperty("address")
-    private String address;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private Date dateTimeExtraction;
 
-    @JsonProperty("zipCode")
-    private String zipCode;
+    private String taxId;
+
+    private LegalAddressProfessional professionalAddress;
 
 }

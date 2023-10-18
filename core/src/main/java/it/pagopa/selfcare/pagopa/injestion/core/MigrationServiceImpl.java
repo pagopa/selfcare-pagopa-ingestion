@@ -38,10 +38,10 @@ class MigrationServiceImpl implements MigrationService {
 
     private <T> List<T> getEntities(Class<T> modelClass, String file) {
         if(local){
-            return csvService.readItemsFromCsv(modelClass, file, 1);
+            return csvService.readItemsFromCsv(modelClass, file);
         }
         else{
-            return csvService.readItemsFromCsv(modelClass, azureConnector.readCsv(file).getData(), 1);
+            return csvService.readItemsFromCsv(modelClass, azureConnector.readCsv(file).getData());
         }
     }
 

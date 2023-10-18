@@ -7,9 +7,10 @@ import java.util.Arrays;
 
 public enum WorkStatus {
     NOT_WORKED("NOT_WORKED"),
-    TO_SEND("TO_SEND"),
-    TO_BUILDING("TO_BUILDING"),
+    TO_SEND_IPA("TO_SEND_IPA"),
+    TO_SEND_INIPEC("TO_SEND_INIPEC"),
     ERROR("ERROR"),
+    NOT_FOUND_IN_REGISTRY("NOT_FOUND_IN_REGISTRY"),
     DONE("DONE");
 
     private final String value;

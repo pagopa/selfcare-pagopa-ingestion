@@ -1,13 +1,12 @@
 package it.pagopa.selfcare.pagopa.injestion.core;
 
-import io.micrometer.core.instrument.util.StringUtils;
 import it.pagopa.selfcare.commons.base.utils.InstitutionType;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.utils.MaskData;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.ECConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.UserConnector;
+import it.pagopa.selfcare.pagopa.injestion.api.rest.NationalRegistriesConnector;
+import it.pagopa.selfcare.pagopa.injestion.api.rest.PartyRegistryProxyConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.SelfcareExternalApiBackendConnector;
-import it.pagopa.selfcare.pagopa.injestion.api.rest.SelfcareMsCoreConnector;
-import it.pagopa.selfcare.pagopa.injestion.api.rest.SelfcareMsPartyRegistryProxyConnector;
 import it.pagopa.selfcare.pagopa.injestion.mapper.ECMapper;
 import it.pagopa.selfcare.pagopa.injestion.model.csv.ECModel;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.*;
@@ -17,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,9 +25,9 @@ class MigrationECServiceImpl implements MigrationECService {
     private final MigrationService migrationService;
     private final ECConnector ecConnector;
     private final UserConnector userConnector;
-    private final SelfcareMsCoreConnector selfcareMsCoreConnector;
+    private final PartyRegistryProxyConnector partyRegistryProxyConnector;
     private final SelfcareExternalApiBackendConnector selfcareExternalApiBackendConnector;
-    private final SelfcareMsPartyRegistryProxyConnector selfcareMsPartyRegistryProxyConnector;
+    private final NationalRegistriesConnector nationalRegistriesConnector;
 
     @Value("${app.local.ec}")
     private String csvPath;
@@ -41,18 +39,17 @@ class MigrationECServiceImpl implements MigrationECService {
             MigrationService migrationService,
             ECConnector ecConnector,
             UserConnector userConnector,
-            SelfcareMsCoreConnector selfcareMsCoreConnector,
+            PartyRegistryProxyConnector partyRegistryProxyConnector,
             SelfcareExternalApiBackendConnector selfcareExternalApiBackendConnector,
-            SelfcareMsPartyRegistryProxyConnector selfcareMsPartyRegistryProxyConnector
+            NationalRegistriesConnector nationalRegistriesConnector
     ) {
         this.migrationService = migrationService;
         this.ecConnector = ecConnector;
         this.userConnector = userConnector;
-        this.selfcareMsCoreConnector = selfcareMsCoreConnector;
+        this.partyRegistryProxyConnector = partyRegistryProxyConnector;
         this.selfcareExternalApiBackendConnector = selfcareExternalApiBackendConnector;
-        this.selfcareMsPartyRegistryProxyConnector = selfcareMsPartyRegistryProxyConnector;
+        this.nationalRegistriesConnector = nationalRegistriesConnector;
     }
-
 
     @Override
     public void persistEC() {
@@ -80,39 +77,55 @@ class MigrationECServiceImpl implements MigrationECService {
     }
 
     private void migrateECOnboarding(EC ec) {
-        Institution institution = selfcareMsCoreConnector.createInstitutionFromIpa(ec.getTaxCode(), null, null);
+        InstitutionProxyInfo institutionProxyInfo = partyRegistryProxyConnector.getInstitutionById(ec.getTaxCode());
 
-        if (isInstitutionValid(institution)) {
-            migrateECOnboardingWithIpa(ec, institution);
+        if (isInstitutionValid(institutionProxyInfo)) {
+            migrateECOnboardingWithIpa(ec, institutionProxyInfo);
         } else {
-            migrateECOnboardingWithInipec(ec);
+            migrateECOnboardingWithSedeLegale(ec);
         }
     }
 
-    private boolean isInstitutionValid(Institution institution) {
+    private boolean isInstitutionValid(InstitutionProxyInfo institution) {
         return institution != null &&
-                StringUtils.isNotEmpty(institution.getAddress()) &&
-                StringUtils.isNotEmpty(institution.getDigitalAddress()) &&
-                StringUtils.isNotEmpty(institution.getZipCode());
+                isStringValid(institution.getAddress()) &&
+                isStringValid(institution.getDigitalAddress()) &&
+                isStringValid(institution.getZipCode());
     }
 
-    private void migrateECOnboardingWithIpa(EC ec, Institution institution) {
+    private void migrateECOnboardingWithIpa(EC ec, InstitutionProxyInfo institution) {
         ec.setDigitalAddress(institution.getDigitalAddress());
         ec.setZipCode(institution.getZipCode());
-        ec.setWorkStatus(WorkStatus.TO_SEND);
+        ec.setWorkStatus(WorkStatus.TO_SEND_IPA);
         ecConnector.save(ec);
         Onboarding onboarding = createOnboarding(ec, Origin.IPA.name());
         processMigrateEC(ec, onboarding);
     }
 
-    private void migrateECOnboardingWithInipec(EC ec) {
-        IniPec iniPec = selfcareMsPartyRegistryProxyConnector.getIniPec(ec.getTaxCode());
-        ec.setDigitalAddress(iniPec.getAddress());
-        ec.setZipCode(iniPec.getZipCode());
-        ec.setWorkStatus(WorkStatus.TO_SEND);
-        ecConnector.save(ec);
-        Onboarding onboarding = createOnboarding(ec, Origin.INFOCAMERE.name());
-        processMigrateEC(ec, onboarding);
+    private void migrateECOnboardingWithSedeLegale(EC ec) {
+        LegalAddress legalAddress = nationalRegistriesConnector.getLegalAddress(ec.getTaxCode());
+
+        if (isLegalAddressValid(legalAddress)) {
+            ec.setDigitalAddress(legalAddress.getProfessionalAddress().getAddress());
+            ec.setZipCode(legalAddress.getProfessionalAddress().getZip());
+            ec.setWorkStatus(WorkStatus.TO_SEND_INIPEC);
+            ecConnector.save(ec);
+            Onboarding onboarding = createOnboarding(ec, Origin.INFOCAMERE.name());
+            processMigrateEC(ec, onboarding);
+        } else {
+            ec.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY);
+            ecConnector.save(ec);
+        }
+    }
+
+    private boolean isLegalAddressValid(LegalAddress legalAddress) {
+        return legalAddress != null &&
+                isStringValid(legalAddress.getProfessionalAddress().getAddress()) &&
+                isStringValid(legalAddress.getProfessionalAddress().getZip());
+    }
+
+    private boolean isStringValid(String str) {
+        return str != null && !str.isEmpty();
     }
 
     private void processMigrateEC(EC ec, Onboarding onboarding) {
@@ -133,7 +146,6 @@ class MigrationECServiceImpl implements MigrationECService {
             ec.setWorkStatus(WorkStatus.ERROR);
             log.error("Conflict while migrating EC for tax code: " + MaskData.maskData(ec.getTaxCode()), e);
         } else {
-            ec.setWorkStatus(WorkStatus.TO_SEND);
             log.error("Error while migrating EC for tax code: " + MaskData.maskData(ec.getTaxCode()), e);
         }
     }
@@ -143,18 +155,13 @@ class MigrationECServiceImpl implements MigrationECService {
         log.error("Error migrating EC for tax code: " + MaskData.maskData(ec.getTaxCode()), e);
     }
 
-
-
     private Onboarding createOnboarding(EC ec, String origin) {
         Onboarding onboarding = new Onboarding();
         onboarding.setUsers(userConnector.findAllByTaxCode(ec.getTaxCode()));
         onboarding.setBillingData(fillBillingDataFromInstitutionAndEC(ec.getDigitalAddress(), ec.getZipCode(), ec));
-        onboarding.setInstitutionType(InstitutionType.PA); // Fisso PA (?)
+        onboarding.setInstitutionType(InstitutionType.PA);
         onboarding.setOrigin(origin);
-        onboarding.setGeographicTaxonomies(new ArrayList<>());
-        //onboarding.setCompanyInformation(); ???
-        //onboarding.setPricingPlan(); ???
-        //onboarding.setPspData(new PspData()); ???
+        onboarding.setGeographicTaxonomies(List.of());
         onboarding.setAssistanceContacts(new AssistanceContacts());
         return onboarding;
     }
@@ -168,17 +175,20 @@ class MigrationECServiceImpl implements MigrationECService {
         billingData.setTaxCode(ec.getTaxCode());
         billingData.setZipCode(zipCode);
         billingData.setVatNumber(ec.getVatNumber());
-        //billingData.setPublicServices(); ????
         return billingData;
     }
 
     @Override
     public void autoComplete() {
-        log.info("Starting auto complete of EC");
-        int page = 0;
+        autoComplete(WorkStatus.TO_SEND_IPA.name());
+        autoComplete(WorkStatus.TO_SEND_INIPEC.name());
+    }
 
+    private void autoComplete(String workStatus) {
+        log.info("Starting auto complete of EC with workStatus: {}", workStatus);
+        int page = 0;
         while (true) {
-            List<EC> ecs = ecConnector.findAllByStatus(page, pageSize, WorkStatus.TO_SEND.name());
+            List<EC> ecs = ecConnector.findAllByStatus(page, pageSize, workStatus);
             if (ecs.isEmpty()) {
                 break;
             }
@@ -191,11 +201,8 @@ class MigrationECServiceImpl implements MigrationECService {
         log.info("Completed auto complete of EC");
     }
 
-    private void continueMigrateECOnboarding(EC ec){
-        Onboarding onboarding = createOnboarding(ec, Origin.INFOCAMERE.name());  //Distinguere ORIGIN
+    private void continueMigrateECOnboarding(EC ec) {
+        Onboarding onboarding = createOnboarding(ec, ec.getWorkStatus() == WorkStatus.TO_SEND_IPA ? Origin.IPA.name() : Origin.INIPEC.name());
         processMigrateEC(ec, onboarding);
     }
-
-
-
 }

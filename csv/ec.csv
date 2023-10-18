@@ -1,4 +1,5 @@
 BusinessName,TaxCode,RegisteredOffice,ZipCode,digitalAddress,vatNumber,recipientCode
 Comune di San Colombano Certenoli 1,82002530100,Piazza Roberto Lucifredi N. 1,16041,comune.sancolombanocertenoli1@legalmail.it,82002530101,c_h801
-Comune di San Colombano Certenoli 2,82002530101,Piazza Roberto Lucifredi N. 2,16042,comune.sancolombanocertenoli1@legalmail.it,82002530102,c_h802
-Comune di San Colombano Certenoli 3,82002530102,Piazza Roberto Lucifredi N. 3,16043,comune.sancolombanocertenoli1@legalmail.it,82002530103,c_h803
+Comune di Genova,123456789,Corso Italia 10,16126,genova@example.com,987654321,G12345
+Comune di Milano,987654321,Piazza Duomo 1,20121,milano@example.com,456789012,M67890
+Comune di Roma,567890123,Via del Corso 100,00186,roma@example.com,654321098,R54321

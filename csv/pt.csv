@@ -1,4 +1,5 @@
 BusinessName,TaxCode,RegisteredOffice,ZipCode,digitalAddress,vatNumber
-Maggioli,DNLVCN90L07A717K,Piazza Roberto Lucifredi N. 2,16040,comune.sancolombanocertenoli@legalmail.it,82002530101
-Maggioli,DNLVCN90L07A717K,Piazza Roberto Lucifredi N. 3,16041,comune.sancolombanocertenoli@legalmail.it,82002530102
-Maggioli,DNLVCN90L07A717K,Piazza Roberto Lucifredi N. 4,16042,comune.sancolombanocertenoli@legalmail.it,82002530103
+Maggioli,DNLVCN90L07A717K,Piazza Roberto Lucifredi N. 2,16040,maggioli@example.com,82002530102
+ABC Corporation,345678912,123 Main Street,54321,abc@example.com,345678912
+XYZ Inc.,789012345,456 Elm Avenue,12345,xyz@example.com,789012345
+PQR Ltd.,234567890,789 Oak Lane,67890,pqr@example.com,234567890

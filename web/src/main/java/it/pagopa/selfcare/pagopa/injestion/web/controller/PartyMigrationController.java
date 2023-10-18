@@ -22,6 +22,8 @@ public class PartyMigrationController {
     private final MigrationPTService migrationPTService;
     private final MigrationECPTRelationshipService migrationECPTRelationshipService;
     private final MigrationUserService migrationUserService;
+    
+    private static final String COMPLETE = "Elaborazione completata con successo";
 
     public PartyMigrationController(
             MigrationECService migrationECService,
@@ -43,7 +45,7 @@ public class PartyMigrationController {
             migrationECPTRelationshipService.persistECPTRelationship();
             migrationUserService.persistUser();
 
-            return new ResponseEntity<>("Elaborazione completata con successo", HttpStatus.OK);
+            return new ResponseEntity<>(COMPLETE, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Errore durante l'elaborazione dei file: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -56,9 +58,45 @@ public class PartyMigrationController {
 
             migrationECService.migrateEC();
 
-            return new ResponseEntity<>("Elaborazione completata con successo", HttpStatus.OK);
+            return new ResponseEntity<>(COMPLETE, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Errore durante la migrazione EC", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/EC/continue")
+    public ResponseEntity<String> continueMigrationEC() {
+        try {
+
+            migrationECService.autoComplete();
+
+            return new ResponseEntity<>(COMPLETE, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Errore durante la migrazione EC", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/PT")
+    public ResponseEntity<String> migrationPT() {
+        try {
+
+            migrationPTService.migratePT();
+
+            return new ResponseEntity<>(COMPLETE, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Errore durante la migrazione PT", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/PT/continue")
+    public ResponseEntity<String> continueMigrationPT() {
+        try {
+
+            migrationPTService.autoComplete();
+
+            return new ResponseEntity<>(COMPLETE, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Errore durante la migrazione PT", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

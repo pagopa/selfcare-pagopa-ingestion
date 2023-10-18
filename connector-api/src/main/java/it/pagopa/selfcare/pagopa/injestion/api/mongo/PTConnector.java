@@ -10,6 +10,8 @@ public interface PTConnector {
 
     List<PT> findAll();
 
+    List<PT> findAllByStatus(int page, int pageSize, String status);
+
     PT findById(String id);
 
     PT save(PT pt);
