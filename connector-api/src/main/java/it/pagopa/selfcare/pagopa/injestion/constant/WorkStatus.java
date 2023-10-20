@@ -1,4 +1,4 @@
-package it.pagopa.selfcare.pagopa.injestion.model.dto;
+package it.pagopa.selfcare.pagopa.injestion.constant;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

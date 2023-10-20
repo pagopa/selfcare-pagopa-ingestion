@@ -1,5 +1,3 @@
-BusinessName,TaxCode,RegisteredOffice,ZipCode,digitalAddress,vatNumber
-Maggioli,DNLVCN90L07A717K,Piazza Roberto Lucifredi N. 2,16040,maggioli@example.com,82002530102
-ABC Corporation,345678912,123 Main Street,54321,abc@example.com,345678912
-XYZ Inc.,789012345,456 Elm Avenue,12345,xyz@example.com,789012345
-PQR Ltd.,234567890,789 Oak Lane,67890,pqr@example.com,234567890
+BusinessName;TaxCode;RegisteredOffice;ZipCode;digitalAddress;vatNumber;recipientCode
+A.P.S.P. Padre Odone Nicolini;86001530228;;;;86001530228;apspp
+A.P.S.P. Piccolo Spedale;81002110229;;;;81002110229;apspps

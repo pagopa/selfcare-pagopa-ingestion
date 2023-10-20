@@ -11,7 +11,6 @@ import javax.validation.constraints.Email;
 @Data
 public class AssistanceContacts {
 
-    @Email
     private String supportEmail;
 
     private String supportPhone;

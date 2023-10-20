@@ -1,5 +1,6 @@
 package it.pagopa.selfcare.pagopa.injestion.model.dto;
 
+import it.pagopa.selfcare.pagopa.injestion.constant.WorkStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

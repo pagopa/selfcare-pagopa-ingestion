@@ -2,7 +2,7 @@ package it.pagopa.selfcare.pagopa.injestion.api.dao.mapper;
 
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.ECPTRelationshipEntity;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.ECPTRelationship;
-import it.pagopa.selfcare.pagopa.injestion.model.dto.WorkStatus;
+import it.pagopa.selfcare.pagopa.injestion.constant.WorkStatus;
 
 import java.util.List;
 import java.util.stream.Collectors;

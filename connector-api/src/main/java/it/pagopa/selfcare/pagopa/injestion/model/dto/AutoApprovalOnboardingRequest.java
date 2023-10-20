@@ -1,25 +1,21 @@
 package it.pagopa.selfcare.pagopa.injestion.model.dto;
 
 import it.pagopa.selfcare.commons.base.utils.InstitutionType;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
-public class Onboarding {
+public class AutoApprovalOnboardingRequest {
 
-    private List<User> users;
+    private List<UserToOnboard> users;
     private BillingData billingData;
     private InstitutionType institutionType;
     private String origin;
     private String pricingPlan;
     private PspData pspData;
-    private List<GeographicTaxonomies> geographicTaxonomies;
-    private CompanyInformation companyInformation;
+    private List<GeographicTaxonomy> geographicTaxonomies;
+    private CompanyInformations companyInformations;
     private AssistanceContacts assistanceContacts;
 
 }

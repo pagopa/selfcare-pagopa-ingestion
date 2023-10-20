@@ -4,8 +4,7 @@ public interface MigrationPTService {
 
     void persistPT();
 
-    void migratePT();
+    void migratePT(String status);
 
-    void autoComplete();
 
 }

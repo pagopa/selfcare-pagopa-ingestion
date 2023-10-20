@@ -1,7 +1,6 @@
-package it.pagopa.selfcare.pagopa.injestion.api.rest.model.selfcare_external_api_backend;
+package it.pagopa.selfcare.pagopa.injestion.api.rest.model.external;
 
 import it.pagopa.selfcare.commons.base.utils.InstitutionType;
-import it.pagopa.selfcare.pagopa.injestion.model.dto.DelegationType;
 import lombok.Data;
 
 @Data

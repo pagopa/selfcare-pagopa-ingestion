@@ -6,8 +6,8 @@ import it.pagopa.selfcare.pagopa.injestion.core.MigrationECService;
 import it.pagopa.selfcare.pagopa.injestion.core.MigrationPTService;
 import it.pagopa.selfcare.pagopa.injestion.core.MigrationUserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,80 +36,31 @@ public class PartyMigrationController {
         this.migrationUserService = migrationUserService;
     }
 
-    @PostMapping("/")
-    public ResponseEntity<String> migration() {
-        try {
-
-            migrationECService.persistEC();
-            migrationPTService.persistPT();
-            migrationECPTRelationshipService.persistECPTRelationship();
-            migrationUserService.persistUser();
-
-            return new ResponseEntity<>(COMPLETE, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Errore durante l'elaborazione dei file: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @PostMapping("/persist")
+    public ResponseEntity<String> persistFromCsv() {
+        migrationECService.persistEC();
+        migrationPTService.persistPT();
+        migrationECPTRelationshipService.persistECPTRelationship();
+        migrationUserService.persistUser();
+        return ResponseEntity.ok().body(COMPLETE);
     }
-
 
     @PostMapping("/EC")
-    public ResponseEntity<String> migrationEC() {
-        try {
-
-            migrationECService.migrateEC();
-
-            return new ResponseEntity<>(COMPLETE, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Errore durante la migrazione EC", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping("/EC/continue")
-    public ResponseEntity<String> continueMigrationEC() {
-        try {
-
-            migrationECService.autoComplete();
-
-            return new ResponseEntity<>(COMPLETE, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Errore durante la migrazione EC", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<String> migrationEC(@PathVariable("status") String status) {
+        migrationECService.migrateEC(status);
+        return ResponseEntity.ok().body(COMPLETE);
     }
 
     @PostMapping("/PT")
-    public ResponseEntity<String> migrationPT() {
-        try {
-
-            migrationPTService.migratePT();
-
-            return new ResponseEntity<>(COMPLETE, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Errore durante la migrazione PT", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<String> migrationPT(@PathVariable("status") String status) {
+            migrationPTService.migratePT(status);
+        return ResponseEntity.ok().body(COMPLETE);
     }
 
-    @PostMapping("/PT/continue")
-    public ResponseEntity<String> continueMigrationPT() {
-        try {
-
-            migrationPTService.autoComplete();
-
-            return new ResponseEntity<>(COMPLETE, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Errore durante la migrazione PT", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping("/ECPT")
-    public ResponseEntity<String> migrationECPT() {
-        try {
-
-            migrationECPTRelationshipService.migrateECPTRelationship();
-
-            return new ResponseEntity<>(COMPLETE, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Errore durante la migrazione PT", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @PostMapping("/delegation")
+    public ResponseEntity<String> createDelegation() {
+        migrationECPTRelationshipService.migrateECPTRelationship();
+        return ResponseEntity.ok().body(COMPLETE);
     }
 
 

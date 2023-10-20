@@ -4,8 +4,6 @@ public interface MigrationECService {
 
     void persistEC();
 
-    void migrateEC();
-
-    void autoComplete();
+    void migrateEC(String status);
 
 }

@@ -1,7 +1,7 @@
 package it.pagopa.selfcare.pagopa.injestion.api.rest.client;
 
-import it.pagopa.selfcare.pagopa.injestion.api.rest.model.party_registry_proxy.NationalRegistriesProfessionalAddress;
-import it.pagopa.selfcare.pagopa.injestion.api.rest.model.party_registry_proxy.ProxyInstitutionResponse;
+import it.pagopa.selfcare.pagopa.injestion.api.rest.model.registryproxy.NationalRegistriesProfessionalAddress;
+import it.pagopa.selfcare.pagopa.injestion.api.rest.model.registryproxy.ProxyInstitutionResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 

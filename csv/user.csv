@@ -1,5 +1,19 @@
-Name,Surname,Email,TaxCode,Status,Institution TaxCode,Role
-Vincenzo,Adinolfi,vincenzo.adinolfi@codexon.it,DNLVCN90L07A717K,true,CF_Azienda_A,RT
-Laura,Rossi,laura.rossi@email.com,ABCPQR12M34Z567T,false,CF_Azienda_B,Employee
-Giovanni,Bianchi,giovanni.bianchi@email.com,XYZ12345QWERTY,true,CF_Azienda_C,Manager
-Maria,Verdi,maria.verdi@email.com,LMNOP67890ABCDE,false,CF_Azienda_D,Consultant
+Name;Surname;Email;TaxCode;Status;Institution TaxCode;Role
+Paolo;De Santis;paolo.desantis@istruzione.it;DSNPLA64L01A252Y;TRUE;80012320729;RP
+Paolo;De Santis;paolo.desantis@istruzione.it;DSNPLA64L01A252Y;FALSE;94076720658;RT
+Bruno;Maria Serena;saic8bu00x@istruzione.it;BRNMSR76E69F839D;TRUE;94076720658;RP
+Pagopa_rp;Pagopa_rp;operations@pagopa.it;MNTGLI55C54D612U;FALSE;1813730387;RP
+Lopardi;Mariarosaria;mlopardi@adisurcampania.it;LPRMRS72C45H703H;TRUE;8699411214;RP
+Gennaro;Romano;gennaro.romano@regione.campania.it;RMNGNR67C24F839N;TRUE;8699411214;RT
+Paolo;De Santis;paolo.desantis@istruzione.it;DSNPLA64L01A252Y;FALSE;93038940362;RT
+Paolo;De Santis;paolo.desantis@istruzione.it;DSNPLA64L01A252Y;FALSE;93038940362;RP
+Paolo;De Santis;paolo.desantis@istruzione.it;DSNPLA64L01A252Y;TRUE;1332171222;RT
+Paolo;De Santis;paolo.desantis@istruzione.it;DSNPLA64L01A252Y;FALSE;1332171222;RP
+Bruno;Maria Serena;saic8bu00x@istruzione.it;BRNMSR76E69F839D;TRUE;1345711333;RT
+Pagopa_rp;Pagopa_rp;operations@pagopa.it;MNTGLI55C54D612U;FALSE;1345711333;RP
+Lopardi;Mariarosaria;mlopardi@adisurcampania.it;LPRMRS72C45H703H;TRUE;1212128786;RT
+Gennaro;Romano;gennaro.romano@regione.campania.it;RMNGNR67C24F839N;TRUE;1212128786;RP
+Paolo;De Santis;paolo.desantis@istruzione.it;DSNPLA64L01A252Y;FALSE;1831094751;RT
+Paolo;De Santis;paolo.desantis@istruzione.it;DSNPLA64L01A252Y;FALSE;1831094751;RP
+Gennaro;Romano;gennaro.romano@regione.campania.it;RMNGNR67C24F839N;FALSE;1331112223;RT
+Gennaro;Romano;gennaro.romano@regione.campania.it;RMNGNR67C24F839N;TRUE;1331112223;RP

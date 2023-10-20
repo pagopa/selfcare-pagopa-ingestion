@@ -7,4 +7,5 @@ public interface MigrationService {
 
     <T, D> void migrateEntities(Class<T> modelClass, String filePath, Consumer<D> saveFunction, Function<T, D> convertFunction);
 
+
 }

@@ -1,5 +1,13 @@
-BusinessName,TaxCode,RegisteredOffice,ZipCode,digitalAddress,vatNumber,recipientCode
-Comune di San Colombano Certenoli 1,82002530100,Piazza Roberto Lucifredi N. 1,16041,comune.sancolombanocertenoli1@legalmail.it,82002530101,c_h801
-Comune di Genova,123456789,Corso Italia 10,16126,genova@example.com,987654321,G12345
-Comune di Milano,987654321,Piazza Duomo 1,20121,milano@example.com,456789012,M67890
-Comune di Roma,567890123,Via del Corso 100,00186,roma@example.com,654321098,R54321
+BusinessName;TaxCode;RegisteredOffice;ZipCode;digitalAddress;vatNumber;recipientCode
+2 Circolo Didattico San Giovanni Bosco;80012320729;;;;80012320729;istsc_baee15800a
+3 Istituto Comprensivo Nocera Inferiore;94076720658;;;;94076720658;isticom
+A Tutta Rete S.R.L.;1813730387;;;;1813730387;atrsr
+A.Di.S.U.R.C. Azienda per Il Diritto allo Studio Universitario della Regione Campania;8699411214;;;;8699411214;adsurca
+A.F.Formiggini Lliceo Scientifico e Classico;93038940362;;;;93038940362;affs
+ente no Ipa 1;1332171222;;;;1332171222;rc1
+ente no Ipa 2;1345711333;;;;1345711333;rc2
+ente no Ipa 3;1212128786;;;;1212128786;rc3
+ente no Ipa 4;1831094751;;;;1831094751;rc4
+ente no Ipa 5;1331112223;;;;1331112223;rc5
+2V ENERGY S.R.L.;3795470248;;;;3795470248;2venergysrl_20201113
+5T srl;6360270018;;;;6360270018;5t_20181024

@@ -1,8 +1,9 @@
-package it.pagopa.selfcare.pagopa.injestion.api.rest.model.selfcare_external_api_backend;
+package it.pagopa.selfcare.pagopa.injestion.api.rest.model.external;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import it.pagopa.selfcare.commons.base.utils.InstitutionType;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.UserToOnboard;
 import lombok.Data;
 
 import javax.validation.Valid;
@@ -17,7 +18,7 @@ public class OnboardingRequest {
     @NotEmpty
     @Valid
     @JsonProperty("users")
-    private List<UserRequest> users;
+    private List<UserToOnboard> users;
 
     @ApiModelProperty(required = true)
     @NotNull
