@@ -1,20 +1,15 @@
 package it.pagopa.selfcare.pagopa.injestion.core;
 
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import com.opencsv.bean.StatefulBeanToCsv;
-import com.opencsv.bean.StatefulBeanToCsvBuilder;
-import com.opencsv.exceptions.CsvDataTypeMismatchException;
-import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import it.pagopa.selfcare.pagopa.injestion.exception.SelfCarePagoPaInjectionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 @Slf4j
@@ -22,15 +17,15 @@ public class CsvServiceImpl implements CsvService {
 
     @Override
     public <T> List<T> readItemsFromCsv(Class<T> csvClass, byte[] csvData) {
-        try (Reader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(csvData)))) {
-            CSVReader csvReader = new CSVReaderBuilder(reader).withCSVParser(new CSVParserBuilder().withSeparator(';').build()).build();
+        try {
+            StringReader stringReader = new StringReader(new String(csvData, StandardCharsets.UTF_8));
+            CsvToBeanBuilder<T> csvToBeanBuilder = new CsvToBeanBuilder<>(stringReader);
+            csvToBeanBuilder.withSeparator(';');
+            csvToBeanBuilder.withSkipLines(1);
+            csvToBeanBuilder.withType(csvClass);
 
-                CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(csvReader)
-                    .withType(csvClass)
-                    .withIgnoreLeadingWhiteSpace(true)
-                    .build();
-
-            return csvToBean.parse();
+            List<T> parsedItems = csvToBeanBuilder.build().parse();
+            return new ArrayList<>(parsedItems);
         } catch (Exception e) {
             log.error("Error during CSV reading: {}", e.getMessage());
             throw new SelfCarePagoPaInjectionException("Error during CSV reading: " + e.getMessage(), 400);
@@ -39,36 +34,19 @@ public class CsvServiceImpl implements CsvService {
 
     @Override
     public <T> List<T> readItemsFromCsv(Class<T> csvClass, String filePath) {
-        try (FileReader fileReader = new FileReader(filePath+".csv");
-             CSVReader csvReader = new CSVReaderBuilder(fileReader).withCSVParser(new CSVParserBuilder().withSeparator(';').build()).build()) {
+        try(FileInputStream fileInputStream = new FileInputStream(filePath)){
 
-            csvReader.readNext();
+            StringReader stringReader = new StringReader(new String(fileInputStream.readAllBytes(), StandardCharsets.UTF_8));
+            CsvToBeanBuilder<T> csvToBeanBuilder = new CsvToBeanBuilder<>(stringReader);
+            csvToBeanBuilder.withSeparator(';');
+            csvToBeanBuilder.withSkipLines(1);
+            csvToBeanBuilder.withType(csvClass);
 
-            CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(csvReader)
-                    .withType(csvClass)
-                    .withIgnoreLeadingWhiteSpace(true)
-                    .build();
-
-            return csvToBean.parse();
+            List<T> parsedItems = csvToBeanBuilder.build().parse();
+            return new ArrayList<>(parsedItems);
         } catch (Exception e) {
             log.error("Error during CSV reading: {}", e.getMessage());
             throw new SelfCarePagoPaInjectionException("Error during CSV reading: " + e.getMessage(), 400);
-        }
-    }
-
-    @Override
-    public <T> void writeItemsOnCsv(List<T> items, String nameFile, String directoryPath) {
-        try (FileWriter writer = new FileWriter(new File(directoryPath, nameFile))) {
-            StatefulBeanToCsv<T> beanToCsv = new StatefulBeanToCsvBuilder<T>(writer)
-                    .withQuotechar('"')
-                    .withSeparator(';')
-                    .build();
-
-            beanToCsv.write(items);
-            writer.flush();
-        } catch (IOException | CsvDataTypeMismatchException | CsvRequiredFieldEmptyException e) {
-            log.error("Error during CSV writing: nameFile: {} - directoryPath: {} - itemsSize: {}", nameFile, directoryPath, items.size());
-            throw new SelfCarePagoPaInjectionException("Error: " + e.getMessage(), 400);
         }
     }
 }

@@ -75,7 +75,7 @@ class MigrationECServiceImpl implements MigrationECService {
     private void migrateECOnboarding(EC ec) {
         if (WorkStatus.NOT_WORKED == ec.getWorkStatus()) {
             InstitutionProxyInfo institutionProxyInfo = partyRegistryProxyConnector.getInstitutionById(ec.getTaxCode());
-            if (isInstitutionValid(institutionProxyInfo)) {
+            if (institutionProxyInfo != null) {
                 migrateECOnboardingWithIpa(ec, institutionProxyInfo);
             } else {
                 migrateECOnboardingWithSedeLegale(ec);
@@ -99,7 +99,7 @@ class MigrationECServiceImpl implements MigrationECService {
     private void migrateECOnboardingWithSedeLegale(EC ec) {
         LegalAddress legalAddress = partyRegistryProxyConnector.getLegalAddress(ec.getTaxCode());
 
-        if (isLegalAddressValid(legalAddress)) {
+        if (legalAddress != null) {
             ec.setRegisteredOffice(legalAddress.getAddress());
             ec.setZipCode(legalAddress.getZip());
             ec.setWorkStatus(WorkStatus.TO_SEND_INFOCAMERE);

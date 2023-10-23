@@ -21,8 +21,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static it.pagopa.selfcare.pagopa.injestion.core.util.MigrationUtil.isInstitutionValid;
-import static it.pagopa.selfcare.pagopa.injestion.core.util.MigrationUtil.isLegalAddressValid;
 
 @Service
 @Slf4j
@@ -79,7 +77,7 @@ class MigrationPTServiceImpl implements MigrationPTService {
 
     private void migratePTOnboarding(PT pt) {
         InstitutionProxyInfo institutionProxyInfo = partyRegistryProxyConnector.getInstitutionById(pt.getTaxCode());
-        if (isInstitutionValid(institutionProxyInfo)) {
+        if (institutionProxyInfo != null) {
             migratePTOnboardingWithIpa(pt, institutionProxyInfo);
         } else {
             migratePTOnboardingWithSedeLegale(pt);
@@ -101,7 +99,7 @@ class MigrationPTServiceImpl implements MigrationPTService {
     private void migratePTOnboardingWithSedeLegale(PT pt) {
         LegalAddress legalAddress = partyRegistryProxyConnector.getLegalAddress(pt.getTaxCode());
 
-        if (isLegalAddressValid(legalAddress)) {
+        if (legalAddress != null) {
             pt.setRegisteredOffice(legalAddress.getAddress());
             pt.setZipCode(legalAddress.getZip());
             pt.setWorkStatus(WorkStatus.TO_SEND_INFOCAMERE);

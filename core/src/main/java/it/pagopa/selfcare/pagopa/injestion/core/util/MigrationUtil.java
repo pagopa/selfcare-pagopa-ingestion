@@ -4,26 +4,12 @@ import it.pagopa.selfcare.commons.base.security.PartyRole;
 import it.pagopa.selfcare.commons.base.utils.InstitutionType;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.*;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MigrationUtil {
-
-    public static boolean isInstitutionValid(InstitutionProxyInfo institution) {
-        return institution != null &&
-                StringUtils.hasText(institution.getAddress()) &&
-                StringUtils.hasText(institution.getDigitalAddress()) &&
-                StringUtils.hasText(institution.getZipCode());
-    }
-
-    public static boolean isLegalAddressValid(LegalAddress legalAddress) {
-        return legalAddress != null &&
-                StringUtils.hasText(legalAddress.getAddress()) &&
-                StringUtils.hasText(legalAddress.getZip());
-    }
 
     private static BillingData fillBillingDataFromInstitutionAndEC(String digitalAddress, String zipCode, EC ec) {
         BillingData billingData = new BillingData();
@@ -44,6 +30,11 @@ public class MigrationUtil {
         onboarding.setInstitutionType(InstitutionType.PA);
         onboarding.setGeographicTaxonomies(List.of());
         onboarding.setOrigin(origin);
+        PspData pspData = new PspData();
+        pspData.setDpoData(new DpoData());
+        onboarding.setPspData(pspData);
+        onboarding.setCompanyInformations(new CompanyInformations());
+        onboarding.setAssistanceContacts(new AssistanceContacts());
         if(!CollectionUtils.isEmpty(users)) {
             userToOnboards = users.stream()
                     .map(user -> {

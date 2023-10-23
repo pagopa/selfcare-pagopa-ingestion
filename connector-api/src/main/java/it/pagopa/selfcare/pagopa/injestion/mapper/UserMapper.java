@@ -4,6 +4,7 @@ package it.pagopa.selfcare.pagopa.injestion.mapper;
 import it.pagopa.selfcare.pagopa.injestion.model.csv.UserModel;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.Role;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.User;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -16,8 +17,10 @@ public class UserMapper {
             user.setInstitutionTaxCode(userModel.getInstitutionTaxCode());
             user.setName(userModel.getName());
             user.setSurname(userModel.getSurname());
-            user.setRole(Role.valueOf(userModel.getRole()));
-            user.setStatus(Boolean.valueOf(userModel.getStatus()));
+            if(!StringUtils.isBlank(userModel.getRole())) {
+                user.setRole(Role.valueOf(userModel.getRole()));
+            }
+            user.setStatus(userModel.getStatus());
             user.setEmail(userModel.getEmail());
             user.setTaxCode(userModel.getTaxCode());
         }
