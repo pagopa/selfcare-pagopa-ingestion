@@ -8,6 +8,4 @@ public interface CsvService {
 
     <T> List<T> readItemsFromCsv(Class<T> csvClass, String filePath);
 
-    <T> void writeItemsOnCsv(List<T> items, String nameFile, String directoryPath);
-
 }

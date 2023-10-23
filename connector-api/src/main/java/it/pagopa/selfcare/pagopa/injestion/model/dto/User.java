@@ -1,6 +1,5 @@
 package it.pagopa.selfcare.pagopa.injestion.model.dto;
 
-import it.pagopa.selfcare.commons.base.security.PartyRole;
 import it.pagopa.selfcare.pagopa.injestion.constant.WorkStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,9 +14,8 @@ public class User {
     private String surname;
     private String taxCode;
     private Role role;
-    private PartyRole partyRole;
     private String email;
-    private Boolean status;
+    private String status;
     private String institutionTaxCode;
     private String productRole;
     private WorkStatus workStatus;

@@ -20,7 +20,7 @@ public class UserEntity {
     private String surname;
     private String email;
     private String taxCode;
-    private Boolean status;
+    private String status;
     private String institutionTaxCode;
     private String role;
     private String workStatus;
