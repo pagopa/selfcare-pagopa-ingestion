@@ -19,5 +19,6 @@ public class EC {
     private String vatNumber;
     private String recipientCode;
     private WorkStatus workStatus;
+    private int retry;
 
 }

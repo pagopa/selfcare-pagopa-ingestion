@@ -23,6 +23,7 @@ public class PTMapper {
         pt.setVatNumber(entity.getVatNumber());
         pt.setRegisteredOffice(entity.getRegisteredOffice());
         pt.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
+        pt.setRetry(entity.getRetry());
 
         return pt;
     }
@@ -41,6 +42,7 @@ public class PTMapper {
         entity.setVatNumber(pt.getVatNumber());
         entity.setRegisteredOffice(pt.getRegisteredOffice());
         entity.setWorkStatus(pt.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : pt.getWorkStatus().name());
+        entity.setRetry(pt.getRetry());
 
         return entity;
     }

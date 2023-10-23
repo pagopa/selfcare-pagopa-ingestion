@@ -18,6 +18,7 @@ public class ECMapper {
             ec.setRecipientCode(ecModel.getRecipientCode());
             ec.setDigitalAddress(ecModel.getDigitalAddress());
             ec.setBusinessName(ecModel.getBusinessName());
+            ec.setRetry(0);
         }
         return ec;
     }

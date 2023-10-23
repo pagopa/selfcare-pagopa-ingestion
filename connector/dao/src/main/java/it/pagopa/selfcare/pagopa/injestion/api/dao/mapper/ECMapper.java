@@ -24,6 +24,7 @@ public class ECMapper {
         ec.setZipCode(entity.getZipCode());
         ec.setRegisteredOffice(entity.getRegisteredOffice());
         ec.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
+        ec.setRetry(entity.getRetry());
 
         return ec;
     }
@@ -43,6 +44,7 @@ public class ECMapper {
         entity.setZipCode(ec.getZipCode());
         entity.setRegisteredOffice(ec.getRegisteredOffice());
         entity.setWorkStatus(ec.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : ec.getWorkStatus().name());
+        entity.setRetry(ec.getRetry());
 
         return entity;
     }

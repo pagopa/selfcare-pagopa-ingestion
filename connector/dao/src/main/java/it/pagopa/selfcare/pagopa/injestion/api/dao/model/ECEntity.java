@@ -22,5 +22,6 @@ public class ECEntity {
     private String vatNumber;
     private String recipientCode;
     private String workStatus;
+    private int retry;
 
 }

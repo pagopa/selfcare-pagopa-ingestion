@@ -91,6 +91,7 @@ class MigrationECServiceImpl implements MigrationECService {
         ec.setDigitalAddress(institution.getDigitalAddress());
         ec.setZipCode(institution.getZipCode());
         ec.setWorkStatus(WorkStatus.TO_SEND_IPA);
+        ec.setRetry(ec.getRetry()+1);
         ecConnector.save(ec);
         AutoApprovalOnboarding onboarding = createOnboarding(ec, Origin.IPA.name());
         processMigrateEC(ec, onboarding);
@@ -103,6 +104,7 @@ class MigrationECServiceImpl implements MigrationECService {
             ec.setRegisteredOffice(legalAddress.getAddress());
             ec.setZipCode(legalAddress.getZip());
             ec.setWorkStatus(WorkStatus.TO_SEND_INFOCAMERE);
+            ec.setRetry(ec.getRetry()+1);
             ecConnector.save(ec);
             AutoApprovalOnboarding onboarding = createOnboarding(ec, Origin.INFOCAMERE.name());
             processMigrateEC(ec, onboarding);
@@ -119,6 +121,9 @@ class MigrationECServiceImpl implements MigrationECService {
         } catch (HttpClientErrorException e) {
             handleHttpClientErrorException(ec, e);
         } catch (Exception e) {
+            if(ec.getRetry()>2){
+                ec.setWorkStatus(WorkStatus.ERROR);
+            }
             log.error("Error while migrating EC for tax code: " + MaskData.maskData(ec.getTaxCode()), e);
         } finally {
             ecConnector.save(ec);
@@ -126,7 +131,7 @@ class MigrationECServiceImpl implements MigrationECService {
     }
 
     private void handleHttpClientErrorException(EC ec, HttpClientErrorException e) {
-        if (e.getStatusCode() == HttpStatus.CONFLICT || e.getStatusCode() == HttpStatus.BAD_REQUEST) {
+        if (e.getStatusCode() == HttpStatus.CONFLICT || e.getStatusCode() == HttpStatus.BAD_REQUEST || ec.getRetry()>2) {
             ec.setWorkStatus(WorkStatus.ERROR);
             log.error("Conflict while migrating EC for tax code: " + MaskData.maskData(ec.getTaxCode()), e);
         } else {
@@ -142,6 +147,7 @@ class MigrationECServiceImpl implements MigrationECService {
 
     private void continueMigrateECOnboarding(EC ec) {
         AutoApprovalOnboarding onboarding = createOnboarding(ec, ec.getWorkStatus() == WorkStatus.TO_SEND_IPA ? Origin.IPA.name() : Origin.INIPEC.name());
+        ec.setRetry(ec.getRetry()+1);
         processMigrateEC(ec, onboarding);
     }
 }

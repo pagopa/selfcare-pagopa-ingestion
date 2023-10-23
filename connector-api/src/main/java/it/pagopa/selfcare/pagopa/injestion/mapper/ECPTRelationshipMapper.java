@@ -16,6 +16,7 @@ public class ECPTRelationshipMapper {
             ecIntermediaroPT.setIntermediarioPTCF(ecptRelationshipModel.getIntermediarioPTCF());
             ecIntermediaroPT.setEnteIndirettoCF(ecptRelationshipModel.getEnteIndirettoCF());
             ecIntermediaroPT.setIntermediarioPTRagioneSociale(ecptRelationshipModel.getIntermediarioPTRagioneSociale());
+            ecIntermediaroPT.setRetry(0);
         }
         return ecIntermediaroPT;
     }

@@ -23,5 +23,6 @@ public class PTEntity {
     private String digitalAddress;
     private String vatNumber;
     private String workStatus;
+    private int retry;
 
 }

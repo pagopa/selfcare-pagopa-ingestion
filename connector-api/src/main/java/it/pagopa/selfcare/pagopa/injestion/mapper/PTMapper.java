@@ -19,6 +19,7 @@ public class PTMapper {
             pt.setZipCode(ptModel.getZipCode());
             pt.setDigitalAddress(ptModel.getDigitalAddress());
             pt.setRegisteredOffice(ptModel.getRegisteredOffice());
+            pt.setRetry(0);
         }
         return pt;
     }

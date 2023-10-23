@@ -22,6 +22,7 @@ public class UserMapper {
         user.setStatus(entity.getStatus());
         user.setInstitutionTaxCode(entity.getInstitutionTaxCode());
         user.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
+        user.setRetry(entity.getRetry());
 
         return user;
     }
@@ -41,6 +42,7 @@ public class UserMapper {
         entity.setSurname(user.getSurname());
         entity.setInstitutionTaxCode(user.getInstitutionTaxCode());
         entity.setWorkStatus(user.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : user.getWorkStatus().name());
+        entity.setRetry(user.getRetry());
 
         return entity;
     }

@@ -18,5 +18,6 @@ public class PT {
     private String digitalAddress;
     private String vatNumber;
     private WorkStatus workStatus;
+    private int retry;
 
 }

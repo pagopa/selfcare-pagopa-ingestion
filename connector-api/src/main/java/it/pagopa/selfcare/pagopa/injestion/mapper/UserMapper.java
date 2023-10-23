@@ -23,6 +23,7 @@ public class UserMapper {
             user.setStatus(userModel.getStatus());
             user.setEmail(userModel.getEmail());
             user.setTaxCode(userModel.getTaxCode());
+            user.setRetry(0);
         }
         return user;
     }

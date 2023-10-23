@@ -91,6 +91,7 @@ class MigrationPTServiceImpl implements MigrationPTService {
         pt.setDigitalAddress(institution.getDigitalAddress());
         pt.setZipCode(institution.getZipCode());
         pt.setWorkStatus(WorkStatus.TO_SEND_IPA);
+        pt.setRetry(pt.getRetry()+1);
         ptConnector.save(pt);
         AutoApprovalOnboarding onboarding = createAutoApprovalOnboarding(pt, Origin.IPA.name());
         processMigratePT(pt, onboarding);
@@ -103,6 +104,7 @@ class MigrationPTServiceImpl implements MigrationPTService {
             pt.setRegisteredOffice(legalAddress.getAddress());
             pt.setZipCode(legalAddress.getZip());
             pt.setWorkStatus(WorkStatus.TO_SEND_INFOCAMERE);
+            pt.setRetry(pt.getRetry()+1);
             ptConnector.save(pt);
             AutoApprovalOnboarding onboarding = createAutoApprovalOnboarding(pt, Origin.INFOCAMERE.name());
             processMigratePT(pt, onboarding);
@@ -120,24 +122,22 @@ class MigrationPTServiceImpl implements MigrationPTService {
         } catch (HttpClientErrorException e) {
             handleHttpClientErrorException(pt, e);
         } catch (Exception e) {
-            handleOtherException(pt, e);
+            if(pt.getRetry()>2){
+                pt.setWorkStatus(WorkStatus.ERROR);
+            }
+            log.error("Error migrating EC for tax code: " + MaskData.maskData(pt.getTaxCode()), e);
         } finally {
             ptConnector.save(pt);
         }
     }
 
     private void handleHttpClientErrorException(PT pt, HttpClientErrorException e) {
-        if (e.getStatusCode() == HttpStatus.CONFLICT || e.getStatusCode() == HttpStatus.BAD_REQUEST) {
+        if (e.getStatusCode() == HttpStatus.CONFLICT || e.getStatusCode() == HttpStatus.BAD_REQUEST || pt.getRetry()>2) {
             pt.setWorkStatus(WorkStatus.ERROR);
             log.error("Conflict while migrating EC for tax code: " + MaskData.maskData(pt.getTaxCode()), e);
         } else {
             log.error("Error while migrating EC for tax code: " + MaskData.maskData(pt.getTaxCode()), e);
         }
-    }
-
-    private void handleOtherException(PT pt, Exception e) {
-        pt.setWorkStatus(WorkStatus.ERROR);
-        log.error("Error migrating EC for tax code: " + MaskData.maskData(pt.getTaxCode()), e);
     }
 
     private AutoApprovalOnboarding createAutoApprovalOnboarding(PT pt, String origin) {
@@ -193,6 +193,7 @@ class MigrationPTServiceImpl implements MigrationPTService {
     private void continueMigratePTOnboarding(PT pt) {
         AutoApprovalOnboarding onboarding =
                 createAutoApprovalOnboarding(pt, pt.getWorkStatus() == WorkStatus.TO_SEND_IPA ? Origin.IPA.name() : Origin.INIPEC.name());
+        pt.setRetry(pt.getRetry()+1);
         processMigratePT(pt, onboarding);
     }
 }
