@@ -32,7 +32,7 @@ class MigrationPTServiceImpl implements MigrationPTService {
     private final PartyRegistryProxyConnector partyRegistryProxyConnector;
     private final InternalApiConnector internalApiConnector;
 
-    @Value("${app.local.ec}")
+    @Value("${app.local.pt}")
     private String csvPath;
 
     @Value("${app.pageSize}")
