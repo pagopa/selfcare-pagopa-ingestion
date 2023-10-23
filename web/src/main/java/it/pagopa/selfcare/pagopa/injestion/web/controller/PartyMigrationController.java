@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("swagger-resources/migration")
+@RequestMapping("migration")
 @Api(tags = "migration")
 public class PartyMigrationController {
 
