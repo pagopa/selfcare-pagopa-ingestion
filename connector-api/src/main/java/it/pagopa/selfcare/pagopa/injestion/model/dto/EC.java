@@ -1,5 +1,6 @@
 package it.pagopa.selfcare.pagopa.injestion.model.dto;
 
+import it.pagopa.selfcare.commons.base.utils.Origin;
 import it.pagopa.selfcare.pagopa.injestion.constant.WorkStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +19,7 @@ public class EC {
     private String digitalAddress;
     private String vatNumber;
     private String recipientCode;
+    private Origin origin;
     private WorkStatus workStatus;
-    private int retry;
 
 }

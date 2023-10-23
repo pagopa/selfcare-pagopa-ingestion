@@ -38,7 +38,7 @@ app:
   pageSize: ${PAGE_SIZE:50}
   local:
     csv: ${LOCAL_CSV:true}
-    ec: ${EC_CSV_PATH}
-    pt: ${PT_CSV_PATH}
-    ecptrelationship: ${EC_PT_CSV_PATH}
-    user: ${USER_CSV_PATH}
+    ec: csv/ec.csv
+    pt: csv/pt.csv
+    ecptrelationship: csv/ecpt.csv
+    user: csv/user.csv

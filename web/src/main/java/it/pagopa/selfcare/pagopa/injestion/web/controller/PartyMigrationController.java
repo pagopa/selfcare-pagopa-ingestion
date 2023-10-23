@@ -1,62 +1,72 @@
 package it.pagopa.selfcare.pagopa.injestion.web.controller;
 
 import io.swagger.annotations.Api;
-import it.pagopa.selfcare.pagopa.injestion.core.MigrationECPTRelationshipService;
-import it.pagopa.selfcare.pagopa.injestion.core.MigrationECService;
-import it.pagopa.selfcare.pagopa.injestion.core.MigrationPTService;
-import it.pagopa.selfcare.pagopa.injestion.core.MigrationUserService;
+import io.swagger.annotations.ApiOperation;
+import it.pagopa.selfcare.pagopa.injestion.core.DelegationService;
+import it.pagopa.selfcare.pagopa.injestion.core.ECService;
+import it.pagopa.selfcare.pagopa.injestion.core.PTService;
+import it.pagopa.selfcare.pagopa.injestion.core.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("migration")
-@Api(tags = "migration")
+@RequestMapping(value = "/injestion", produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(tags = "injestion")
 public class PartyMigrationController {
 
-    private final MigrationECService migrationECService;
-    private final MigrationPTService migrationPTService;
-    private final MigrationECPTRelationshipService migrationECPTRelationshipService;
-    private final MigrationUserService migrationUserService;
-    
+    private final ECService ecService;
+    private final PTService ptService;
+    private final DelegationService delegationService;
+    private final UserService userService;
     private static final String COMPLETE = "Elaborazione completata con successo";
 
     public PartyMigrationController(
-            MigrationECService migrationECService,
-            MigrationPTService migrationPTService,
-            MigrationECPTRelationshipService migrationECPTRelationshipService,
-            MigrationUserService migrationUserService) {
-        this.migrationECService = migrationECService;
-        this.migrationPTService = migrationPTService;
-        this.migrationECPTRelationshipService = migrationECPTRelationshipService;
-        this.migrationUserService = migrationUserService;
+            ECService ecService,
+            PTService ptService,
+            DelegationService delegationService,
+            UserService userService) {
+        this.ecService = ecService;
+        this.ptService = ptService;
+        this.delegationService = delegationService;
+        this.userService = userService;
     }
 
     @PostMapping("/persist")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "", notes = "${swagger.injestion.api.persistFromCsv}")
     public ResponseEntity<String> persistFromCsv() {
-        migrationECService.persistEC();
-        migrationPTService.persistPT();
-        migrationECPTRelationshipService.persistECPTRelationship();
-        migrationUserService.persistUser();
+        ecService.persistEC();
+        ptService.persistPT();
+        delegationService.persistECPTRelationship();
+        userService.persistUser();
         return ResponseEntity.ok().body(COMPLETE);
     }
 
-    @PostMapping("/EC")
+    @PostMapping("/ec")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "", notes = "${swagger.injestion.api.ec}")
     public ResponseEntity<String> migrationEC(@RequestParam("status") String status) {
-        migrationECService.migrateEC(status);
+        ecService.migrateEC(status);
         return ResponseEntity.ok().body(COMPLETE);
     }
 
-    @PostMapping("/PT")
+    @PostMapping("/pt")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "", notes = "${swagger.injestion.api.pt}")
     public ResponseEntity<String> migrationPT(@RequestParam("status") String status) {
-            migrationPTService.migratePT(status);
+        ptService.migratePT(status);
         return ResponseEntity.ok().body(COMPLETE);
     }
 
     @PostMapping("/delegation")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "", notes = "${swagger.injestion.api.delegation}")
     public ResponseEntity<String> createDelegation() {
-        migrationECPTRelationshipService.migrateECPTRelationship();
+        delegationService.migrateECPTRelationship();
         return ResponseEntity.ok().body(COMPLETE);
     }
 

@@ -12,11 +12,11 @@ public interface PartyRegistryProxyRestClient {
 
     @GetMapping(value = "${rest-client.party-registry-proxy.getInstitutionById.path}", consumes = APPLICATION_JSON_VALUE)
     @ResponseBody
-    ProxyInstitutionResponse getInstitutionById(@PathVariable("id") String id);
+    ProxyInstitutionResponse getInstitutionById(@PathVariable("id") String id, @RequestHeader(name="Ocp-Apim-Subscription-Key")  String subscriptionKey);
 
 
-    @GetMapping(value = "${rest-client.party-registry-proxy.getLegalAddress.path}", consumes = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "${rest-client.party-registry-proxy.legalAddress.path}", consumes = APPLICATION_JSON_VALUE)
     @ResponseBody
-    NationalRegistriesProfessionalAddress getLegalAddress(@RequestParam(value = "taxId") String taxId);
+    NationalRegistriesProfessionalAddress getLegalAddress(@RequestParam(value = "taxId") String taxId, @RequestHeader(name="Ocp-Apim-Subscription-Key")  String subscriptionKey);
 
 }

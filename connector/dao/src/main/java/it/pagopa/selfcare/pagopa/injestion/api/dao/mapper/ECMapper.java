@@ -22,9 +22,9 @@ public class ECMapper {
         ec.setTaxCode(entity.getTaxCode());
         ec.setVatNumber(entity.getVatNumber());
         ec.setZipCode(entity.getZipCode());
+        ec.setOrigin(entity.getOrigin());
         ec.setRegisteredOffice(entity.getRegisteredOffice());
         ec.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
-        ec.setRetry(entity.getRetry());
 
         return ec;
     }
@@ -42,22 +42,10 @@ public class ECMapper {
         entity.setTaxCode(ec.getTaxCode());
         entity.setVatNumber(ec.getVatNumber());
         entity.setZipCode(ec.getZipCode());
+        entity.setOrigin(ec.getOrigin());
         entity.setRegisteredOffice(ec.getRegisteredOffice());
         entity.setWorkStatus(ec.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : ec.getWorkStatus().name());
-        entity.setRetry(ec.getRetry());
 
         return entity;
-    }
-
-    public static List<ECEntity> dtoListToEntityList(List<EC> ecList) {
-        return ecList.stream()
-                .map(ECMapper::dtoToEntity)
-                .collect(Collectors.toList());
-    }
-
-    public static List<EC> entityListToDtoList(List<ECEntity> ecEntityList) {
-        return ecEntityList.stream()
-                .map(ECMapper::entityToDto)
-                .collect(Collectors.toList());
     }
 }

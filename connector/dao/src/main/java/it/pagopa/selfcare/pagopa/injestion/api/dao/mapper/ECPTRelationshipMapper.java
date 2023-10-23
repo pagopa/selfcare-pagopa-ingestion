@@ -21,7 +21,6 @@ public class ECPTRelationshipMapper {
         ecptRelationship.setEnteIndirettoCF(entity.getEnteIndirettoCF());
         ecptRelationship.setEnteIndirettoRagioneSociale(entity.getEnteIndirettoRagioneSociale());
         ecptRelationship.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
-        ecptRelationship.setRetry(entity.getRetry());
 
         return ecptRelationship;
     }
@@ -38,21 +37,7 @@ public class ECPTRelationshipMapper {
         entity.setIntermediarioPTRagioneSociale(ecptRelationship.getIntermediarioPTRagioneSociale());
         entity.setEnteIndirettoRagioneSociale(ecptRelationship.getEnteIndirettoRagioneSociale());
         entity.setWorkStatus(ecptRelationship.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : ecptRelationship.getWorkStatus().name());
-        entity.setRetry(ecptRelationship.getRetry());
 
         return entity;
     }
-
-    public static List<ECPTRelationship> entitiesToDto(List<ECPTRelationshipEntity> entities) {
-        return entities.stream()
-                .map(ECPTRelationshipMapper::entityToDto)
-                .collect(Collectors.toList());
-    }
-
-    public static List<ECPTRelationshipEntity> convertDtoToEntities(List<ECPTRelationship> ecptRelationships) {
-        return ecptRelationships.stream()
-                .map(ECPTRelationshipMapper::dtoToEntity)
-                .collect(Collectors.toList());
-    }
-
 }

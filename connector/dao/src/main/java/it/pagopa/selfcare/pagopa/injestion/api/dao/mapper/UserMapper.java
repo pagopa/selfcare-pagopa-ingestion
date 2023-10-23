@@ -14,15 +14,16 @@ public class UserMapper {
 
         User user = new User();
         user.setEmail(entity.getEmail());
+        user.setId(entity.getId());
         user.setName(entity.getName());
-        if(user.getRole() != null) {
+        user.setTaxCode(entity.getTaxCode());
+        if(entity.getRole() != null) {
             user.setRole(Role.valueOf(entity.getRole()));
         }
         user.setSurname(entity.getSurname());
         user.setStatus(entity.getStatus());
         user.setInstitutionTaxCode(entity.getInstitutionTaxCode());
         user.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
-        user.setRetry(entity.getRetry());
 
         return user;
     }
@@ -33,6 +34,8 @@ public class UserMapper {
         }
 
         UserEntity entity = new UserEntity();
+        entity.setId(user.getId());
+        entity.setTaxCode(user.getTaxCode());
         entity.setEmail(user.getEmail());
         entity.setName(user.getName());
         if(user.getRole() != null) {
@@ -42,8 +45,6 @@ public class UserMapper {
         entity.setSurname(user.getSurname());
         entity.setInstitutionTaxCode(user.getInstitutionTaxCode());
         entity.setWorkStatus(user.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : user.getWorkStatus().name());
-        entity.setRetry(user.getRetry());
-
         return entity;
     }
 }

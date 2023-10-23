@@ -5,6 +5,7 @@ import it.pagopa.selfcare.pagopa.injestion.api.rest.client.InternalApiRestClient
 import it.pagopa.selfcare.pagopa.injestion.api.rest.model.internal.*;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,15 +16,18 @@ import java.util.stream.Collectors;
 public class InternalApiConnectorImpl implements InternalApiConnector {
 
     private final InternalApiRestClient internalApiRestClient;
+    private final String internalSubscriptionkey;
 
-    public InternalApiConnectorImpl(InternalApiRestClient internalApiRestClient) {
+    public InternalApiConnectorImpl(InternalApiRestClient internalApiRestClient,
+                                    @Value("${authorization.internal-api.subscriptionKey}") String internalSubscriptionkey) {
         this.internalApiRestClient = internalApiRestClient;
+        this.internalSubscriptionkey = internalSubscriptionkey;
     }
 
     @Override
     public void autoApprovalOnboarding(String externalInstitutionId, String productId, AutoApprovalOnboarding request) {
         log.info("autoApprovalOnboarding");
-        internalApiRestClient.autoApprovalOnboarding(externalInstitutionId, productId, createRequestOnboarding(request));
+        internalApiRestClient.autoApprovalOnboarding(externalInstitutionId, productId, createRequestOnboarding(request), internalSubscriptionkey);
     }
 
     private AutoApprovalOnboardingRequest createRequestOnboarding(AutoApprovalOnboarding request) {
@@ -32,50 +36,7 @@ public class InternalApiConnectorImpl implements InternalApiConnector {
         autoApprovalOnboardingRequest.setBillingData(createBillingDataRequest(request.getBillingData()));
         autoApprovalOnboardingRequest.setInstitutionType(request.getInstitutionType());
         autoApprovalOnboardingRequest.setOrigin(request.getOrigin());
-        autoApprovalOnboardingRequest.setPricingPlan(request.getPricingPlan());
-        autoApprovalOnboardingRequest.setPspData(createPspDataRequest(request.getPspData()));
-        autoApprovalOnboardingRequest.setGeographicTaxonomies(createGeographicTaxonomiesRequest(request.getGeographicTaxonomies()));
-        autoApprovalOnboardingRequest.setCompanyInformations(createCompanyInformationsRequest(request.getCompanyInformations()));
-        autoApprovalOnboardingRequest.setAssistanceContacts(request.getAssistanceContacts());
         return autoApprovalOnboardingRequest;
-    }
-
-    private CompanyInformationsRequest createCompanyInformationsRequest(CompanyInformations companyInformations) {
-        CompanyInformationsRequest companyInformationsRequest = new CompanyInformationsRequest();
-        companyInformationsRequest.setRea(companyInformations.getRea());
-        companyInformationsRequest.setShareCapital(companyInformations.getShareCapital());
-        companyInformationsRequest.setBusinessRegisterPlace(companyInformations.getBusinessRegisterPlace());
-        return companyInformationsRequest;
-    }
-
-    private List<GeographicTaxonomyRequest> createGeographicTaxonomiesRequest(List<GeographicTaxonomy> geographicTaxonomies){
-        return geographicTaxonomies.stream().map(this::createGeographicTaxonomyRequest).collect(Collectors.toList());
-    }
-
-    private GeographicTaxonomyRequest createGeographicTaxonomyRequest(GeographicTaxonomy geographicTaxonomy) {
-        GeographicTaxonomyRequest geographicTaxonomyRequest = new GeographicTaxonomyRequest();
-        geographicTaxonomyRequest.setCode(geographicTaxonomy.getCode());
-        geographicTaxonomyRequest.setDesc(geographicTaxonomy.getDesc());
-        return geographicTaxonomyRequest;
-    }
-
-    private PspDataRequest createPspDataRequest(PspData pspData) {
-        PspDataRequest pspDataRequest = new PspDataRequest();
-        pspDataRequest.setAbiCode(pspData.getAbiCode());
-        pspDataRequest.setBusinessRegisterNumber(pspData.getBusinessRegisterNumber());
-        pspDataRequest.setLegalRegisterName(pspData.getLegalRegisterName());
-        pspDataRequest.setLegalRegisterNumber(pspData.getLegalRegisterNumber());
-        pspDataRequest.setVatNumberGroup(pspData.getVatNumberGroup());
-        pspDataRequest.setDpoData(crateDpoDataRequest(pspData.getDpoData()));
-        return pspDataRequest;
-    }
-
-    private DpoDataRequest crateDpoDataRequest(DpoData dpoData) {
-        DpoDataRequest dpoDataRequest = new DpoDataRequest();
-        dpoDataRequest.setAddress(dpoData.getAddress());
-        dpoDataRequest.setPec(dpoData.getPec());
-        dpoDataRequest.setEmail(dpoData.getEmail());
-        return dpoDataRequest;
     }
 
     private BillingDataRequest createBillingDataRequest(BillingData billingData) {

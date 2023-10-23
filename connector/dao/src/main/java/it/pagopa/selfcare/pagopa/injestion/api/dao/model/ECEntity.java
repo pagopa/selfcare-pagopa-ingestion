@@ -1,5 +1,6 @@
 package it.pagopa.selfcare.pagopa.injestion.api.dao.model;
 
+import it.pagopa.selfcare.commons.base.utils.Origin;
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;
 import org.springframework.data.annotation.Id;
@@ -22,6 +23,7 @@ public class ECEntity {
     private String vatNumber;
     private String recipientCode;
     private String workStatus;
-    private int retry;
+    private Origin origin;
+    private String originId;
 
 }

@@ -9,6 +9,7 @@ import it.pagopa.selfcare.pagopa.injestion.exception.SelfCarePagoPaInjectionExce
 import it.pagopa.selfcare.pagopa.injestion.model.dto.InstitutionProxyInfo;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.LegalAddress;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -16,6 +17,9 @@ import org.springframework.stereotype.Service;
 public class PartyRegistryProxyConnectorImpl implements PartyRegistryProxyConnector {
 
     private final PartyRegistryProxyRestClient partyRegistryProxyRestClient;
+
+    @Value("${authorization.internal-api.subscriptionKey}")
+    private String internalSubscriptionkey;
 
 
     public PartyRegistryProxyConnectorImpl(PartyRegistryProxyRestClient partyRegistryProxyRestClient) {
@@ -26,7 +30,7 @@ public class PartyRegistryProxyConnectorImpl implements PartyRegistryProxyConnec
     @Override
     public InstitutionProxyInfo getInstitutionById(String id) {
         try {
-            ProxyInstitutionResponse response = partyRegistryProxyRestClient.getInstitutionById(id);
+            ProxyInstitutionResponse response = partyRegistryProxyRestClient.getInstitutionById(id, internalSubscriptionkey);
             if (response == null) {
                 return null;
             }
@@ -60,7 +64,7 @@ public class PartyRegistryProxyConnectorImpl implements PartyRegistryProxyConnec
     @Override
     public LegalAddress getLegalAddress(String taxId) {
         try {
-            NationalRegistriesProfessionalAddress address = partyRegistryProxyRestClient.getLegalAddress(taxId);
+            NationalRegistriesProfessionalAddress address = partyRegistryProxyRestClient.getLegalAddress(taxId, internalSubscriptionkey);
             if(address == null){
                 return null;
             }

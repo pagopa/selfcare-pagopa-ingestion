@@ -6,20 +6,10 @@ import java.util.List;
 
 public interface UserConnector {
 
-    List<User> findAll(int page, int pageSize);
-
-    List<User> findAll();
-
-    User findById(String id);
-
-    List<User> findAllByTaxCode(String taxCode);
+    List<User> findAllByInstitutionTaxCode(String taxCode);
 
     User save(User user);
 
     List<User> saveAll(List<User> users);
-
-    void deleteById(String id);
-
-    void delete(User user);
     
 }

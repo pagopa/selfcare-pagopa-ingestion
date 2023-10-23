@@ -24,6 +24,5 @@ public class UserEntity {
     private String institutionTaxCode;
     private String role;
     private String workStatus;
-    private int retry;
 
 }

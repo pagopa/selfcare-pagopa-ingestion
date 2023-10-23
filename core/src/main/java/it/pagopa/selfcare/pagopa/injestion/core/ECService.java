@@ -1,6 +1,6 @@
 package it.pagopa.selfcare.pagopa.injestion.core;
 
-public interface MigrationECService {
+public interface ECService {
 
     void persistEC();
 

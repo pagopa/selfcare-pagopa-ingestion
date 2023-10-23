@@ -3,10 +3,7 @@ package it.pagopa.selfcare.pagopa.injestion.api.rest.client;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.model.internal.AutoApprovalOnboardingRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "${rest-client.internal-api.serviceCode}", url = "${rest-client.internal-api.base-url}")
 public interface InternalApiRestClient {
@@ -15,5 +12,6 @@ public interface InternalApiRestClient {
     @ResponseBody
     void autoApprovalOnboarding(@PathVariable("externalInstitutionId") String externalInstitutionId,
                                 @PathVariable("productId") String productId,
-                                @RequestBody AutoApprovalOnboardingRequest request);
+                                @RequestBody AutoApprovalOnboardingRequest request,
+                                @RequestHeader(name="Ocp-Apim-Subscription-Key")  String subscriptionKey);
 }

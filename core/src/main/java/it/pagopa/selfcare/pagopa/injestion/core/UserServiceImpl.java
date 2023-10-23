@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-class MigrationUserServiceImpl implements MigrationUserService {
+class UserServiceImpl implements UserService {
 
     private final MigrationService migrationService;
     private final UserConnector userConnector;
     private final String csvPath;
 
-    public MigrationUserServiceImpl(
+    public UserServiceImpl(
             MigrationService migrationService,
             UserConnector userConnector,
             @Value("${app.local.user}") String csvPath

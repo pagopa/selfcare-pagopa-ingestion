@@ -1,19 +1,10 @@
 Name;Surname;Email;TaxCode;Status;Institution TaxCode;Role
-Paolo;De Santis;paolo.desantis@istruzione.it;DSNPLA64L01A252Y;TRUE;80012320729;RP
-Paolo;De Santis;paolo.desantis@istruzione.it;DSNPLA64L01A252Y;FALSE;94076720658;RT
+Paolo;De Santis;paolo.desantis@istruzione.it;CNCGPP80A01H501J;TRUE;80012320729;RP
+Paolo;De Santis;paolo.desantis@istruzione.it;STRSRR80A01H501S;FALSE;94076720658;RT
 Bruno;Maria Serena;saic8bu00x@istruzione.it;BRNMSR76E69F839D;TRUE;94076720658;RP
-Pagopa_rp;Pagopa_rp;operations@pagopa.it;MNTGLI55C54D612U;FALSE;1813730387;RP
-Lopardi;Mariarosaria;mlopardi@adisurcampania.it;LPRMRS72C45H703H;TRUE;8699411214;RP
-Gennaro;Romano;gennaro.romano@regione.campania.it;RMNGNR67C24F839N;TRUE;8699411214;RT
 Paolo;De Santis;paolo.desantis@istruzione.it;DSNPLA64L01A252Y;FALSE;93038940362;RT
-Paolo;De Santis;paolo.desantis@istruzione.it;DSNPLA64L01A252Y;FALSE;93038940362;RP
-Paolo;De Santis;paolo.desantis@istruzione.it;DSNPLA64L01A252Y;TRUE;1332171222;RT
-Paolo;De Santis;paolo.desantis@istruzione.it;DSNPLA64L01A252Y;FALSE;1332171222;RP
-Bruno;Maria Serena;saic8bu00x@istruzione.it;BRNMSR76E69F839D;TRUE;1345711333;RT
-Pagopa_rp;Pagopa_rp;operations@pagopa.it;MNTGLI55C54D612U;FALSE;1345711333;RP
-Lopardi;Mariarosaria;mlopardi@adisurcampania.it;LPRMRS72C45H703H;TRUE;1212128786;RT
-Gennaro;Romano;gennaro.romano@regione.campania.it;RMNGNR67C24F839N;TRUE;1212128786;RP
-Paolo;De Santis;paolo.desantis@istruzione.it;DSNPLA64L01A252Y;FALSE;1831094751;RT
-Paolo;De Santis;paolo.desantis@istruzione.it;DSNPLA64L01A252Y;FALSE;1831094751;RP
-Gennaro;Romano;gennaro.romano@regione.campania.it;RMNGNR67C24F839N;FALSE;1331112223;RT
-Gennaro;Romano;gennaro.romano@regione.campania.it;RMNGNR67C24F839N;TRUE;1331112223;RP
+Paolo;De Santis;paolo.desantis@istruzione.it;STRCRT80A01H501E;FALSE;93038940362;RP
+Paolo;De Santis;paolo.desantis@istruzione.it;CIACIA80A01H501X;TRUE;PPPPLT80A01H501V;RT
+Paolo;De Santis;paolo.desantis@istruzione.it;SRFBRD80A01E256Z;FALSE;PPPPLT80A01H501V;RP
+Paolo;De Santis;paolo.desantis@istruzione.it;DNIDNI80A01H501G;FALSE;05722930657;RT
+Paolo;De Santis;paolo.desantis@istruzione.it;NNVFNC80A01H501G;FALSE;05722930657;RP

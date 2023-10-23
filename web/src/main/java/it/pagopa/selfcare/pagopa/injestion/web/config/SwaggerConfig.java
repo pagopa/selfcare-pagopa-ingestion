@@ -110,12 +110,7 @@ public class SwaggerConfig {
                         .description(environment.getProperty("swagger.description", "Api and Models"))
                         .version(environment.getProperty("swagger.version", environment.getProperty("spring.application.version")))
                         .build())
-                .select().apis(RequestHandlerSelectors.basePackage("it.pagopa.selfcare.mscore.web.controller")).build()
-                .tags(new Tag("External", environment.getProperty("swagger.name.api.external.description")))
-                .tags(new Tag("Institution", environment.getProperty("swagger.name.api.institution.description")))
-                .tags(new Tag("Onboarding", environment.getProperty("swagger.name.api.onboarding.description")))
-                .tags(new Tag("Management", environment.getProperty("swagger.name.api.management.description")))
-                .tags(new Tag("Delegation", environment.getProperty("swagger.name.api.delegation.description")))
+                .select().apis(RequestHandlerSelectors.basePackage("it.pagopa.selfcare.pagopa.injestion.web.controller")).build()
                 .directModelSubstitute(LocalTime.class, String.class)
                 .ignoredParameterTypes(Authentication.class)
                 .forCodeGeneration(true)
@@ -125,34 +120,7 @@ public class SwaggerConfig {
                 .globalResponses(HttpMethod.POST, List.of(BAD_REQUEST_RESPONSE, NOT_FOUND_RESPONSE, CONFLICT_RESPONSE))
                 .globalResponses(HttpMethod.PUT, List.of(BAD_REQUEST_RESPONSE, NOT_FOUND_RESPONSE, FORBIDDEN_RESPONSE))
                 .globalResponses(HttpMethod.HEAD, List.of(BAD_REQUEST_RESPONSE, NOT_FOUND_RESPONSE))
-                .additionalModels(typeResolver.resolve(Problem.class))
-                .securityContexts(Collections.singletonList(SecurityContext.builder()
-                        .securityReferences(defaultAuth())
-                        .build()))
-                .securitySchemes(Collections.singletonList(HttpAuthenticationScheme.JWT_BEARER_BUILDER
-                        .name(AUTH_SCHEMA_NAME)
-                        .description(environment.getProperty("swagger.security.schema.bearer.description"))
-                        .build()));
-    }
-
-
-    private List<SecurityReference> defaultAuth() {
-        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
-        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-        authorizationScopes[0] = authorizationScope;
-        return Collections.singletonList(new SecurityReference(AUTH_SCHEMA_NAME, authorizationScopes));
-    }
-
-
-    @Bean
-    public EmailAnnotationSwaggerPluginConfig emailAnnotationPlugin() {
-        return new EmailAnnotationSwaggerPluginConfig();
-    }
-
-
-    @Bean
-    public ServerSwaggerConfig serverSwaggerConfiguration() {
-        return new ServerSwaggerConfig();
+                .additionalModels(typeResolver.resolve(Problem.class));
     }
 
 }

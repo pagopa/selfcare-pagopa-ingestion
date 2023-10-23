@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class User {
 
+    private String id;
     private String name;
     private String surname;
     private String taxCode;
@@ -19,6 +20,5 @@ public class User {
     private String institutionTaxCode;
     private String productRole;
     private WorkStatus workStatus;
-    private int retry;
 
 }

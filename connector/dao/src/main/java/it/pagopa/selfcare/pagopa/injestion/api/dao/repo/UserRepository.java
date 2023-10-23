@@ -14,7 +14,7 @@ public interface UserRepository extends MongoRepository<UserEntity, String>, Mon
     @Query(value = "{'workStatus': ?0}")
     List<UserEntity> findAllByStatus(String workStatus, Pageable pageable);
 
-    @Query(value = "{'taxCode': ?0}")
-    List<UserEntity> findAllByTaxCode(String taxCode);
+    @Query(value = "{'institutionTaxCode': ?0}")
+    List<UserEntity> findAllByInstitutionTaxCode(String institutionTaxCode);
 
 }

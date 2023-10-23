@@ -1,5 +1,6 @@
 package it.pagopa.selfcare.pagopa.injestion.api.dao.model;
 
+import it.pagopa.selfcare.commons.base.utils.Origin;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
@@ -22,7 +23,8 @@ public class PTEntity {
     private String zipCode;
     private String digitalAddress;
     private String vatNumber;
+    private Origin origin;
+    private String originId;
     private String workStatus;
-    private int retry;
 
 }

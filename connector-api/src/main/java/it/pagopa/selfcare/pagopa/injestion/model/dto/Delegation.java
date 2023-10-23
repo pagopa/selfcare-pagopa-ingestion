@@ -6,23 +6,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Delegation {
 
-    private String id;
     private String from;
+    private String to;
     private String institutionFromName;
     private String institutionToName;
-    private String institutionFromRootName;
-    private DelegationType type;
-    private String to;
     private String productId;
-    private InstitutionType institutionType;
-    private String taxCode;
-    private InstitutionType brokerType;
-    private String brokerTaxCode;
+    private DelegationType type;
 
 }

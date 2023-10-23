@@ -4,12 +4,12 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import it.pagopa.selfcare.pagopa.injestion.exception.SelfCarePagoPaInjectionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Service
 @Slf4j
@@ -34,7 +34,7 @@ public class CsvServiceImpl implements CsvService {
 
     @Override
     public <T> List<T> readItemsFromCsv(Class<T> csvClass, String filePath) {
-        try(FileInputStream fileInputStream = new FileInputStream(filePath)){
+        try(FileInputStream fileInputStream = new FileInputStream(ResourceUtils.getFile("classpath:" + filePath))) {
 
             StringReader stringReader = new StringReader(new String(fileInputStream.readAllBytes(), StandardCharsets.UTF_8));
             CsvToBeanBuilder<T> csvToBeanBuilder = new CsvToBeanBuilder<>(stringReader);

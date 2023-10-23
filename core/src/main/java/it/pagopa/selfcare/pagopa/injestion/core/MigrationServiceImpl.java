@@ -1,6 +1,9 @@
 package it.pagopa.selfcare.pagopa.injestion.core;
 
+import it.pagopa.selfcare.commons.base.utils.Origin;
 import it.pagopa.selfcare.pagopa.injestion.api.azure.AzureConnector;
+import it.pagopa.selfcare.pagopa.injestion.constant.WorkStatus;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.LegalAddress;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

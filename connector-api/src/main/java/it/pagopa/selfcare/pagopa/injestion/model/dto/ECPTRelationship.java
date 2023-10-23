@@ -17,6 +17,5 @@ public class ECPTRelationship {
     private String intermediarioPTRagioneSociale;
     private String intermediarioPTCF;
     private WorkStatus workStatus;
-    private int retry;
 
 }

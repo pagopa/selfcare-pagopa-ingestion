@@ -21,9 +21,9 @@ public class PTMapper {
         pt.setDigitalAddress(entity.getDigitalAddress());
         pt.setBusinessName(entity.getBusinessName());
         pt.setVatNumber(entity.getVatNumber());
+        pt.setOrigin(entity.getOrigin());
         pt.setRegisteredOffice(entity.getRegisteredOffice());
         pt.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
-        pt.setRetry(entity.getRetry());
 
         return pt;
     }
@@ -40,9 +40,9 @@ public class PTMapper {
         entity.setDigitalAddress(pt.getDigitalAddress());
         entity.setBusinessName(pt.getBusinessName());
         entity.setVatNumber(pt.getVatNumber());
+        entity.setOrigin(pt.getOrigin());
         entity.setRegisteredOffice(pt.getRegisteredOffice());
         entity.setWorkStatus(pt.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : pt.getWorkStatus().name());
-        entity.setRetry(pt.getRetry());
 
         return entity;
     }
