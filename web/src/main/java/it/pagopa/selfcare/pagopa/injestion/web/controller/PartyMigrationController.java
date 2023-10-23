@@ -7,14 +7,11 @@ import it.pagopa.selfcare.pagopa.injestion.core.MigrationPTService;
 import it.pagopa.selfcare.pagopa.injestion.core.MigrationUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/migration")
+@RequestMapping("swagger-resources/migration")
 @Api(tags = "migration")
 public class PartyMigrationController {
 
@@ -46,13 +43,13 @@ public class PartyMigrationController {
     }
 
     @PostMapping("/EC")
-    public ResponseEntity<String> migrationEC(@PathVariable("status") String status) {
+    public ResponseEntity<String> migrationEC(@RequestParam("status") String status) {
         migrationECService.migrateEC(status);
         return ResponseEntity.ok().body(COMPLETE);
     }
 
     @PostMapping("/PT")
-    public ResponseEntity<String> migrationPT(@PathVariable("status") String status) {
+    public ResponseEntity<String> migrationPT(@RequestParam("status") String status) {
             migrationPTService.migratePT(status);
         return ResponseEntity.ok().body(COMPLETE);
     }

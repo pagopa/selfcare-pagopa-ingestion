@@ -12,7 +12,7 @@ public interface PartyRegistryProxyRestClient {
 
     @GetMapping(value = "${rest-client.party-registry-proxy.getInstitutionById.path}", consumes = APPLICATION_JSON_VALUE)
     @ResponseBody
-    ProxyInstitutionResponse getInstitutionById(@PathVariable("institutionId") String id);
+    ProxyInstitutionResponse getInstitutionById(@PathVariable("id") String id);
 
 
     @GetMapping(value = "${rest-client.party-registry-proxy.getLegalAddress.path}", consumes = APPLICATION_JSON_VALUE)

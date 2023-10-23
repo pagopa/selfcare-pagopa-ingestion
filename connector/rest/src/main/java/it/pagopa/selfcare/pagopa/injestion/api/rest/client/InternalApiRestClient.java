@@ -1,6 +1,6 @@
 package it.pagopa.selfcare.pagopa.injestion.api.rest.client;
 
-import it.pagopa.selfcare.pagopa.injestion.model.dto.AutoApprovalOnboardingRequest;
+import it.pagopa.selfcare.pagopa.injestion.api.rest.model.internal.AutoApprovalOnboardingRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -4,7 +4,11 @@ import it.pagopa.selfcare.pagopa.injestion.api.rest.ExternalApiConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.client.ExternalApiRestClient;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.model.external.DelegationRequest;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.Delegation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
+@Slf4j
+@Service
 public class ExternalApiConnectorImpl implements ExternalApiConnector {
 
     private final ExternalApiRestClient externalApiRestClient;
