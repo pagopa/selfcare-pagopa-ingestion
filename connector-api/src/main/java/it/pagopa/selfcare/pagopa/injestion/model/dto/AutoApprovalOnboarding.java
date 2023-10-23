@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class AutoApprovalOnboardingRequest {
+public class AutoApprovalOnboarding {
 
     private List<UserToOnboard> users;
     private BillingData billingData;

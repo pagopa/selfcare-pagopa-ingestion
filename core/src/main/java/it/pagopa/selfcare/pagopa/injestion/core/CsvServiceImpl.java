@@ -1,6 +1,8 @@
 package it.pagopa.selfcare.pagopa.injestion.core;
 
+import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.StatefulBeanToCsv;
@@ -21,11 +23,10 @@ public class CsvServiceImpl implements CsvService {
     @Override
     public <T> List<T> readItemsFromCsv(Class<T> csvClass, byte[] csvData) {
         try (Reader reader = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(csvData)))) {
+            CSVReader csvReader = new CSVReaderBuilder(reader).withCSVParser(new CSVParserBuilder().withSeparator(';').build()).build();
 
-            CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(reader)
+                CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(csvReader)
                     .withType(csvClass)
-                    .withSeparator(',')
-                    .withSkipLines(1)
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
 
@@ -39,13 +40,12 @@ public class CsvServiceImpl implements CsvService {
     @Override
     public <T> List<T> readItemsFromCsv(Class<T> csvClass, String filePath) {
         try (FileReader fileReader = new FileReader(filePath+".csv");
-             CSVReader csvReader = new CSVReader(fileReader)) {
+             CSVReader csvReader = new CSVReaderBuilder(fileReader).withCSVParser(new CSVParserBuilder().withSeparator(';').build()).build()) {
 
             csvReader.readNext();
 
             CsvToBean<T> csvToBean = new CsvToBeanBuilder<T>(csvReader)
                     .withType(csvClass)
-                    .withSeparator(',')
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
 

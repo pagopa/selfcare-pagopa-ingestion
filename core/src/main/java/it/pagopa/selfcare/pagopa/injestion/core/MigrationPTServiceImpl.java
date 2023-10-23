@@ -94,7 +94,7 @@ class MigrationPTServiceImpl implements MigrationPTService {
         pt.setZipCode(institution.getZipCode());
         pt.setWorkStatus(WorkStatus.TO_SEND_IPA);
         ptConnector.save(pt);
-        AutoApprovalOnboardingRequest onboarding = createAutoApprovalOnboardingRequest(pt, Origin.IPA.name());
+        AutoApprovalOnboarding onboarding = createAutoApprovalOnboarding(pt, Origin.IPA.name());
         processMigratePT(pt, onboarding);
     }
 
@@ -106,7 +106,7 @@ class MigrationPTServiceImpl implements MigrationPTService {
             pt.setZipCode(legalAddress.getZip());
             pt.setWorkStatus(WorkStatus.TO_SEND_INFOCAMERE);
             ptConnector.save(pt);
-            AutoApprovalOnboardingRequest onboarding = createAutoApprovalOnboardingRequest(pt, Origin.INFOCAMERE.name());
+            AutoApprovalOnboarding onboarding = createAutoApprovalOnboarding(pt, Origin.INFOCAMERE.name());
             processMigratePT(pt, onboarding);
         } else {
             pt.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY);
@@ -115,7 +115,7 @@ class MigrationPTServiceImpl implements MigrationPTService {
     }
 
 
-    private void processMigratePT(PT pt, AutoApprovalOnboardingRequest onboarding) {
+    private void processMigratePT(PT pt, AutoApprovalOnboarding onboarding) {
         try {
             internalApiConnector.autoApprovalOnboarding(pt.getTaxCode(), "prod-pagopa", onboarding);
             pt.setWorkStatus(WorkStatus.DONE);
@@ -142,8 +142,8 @@ class MigrationPTServiceImpl implements MigrationPTService {
         log.error("Error migrating EC for tax code: " + MaskData.maskData(pt.getTaxCode()), e);
     }
 
-    private AutoApprovalOnboardingRequest createAutoApprovalOnboardingRequest(PT pt, String origin) {
-        AutoApprovalOnboardingRequest onboarding = new AutoApprovalOnboardingRequest();
+    private AutoApprovalOnboarding createAutoApprovalOnboarding(PT pt, String origin) {
+        AutoApprovalOnboarding onboarding = new AutoApprovalOnboarding();
         onboarding.setBillingData(fillBillingDataFromInstitutionAndEC(pt.getDigitalAddress(), pt.getZipCode(), pt));
         onboarding.setInstitutionType(InstitutionType.PA);
         onboarding.setGeographicTaxonomies(List.of());
@@ -193,8 +193,8 @@ class MigrationPTServiceImpl implements MigrationPTService {
     }
 
     private void continueMigratePTOnboarding(PT pt) {
-        AutoApprovalOnboardingRequest onboarding =
-                createAutoApprovalOnboardingRequest(pt, pt.getWorkStatus() == WorkStatus.TO_SEND_IPA ? Origin.IPA.name() : Origin.INIPEC.name());
+        AutoApprovalOnboarding onboarding =
+                createAutoApprovalOnboarding(pt, pt.getWorkStatus() == WorkStatus.TO_SEND_IPA ? Origin.IPA.name() : Origin.INIPEC.name());
         processMigratePT(pt, onboarding);
     }
 }

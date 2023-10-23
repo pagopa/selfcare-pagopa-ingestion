@@ -1,4 +1,4 @@
-package it.pagopa.selfcare.pagopa.injestion.api.rest.model.external;
+package it.pagopa.selfcare.pagopa.injestion.api.rest.model.internal;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -14,4 +14,5 @@ public class CompanyInformationsRequest {
 
     @JsonProperty("businessRegisterPlace")
     private String businessRegisterPlace;
+
 }

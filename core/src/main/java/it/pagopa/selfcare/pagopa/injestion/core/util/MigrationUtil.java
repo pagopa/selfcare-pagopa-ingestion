@@ -37,8 +37,8 @@ public class MigrationUtil {
         return billingData;
     }
 
-    public static AutoApprovalOnboardingRequest constructOnboardingDto(EC ec, String origin, List<User> users) {
-        AutoApprovalOnboardingRequest onboarding = new AutoApprovalOnboardingRequest();
+    public static AutoApprovalOnboarding constructOnboardingDto(EC ec, String origin, List<User> users) {
+        AutoApprovalOnboarding onboarding = new AutoApprovalOnboarding();
         List<UserToOnboard> userToOnboards = new ArrayList<>();
         onboarding.setBillingData(fillBillingDataFromInstitutionAndEC(ec.getDigitalAddress(), ec.getZipCode(), ec));
         onboarding.setInstitutionType(InstitutionType.PA);

@@ -3,8 +3,8 @@ package it.pagopa.selfcare.pagopa.injestion.core;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.utils.MaskData;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.ECConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.UserConnector;
-import it.pagopa.selfcare.pagopa.injestion.api.rest.PartyRegistryProxyConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.InternalApiConnector;
+import it.pagopa.selfcare.pagopa.injestion.api.rest.PartyRegistryProxyConnector;
 import it.pagopa.selfcare.pagopa.injestion.constant.WorkStatus;
 import it.pagopa.selfcare.pagopa.injestion.mapper.ECMapper;
 import it.pagopa.selfcare.pagopa.injestion.model.csv.ECModel;
@@ -92,7 +92,7 @@ class MigrationECServiceImpl implements MigrationECService {
         ec.setZipCode(institution.getZipCode());
         ec.setWorkStatus(WorkStatus.TO_SEND_IPA);
         ecConnector.save(ec);
-        AutoApprovalOnboardingRequest onboarding = createOnboarding(ec, Origin.IPA.name());
+        AutoApprovalOnboarding onboarding = createOnboarding(ec, Origin.IPA.name());
         processMigrateEC(ec, onboarding);
     }
 
@@ -104,7 +104,7 @@ class MigrationECServiceImpl implements MigrationECService {
             ec.setZipCode(legalAddress.getZip());
             ec.setWorkStatus(WorkStatus.TO_SEND_INFOCAMERE);
             ecConnector.save(ec);
-            AutoApprovalOnboardingRequest onboarding = createOnboarding(ec, Origin.INFOCAMERE.name());
+            AutoApprovalOnboarding onboarding = createOnboarding(ec, Origin.INFOCAMERE.name());
             processMigrateEC(ec, onboarding);
         } else {
             ec.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY);
@@ -112,7 +112,7 @@ class MigrationECServiceImpl implements MigrationECService {
         }
     }
 
-    private void processMigrateEC(EC ec, AutoApprovalOnboardingRequest onboarding) {
+    private void processMigrateEC(EC ec, AutoApprovalOnboarding onboarding) {
         try {
             internalApiConnector.autoApprovalOnboarding(ec.getTaxCode(), "prod-pagopa", onboarding);
             ec.setWorkStatus(WorkStatus.DONE);
@@ -134,14 +134,14 @@ class MigrationECServiceImpl implements MigrationECService {
         }
     }
 
-    private AutoApprovalOnboardingRequest createOnboarding(EC ec, String origin) {
+    private AutoApprovalOnboarding createOnboarding(EC ec, String origin) {
         List<User> users = userConnector.findAllByTaxCode(ec.getTaxCode());
         return constructOnboardingDto(ec, origin, users);
     }
 
 
     private void continueMigrateECOnboarding(EC ec) {
-        AutoApprovalOnboardingRequest onboarding = createOnboarding(ec, ec.getWorkStatus() == WorkStatus.TO_SEND_IPA ? Origin.IPA.name() : Origin.INIPEC.name());
+        AutoApprovalOnboarding onboarding = createOnboarding(ec, ec.getWorkStatus() == WorkStatus.TO_SEND_IPA ? Origin.IPA.name() : Origin.INIPEC.name());
         processMigrateEC(ec, onboarding);
     }
 }
