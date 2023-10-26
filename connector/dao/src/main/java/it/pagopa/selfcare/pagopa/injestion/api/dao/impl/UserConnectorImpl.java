@@ -28,7 +28,7 @@ public class UserConnectorImpl implements UserConnector {
     public User save(User user) {
         UserEntity entity = UserMapper.dtoToEntity(user);
         UserEntity savedEntity = repository.save(entity);
-        log.info("Salvato User con id: {}", savedEntity.getId());
+        log.info("Salvato User con correlationId: {}", it.pagopa.selfcare.pagopa.injestion.utils.MaskData.maskData(savedEntity.getCorrelationId()));
         return UserMapper.entityToDto(savedEntity);
     }
 

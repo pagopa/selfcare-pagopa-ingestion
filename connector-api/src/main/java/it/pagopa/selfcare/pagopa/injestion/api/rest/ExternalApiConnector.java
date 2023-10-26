@@ -7,5 +7,5 @@ public interface ExternalApiConnector {
 
     void createDelegation(Delegation delegation);
 
-    void autoApprovalOnboarding(String externalInstitutionId, String productId, AutoApprovalOnboarding request);
+    void autoApprovalOnboarding(String injectionInstitutionType, AutoApprovalOnboarding request);
 }

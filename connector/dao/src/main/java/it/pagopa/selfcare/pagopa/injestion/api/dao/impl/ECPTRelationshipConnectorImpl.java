@@ -4,14 +4,13 @@ import it.pagopa.selfcare.pagopa.injestion.api.dao.mapper.ECPTRelationshipMapper
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.ECPTRelationshipEntity;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.repo.ECPTRelationshipRepository;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.ECPTRelationshipConnector;
-import it.pagopa.selfcare.pagopa.injestion.exception.ResourceNotFoundException;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.ECPTRelationship;
+import it.pagopa.selfcare.pagopa.injestion.utils.MaskData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -39,7 +38,7 @@ public class ECPTRelationshipConnectorImpl implements ECPTRelationshipConnector 
     public ECPTRelationship save(ECPTRelationship ecptRelationship) {
         final ECPTRelationshipEntity entity = ECPTRelationshipMapper.dtoToEntity(ecptRelationship);
         ECPTRelationshipEntity savedEntity = repository.save(entity);
-        log.info("Salvato ECIntermediarioPT con id: {}", savedEntity.getId());
+        log.info("Salvato ECIntermediarioPT con correlationId: {}", MaskData.maskData(savedEntity.getCorrelationId()));
         return ECPTRelationshipMapper.entityToDto(savedEntity);
     }
 }

@@ -24,10 +24,6 @@
             <groupId>it.pagopa.selfcare</groupId>
             <artifactId>selc-pagopa-injestion-connector-dao</artifactId>
         </dependency>
-        <dependency>
-            <groupId>it.pagopa.selfcare</groupId>
-            <artifactId>selc-pagopa-injestion-connector-azure-storage</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

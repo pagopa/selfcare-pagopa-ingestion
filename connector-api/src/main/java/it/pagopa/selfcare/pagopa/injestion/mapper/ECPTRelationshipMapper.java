@@ -13,6 +13,7 @@ public class ECPTRelationshipMapper {
         ECPTRelationship ecIntermediaroPT = null;
         if(ecptRelationshipModel != null){
             ecIntermediaroPT = new ECPTRelationship();
+            ecIntermediaroPT.setCorrelationId(ecptRelationshipModel.getEnteIndirettoCF() + "#" + ecptRelationshipModel.getIntermediarioPTCF());
             ecIntermediaroPT.setEnteIndirettoRagioneSociale(ecptRelationshipModel.getEnteIndirettoRagioneSociale());
             ecIntermediaroPT.setIntermediarioPTCF(ecptRelationshipModel.getIntermediarioPTCF());
             ecIntermediaroPT.setEnteIndirettoCF(ecptRelationshipModel.getEnteIndirettoCF());

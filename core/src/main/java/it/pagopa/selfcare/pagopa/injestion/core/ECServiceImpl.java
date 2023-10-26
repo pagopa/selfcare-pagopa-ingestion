@@ -1,16 +1,13 @@
 package it.pagopa.selfcare.pagopa.injestion.core;
 
-import it.pagopa.selfcare.commons.base.utils.Origin;
-import it.pagopa.selfcare.pagopa.injestion.api.dao.utils.MaskData;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.ECConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.UserConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.ExternalApiConnector;
-import it.pagopa.selfcare.pagopa.injestion.api.rest.InternalApiConnector;
-import it.pagopa.selfcare.pagopa.injestion.api.rest.PartyRegistryProxyConnector;
 import it.pagopa.selfcare.pagopa.injestion.constant.WorkStatus;
 import it.pagopa.selfcare.pagopa.injestion.mapper.ECMapper;
 import it.pagopa.selfcare.pagopa.injestion.model.csv.ECModel;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.*;
+import it.pagopa.selfcare.pagopa.injestion.utils.MaskData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static it.pagopa.selfcare.commons.base.utils.ProductId.PROD_PAGOPA;
 import static it.pagopa.selfcare.pagopa.injestion.core.util.MigrationUtil.*;
 
 @Service
@@ -30,7 +26,6 @@ class ECServiceImpl implements ECService {
     private final MigrationService migrationService;
     private final ECConnector ecConnector;
     private final UserConnector userConnector;
-    private final PartyRegistryProxyConnector partyRegistryProxyConnector;
     private final ExternalApiConnector externalApiConnector;
     private final String csvPath;
     private final int pageSize;
@@ -39,14 +34,12 @@ class ECServiceImpl implements ECService {
             MigrationService migrationService,
             ECConnector ecConnector,
             UserConnector userConnector,
-            PartyRegistryProxyConnector partyRegistryProxyConnector,
             ExternalApiConnector externalApiConnector,
             @Value("${app.pageSize}") int pageSize,
-            @Value("${app.local.pt}") String csvPath) {
+            @Value("${app.local.ec}") String csvPath) {
         this.migrationService = migrationService;
         this.ecConnector = ecConnector;
         this.userConnector = userConnector;
-        this.partyRegistryProxyConnector = partyRegistryProxyConnector;
         this.externalApiConnector = externalApiConnector;
         this.pageSize = pageSize;
         this.csvPath = csvPath;
@@ -75,14 +68,6 @@ class ECServiceImpl implements ECService {
     }
 
     private void onboardEc(EC ec) {
-        if (WorkStatus.NOT_WORKED == ec.getWorkStatus()) {
-            InstitutionProxyInfo institutionProxyInfo = partyRegistryProxyConnector.getInstitutionById(ec.getTaxCode());
-            if (institutionProxyInfo != null) {
-                persistEcDataFromIpa(ec, institutionProxyInfo);
-            } else {
-                retrieveAndPersistDataFromInfocamere(ec);
-            }
-        }
         List<User> users = userConnector.findAllByInstitutionTaxCode(ec.getTaxCode());
         AutoApprovalOnboarding onboarding = constructOnboardingDto(ec, users);
         processMigrateEC(ec, onboarding, users);
@@ -91,10 +76,15 @@ class ECServiceImpl implements ECService {
     private void processMigrateEC(EC ec, AutoApprovalOnboarding onboarding, List<User> users) {
         List<User> userToSave = new ArrayList<>();
         try {
-            externalApiConnector.autoApprovalOnboarding(ec.getTaxCode(), PROD_PAGOPA.getValue(), onboarding);
+            externalApiConnector.autoApprovalOnboarding("EC", onboarding);
             ec.setWorkStatus(WorkStatus.DONE);
             users.forEach(user -> user.setWorkStatus(WorkStatus.DONE));
         } catch (Exception e) {
+            if (e.getMessage().equalsIgnoreCase(WorkStatus.NOT_FOUND_IN_REGISTRY.getValue())){
+                log.error("Error while migrating EC: TaxCode {} not found in registry", MaskData.maskData(ec.getTaxCode()), e);
+                ec.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY);
+                userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY)).collect(Collectors.toList()));
+            }
             log.error("Error while migrating EC for tax code: " + MaskData.maskData(ec.getTaxCode()), e);
             ec.setWorkStatus(WorkStatus.ERROR);
             userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.ERROR)).collect(Collectors.toList()));
@@ -102,27 +92,5 @@ class ECServiceImpl implements ECService {
             ecConnector.save(ec);
             userConnector.saveAll(userToSave);
         }
-    }
-
-    private void persistEcDataFromIpa(EC ec, InstitutionProxyInfo institution) {
-        ec.setRegisteredOffice(institution.getAddress());
-        ec.setDigitalAddress(institution.getDigitalAddress());
-        ec.setZipCode(institution.getZipCode());
-        ec.setOrigin(Origin.IPA);
-        ec.setWorkStatus(WorkStatus.TO_SEND);
-        ecConnector.save(ec);
-    }
-
-    private void retrieveAndPersistDataFromInfocamere(EC ec) {
-        LegalAddress legalAddress = partyRegistryProxyConnector.getLegalAddress(ec.getTaxCode());
-        if (legalAddress != null) {
-            ec.setRegisteredOffice(legalAddress.getAddress());
-            ec.setZipCode(legalAddress.getZip());
-            ec.setOrigin(Origin.INFOCAMERE);
-            ec.setWorkStatus(WorkStatus.TO_SEND);
-        } else {
-            ec.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY);
-        }
-        ecConnector.save(ec);
     }
 }

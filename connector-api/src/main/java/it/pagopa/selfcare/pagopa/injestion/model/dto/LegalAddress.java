@@ -9,9 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class LegalAddress {
 
-    private String description;
-    private String municipality;
-    private String province;
     private String address;
-    private String zip;
+    private String zipCode;
 }

@@ -12,6 +12,7 @@ public class PTMapper {
         PT pt = null;
         if (ptModel!= null) {
             pt = new PT();
+            pt.setId(ptModel.getTaxCode());
             pt.setRegisteredOffice(ptModel.getRegisteredOffice());
             pt.setVatNumber(ptModel.getVatNumber());
             pt.setBusinessName(ptModel.getBusinessName());

@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SelfCarePagoPaInjestion {
+public class SelfCarePagoPaInjection{
 
     public static void main(String[] args) {
-        SpringApplication.run(SelfCarePagoPaInjestion.class, args);
+        SpringApplication.run(SelfCarePagoPaInjection.class, args);
     }
 
 }

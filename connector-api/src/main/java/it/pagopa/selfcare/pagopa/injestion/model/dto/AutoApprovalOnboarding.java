@@ -1,7 +1,5 @@
 package it.pagopa.selfcare.pagopa.injestion.model.dto;
 
-import it.pagopa.selfcare.commons.base.utils.InstitutionType;
-import it.pagopa.selfcare.commons.base.utils.Origin;
 import lombok.Data;
 
 import java.util.List;
@@ -10,8 +8,9 @@ import java.util.List;
 public class AutoApprovalOnboarding {
 
     private List<UserToOnboard> users;
-    private BillingData billingData;
-    private InstitutionType institutionType;
-    private Origin origin;
-
+    private String productId;
+    private String businessName;
+    private String taxCode;
+    private String vatNumber;
+    private String recipientCode;
 }

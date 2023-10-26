@@ -3,10 +3,10 @@ package it.pagopa.selfcare.pagopa.injestion.api.dao.mapper;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.ECEntity;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.EC;
 import it.pagopa.selfcare.pagopa.injestion.constant.WorkStatus;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+@RequiredArgsConstructor(access = AccessLevel.NONE)
 public class ECMapper {
 
     public static EC entityToDto(ECEntity entity) {

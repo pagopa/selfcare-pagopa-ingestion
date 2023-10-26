@@ -12,6 +12,7 @@ public class ECMapper {
         EC ec = null;
         if(ecModel!= null){
             ec = new EC();
+            ec.setId(ecModel.getTaxCode());
             ec.setRegisteredOffice(ecModel.getRegisteredOffice());
             ec.setVatNumber(ecModel.getVatNumber());
             ec.setZipCode(ecModel.getZipCode());

@@ -3,10 +3,10 @@ package it.pagopa.selfcare.pagopa.injestion.api.dao.mapper;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.ECPTRelationshipEntity;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.ECPTRelationship;
 import it.pagopa.selfcare.pagopa.injestion.constant.WorkStatus;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+@RequiredArgsConstructor(access = AccessLevel.NONE)
 public class ECPTRelationshipMapper {
 
     public static ECPTRelationship entityToDto(ECPTRelationshipEntity entity) {
@@ -15,7 +15,7 @@ public class ECPTRelationshipMapper {
         }
 
         ECPTRelationship ecptRelationship = new ECPTRelationship();
-        ecptRelationship.setId(entity.getId());
+        ecptRelationship.setCorrelationId(entity.getCorrelationId());
         ecptRelationship.setIntermediarioPTCF(entity.getIntermediarioPTCF());
         ecptRelationship.setIntermediarioPTRagioneSociale(entity.getIntermediarioPTRagioneSociale());
         ecptRelationship.setEnteIndirettoCF(entity.getEnteIndirettoCF());
@@ -31,7 +31,7 @@ public class ECPTRelationshipMapper {
         }
 
         ECPTRelationshipEntity entity = new ECPTRelationshipEntity();
-        entity.setId(ecptRelationship.getId());
+        entity.setCorrelationId(ecptRelationship.getCorrelationId());
         entity.setEnteIndirettoCF(ecptRelationship.getEnteIndirettoCF());
         entity.setIntermediarioPTCF(ecptRelationship.getIntermediarioPTCF());
         entity.setIntermediarioPTRagioneSociale(ecptRelationship.getIntermediarioPTRagioneSociale());

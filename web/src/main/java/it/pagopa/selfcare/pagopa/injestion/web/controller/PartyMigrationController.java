@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/injestion", produces = MediaType.APPLICATION_JSON_VALUE)
-@Api(tags = "injestion")
+@RequestMapping(value = "/injection", produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(tags = "injection")
 public class PartyMigrationController {
 
     private final ECService ecService;
     private final PTService ptService;
     private final DelegationService delegationService;
     private final UserService userService;
-    private static final String COMPLETE = "Elaborazione completata con successo";
+    private static final String COMPLETE = "Elaborazione completata";
 
     public PartyMigrationController(
             ECService ecService,
@@ -37,7 +37,7 @@ public class PartyMigrationController {
 
     @PostMapping("/persist")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "", notes = "${swagger.injestion.api.persistFromCsv}")
+    @ApiOperation(value = "", notes = "${swagger.injection.api.persistFromCsv}")
     public ResponseEntity<String> persistFromCsv() {
         ecService.persistEC();
         ptService.persistPT();
@@ -48,23 +48,23 @@ public class PartyMigrationController {
 
     @PostMapping("/ec")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "", notes = "${swagger.injestion.api.ec}")
-    public ResponseEntity<String> migrationEC(@RequestParam("status") String status) {
+    @ApiOperation(value = "", notes = "${swagger.injection.api.ec}")
+    public ResponseEntity<String> onboardingEc(@RequestParam("status") String status) {
         ecService.migrateEC(status);
         return ResponseEntity.ok().body(COMPLETE);
     }
 
     @PostMapping("/pt")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "", notes = "${swagger.injestion.api.pt}")
-    public ResponseEntity<String> migrationPT(@RequestParam("status") String status) {
+    @ApiOperation(value = "", notes = "${swagger.injection.api.pt}")
+    public ResponseEntity<String> onboardingPt(@RequestParam("status") String status) {
         ptService.migratePT(status);
         return ResponseEntity.ok().body(COMPLETE);
     }
 
     @PostMapping("/delegation")
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "", notes = "${swagger.injestion.api.delegation}")
+    @ApiOperation(value = "", notes = "${swagger.injection.api.delegation}")
     public ResponseEntity<String> createDelegation() {
         delegationService.migrateECPTRelationship();
         return ResponseEntity.ok().body(COMPLETE);

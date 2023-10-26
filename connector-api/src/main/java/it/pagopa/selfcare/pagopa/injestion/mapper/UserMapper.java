@@ -14,6 +14,7 @@ public class UserMapper {
         User user = null;
         if(userModel != null){
             user = new User();
+            user.setCorrelationId(userModel.getTaxCode() + "#" + userModel.getInstitutionTaxCode());
             user.setTaxCode(userModel.getTaxCode());
             user.setInstitutionTaxCode(userModel.getInstitutionTaxCode());
             user.setName(userModel.getName());

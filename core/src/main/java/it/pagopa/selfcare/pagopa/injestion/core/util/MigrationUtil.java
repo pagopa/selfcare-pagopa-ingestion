@@ -1,13 +1,10 @@
 package it.pagopa.selfcare.pagopa.injestion.core.util;
 
 import it.pagopa.selfcare.commons.base.security.PartyRole;
-import it.pagopa.selfcare.commons.base.utils.InstitutionType;
-import it.pagopa.selfcare.commons.base.utils.Origin;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,44 +15,16 @@ import static it.pagopa.selfcare.commons.base.utils.ProductId.PROD_PAGOPA;
 @RequiredArgsConstructor(access = AccessLevel.NONE)
 public class MigrationUtil {
 
-    private static BillingData fillBillingDataFromInstitutionAndEC(EC ec) {
-        BillingData billingData = new BillingData();
-        billingData.setBusinessName(ec.getBusinessName());
-
-        if(Origin.INFOCAMERE != ec.getOrigin()){
-            billingData.setDigitalAddress(ec.getDigitalAddress());
-        }
-
-        billingData.setRecipientCode(ec.getRecipientCode());
-        billingData.setRegisteredOffice(ec.getRegisteredOffice());
-        billingData.setTaxCode(ec.getTaxCode());
-        billingData.setZipCode(ec.getZipCode());
-        billingData.setVatNumber(ec.getVatNumber());
-        return billingData;
-    }
-
-    private static BillingData fillBillingDataFromInstitutionAndEC(PT pt) {
-        BillingData billingData = new BillingData();
-        billingData.setBusinessName(pt.getBusinessName());
-
-        if(Origin.INFOCAMERE != pt.getOrigin()){
-            billingData.setDigitalAddress(pt.getDigitalAddress());
-        }
-
-        billingData.setRecipientCode(pt.getRecipientCode());
-        billingData.setRegisteredOffice(pt.getRegisteredOffice());
-        billingData.setTaxCode(pt.getTaxCode());
-        billingData.setZipCode(pt.getZipCode());
-        billingData.setVatNumber(pt.getVatNumber());
-        return billingData;
-    }
 
     public static AutoApprovalOnboarding constructOnboardingDto(EC ec, List<User> users) {
         AutoApprovalOnboarding onboarding = new AutoApprovalOnboarding();
+        onboarding.setTaxCode(ec.getTaxCode());
+        onboarding.setVatNumber(ec.getVatNumber());
+        onboarding.setRecipientCode(ec.getRecipientCode());
+        onboarding.setBusinessName(ec.getBusinessName());
+        onboarding.setProductId(PROD_PAGOPA.getValue());
+
         List<UserToOnboard> userToOnboards = new ArrayList<>();
-        onboarding.setBillingData(fillBillingDataFromInstitutionAndEC(ec));
-        onboarding.setInstitutionType(InstitutionType.PA);
-        onboarding.setOrigin(ec.getOrigin());
         if(!CollectionUtils.isEmpty(users)) {
             userToOnboards = users.stream()
                     .map(user -> {
@@ -68,18 +37,20 @@ public class MigrationUtil {
                         return userToSend;
                     }).collect(Collectors.toList());
         }
-
         onboarding.setUsers(userToOnboards);
+
         return onboarding;
     }
 
     public static AutoApprovalOnboarding constructOnboardingDto(PT pt, List<User> users) {
         AutoApprovalOnboarding onboarding = new AutoApprovalOnboarding();
-        List<UserToOnboard> userToOnboards = new ArrayList<>();
+        onboarding.setTaxCode(pt.getTaxCode());
+        onboarding.setVatNumber(pt.getVatNumber());
+        onboarding.setRecipientCode(pt.getRecipientCode());
+        onboarding.setBusinessName(pt.getBusinessName());
+        onboarding.setProductId(PROD_PAGOPA.getValue());
 
-        onboarding.setBillingData(fillBillingDataFromInstitutionAndEC(pt));
-        onboarding.setInstitutionType(InstitutionType.PA);
-        onboarding.setOrigin(pt.getOrigin());
+        List<UserToOnboard> userToOnboards = new ArrayList<>();
         if(!CollectionUtils.isEmpty(users)) {
             userToOnboards = users.stream()
                     .map(user -> {
@@ -92,8 +63,8 @@ public class MigrationUtil {
                         return userToSend;
                     }).collect(Collectors.toList());
         }
-
         onboarding.setUsers(userToOnboards);
+
         return onboarding;
     }
 

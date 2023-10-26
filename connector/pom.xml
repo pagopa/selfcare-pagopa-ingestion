@@ -12,7 +12,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>azure-storage</module>
         <module>rest</module>
         <module>dao</module>
     </modules>

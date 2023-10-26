@@ -4,7 +4,10 @@ import it.pagopa.selfcare.pagopa.injestion.api.dao.model.UserEntity;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.Role;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.User;
 import it.pagopa.selfcare.pagopa.injestion.constant.WorkStatus;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor(access = AccessLevel.NONE)
 public class UserMapper {
 
     public static User entityToDto(UserEntity entity) {
@@ -14,7 +17,7 @@ public class UserMapper {
 
         User user = new User();
         user.setEmail(entity.getEmail());
-        user.setId(entity.getId());
+        user.setCorrelationId(entity.getCorrelationId());
         user.setName(entity.getName());
         user.setTaxCode(entity.getTaxCode());
         if(entity.getRole() != null) {
@@ -34,7 +37,7 @@ public class UserMapper {
         }
 
         UserEntity entity = new UserEntity();
-        entity.setId(user.getId());
+        entity.setCorrelationId(user.getCorrelationId());
         entity.setTaxCode(user.getTaxCode());
         entity.setEmail(user.getEmail());
         entity.setName(user.getName());

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class User {
 
-    private String id;
+    private String correlationId;
     private String name;
     private String surname;
     private String taxCode;

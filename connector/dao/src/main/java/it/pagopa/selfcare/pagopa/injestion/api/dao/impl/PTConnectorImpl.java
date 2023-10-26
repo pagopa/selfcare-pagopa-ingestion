@@ -4,8 +4,8 @@ import it.pagopa.selfcare.pagopa.injestion.api.dao.mapper.PTMapper;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.model.PTEntity;
 import it.pagopa.selfcare.pagopa.injestion.api.dao.repo.PTRepository;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.PTConnector;
-import it.pagopa.selfcare.pagopa.injestion.exception.ResourceNotFoundException;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.PT;
+import it.pagopa.selfcare.pagopa.injestion.utils.MaskData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
@@ -38,7 +38,7 @@ public class PTConnectorImpl implements PTConnector {
     public PT save(PT pt) {
         PTEntity entity = PTMapper.dtoToEntity(pt);
         PTEntity savedEntity = repository.save(entity);
-        log.info("Salvato PT con id: {}", savedEntity.getId());
+        log.info("Salvato PT con taxCode: {}", MaskData.maskData(savedEntity.getTaxCode()));
         return PTMapper.entityToDto(savedEntity);
     }
 }

@@ -1,8 +1,6 @@
 package it.pagopa.selfcare.pagopa.injestion.web.config;
 
 import com.fasterxml.classmate.TypeResolver;
-import it.pagopa.selfcare.commons.web.swagger.EmailAnnotationSwaggerPluginConfig;
-import it.pagopa.selfcare.commons.web.swagger.ServerSwaggerConfig;
 import it.pagopa.selfcare.pagopa.injestion.model.error.Problem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,11 +17,9 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseBuilder;
 import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.time.LocalTime;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -32,7 +28,6 @@ import java.util.List;
 @Configuration
 public class SwaggerConfig {
 
-    private static final String AUTH_SCHEMA_NAME = "bearerAuth";
 
     private static final Response BAD_REQUEST_RESPONSE = new ResponseBuilder()
             .code(String.valueOf(HttpStatus.BAD_REQUEST.value()))

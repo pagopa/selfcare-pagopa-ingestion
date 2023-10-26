@@ -15,13 +15,11 @@ public interface ExternalApiRestClient {
 
     @PostMapping(value = "${rest-client.external-api.createDelegation.path}", consumes = APPLICATION_JSON_VALUE)
     @ResponseBody
-    void createDelegation(@RequestBody @Valid DelegationRequest request, @RequestHeader(name="Ocp-Apim-Subscription-Key")  String subscriptionKey);
+    void createDelegation(@RequestBody @Valid DelegationRequest request);
 
-    @PostMapping(value = "${rest-client.internal-api.autoApprovalOnboarding.path}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "${rest-client.external-api.autoApprovalOnboarding.path}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    void autoApprovalOnboarding(@PathVariable("externalInstitutionId") String externalInstitutionId,
-                                @PathVariable("productId") String productId,
-                                @RequestBody AutoApprovalOnboardingRequest request,
-                                @RequestHeader(name="Ocp-Apim-Subscription-Key")  String subscriptionKey);
+    void autoApprovalOnboarding(@PathVariable("injectionInstitutionType") String injectionInstitutionType,
+                                @RequestBody AutoApprovalOnboardingRequest request);
 
 }

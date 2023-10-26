@@ -2,9 +2,11 @@ package it.pagopa.selfcare.pagopa.injestion.constant;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Getter;
 
 import java.util.Arrays;
 
+@Getter
 public enum WorkStatus {
     NOT_WORKED("NOT_WORKED"),
     TO_SEND("TO_SEND"),
