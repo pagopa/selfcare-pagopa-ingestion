@@ -23,6 +23,7 @@ public class ECEntity {
     private String vatNumber;
     private String recipientCode;
     private String workStatus;
+    private int onboardingHttpStatus;
     private Origin origin;
     private String originId;
 

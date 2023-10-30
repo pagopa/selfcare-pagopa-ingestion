@@ -1,5 +1,6 @@
 package it.pagopa.selfcare.pagopa.injestion.core;
 
+import feign.FeignException;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.ECPTRelationshipConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.ExternalApiConnector;
 import it.pagopa.selfcare.pagopa.injestion.constant.WorkStatus;
@@ -65,8 +66,9 @@ class DelegationServiceImpl implements DelegationService {
         try {
             externalApiConnector.createDelegation(delegation);
             ecptRelationship.setWorkStatus(WorkStatus.DONE);
-        }catch (Exception e){
+        }catch (FeignException e){
             ecptRelationship.setWorkStatus(WorkStatus.ERROR);
+            ecptRelationship.setCreateHttpStatus(e.status());
         }
         ecptRelationshipConnector.save(ecptRelationship);
     }

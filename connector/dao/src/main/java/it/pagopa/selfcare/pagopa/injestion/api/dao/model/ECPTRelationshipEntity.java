@@ -21,5 +21,6 @@ public class ECPTRelationshipEntity {
     private String intermediarioPTRagioneSociale;
     private String intermediarioPTCF;
     private String workStatus;
+    private int createHttpStatus;
 
 }

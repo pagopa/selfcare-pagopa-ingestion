@@ -21,5 +21,6 @@ public class EC {
     private String recipientCode;
     private Origin origin;
     private WorkStatus workStatus;
+    private int onboardinHttpStatus;
 
 }

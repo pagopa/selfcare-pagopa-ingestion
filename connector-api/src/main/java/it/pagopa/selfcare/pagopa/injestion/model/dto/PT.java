@@ -20,6 +20,7 @@ public class PT {
     private String vatNumber;
     private String recipientCode;
     private Origin origin;
+    private int onboardinHttpStatus;
     private WorkStatus workStatus;
 
 }

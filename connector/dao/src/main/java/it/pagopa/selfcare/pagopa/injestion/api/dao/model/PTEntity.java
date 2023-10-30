@@ -25,6 +25,7 @@ public class PTEntity {
     private String vatNumber;
     private Origin origin;
     private String originId;
+    private int onboardinHttpStatus;
     private String workStatus;
 
 }

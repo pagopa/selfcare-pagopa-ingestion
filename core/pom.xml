@@ -24,6 +24,10 @@
             <groupId>it.pagopa.selfcare</groupId>
             <artifactId>selc-pagopa-injestion-connector-dao</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-core</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

@@ -1,5 +1,6 @@
 package it.pagopa.selfcare.pagopa.injestion.core;
 
+import feign.FeignException;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.ECConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.UserConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.ExternalApiConnector;
@@ -79,7 +80,7 @@ class ECServiceImpl implements ECService {
             externalApiConnector.autoApprovalOnboarding("EC", onboarding);
             ec.setWorkStatus(WorkStatus.DONE);
             users.forEach(user -> user.setWorkStatus(WorkStatus.DONE));
-        } catch (Exception e) {
+        } catch (FeignException e) {
             if (e.getMessage().equalsIgnoreCase(WorkStatus.NOT_FOUND_IN_REGISTRY.getValue())){
                 log.error("Error while migrating EC: TaxCode {} not found in registry", MaskData.maskData(ec.getTaxCode()), e);
                 ec.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY);
@@ -87,6 +88,7 @@ class ECServiceImpl implements ECService {
             }
             log.error("Error while migrating EC for tax code: " + MaskData.maskData(ec.getTaxCode()), e);
             ec.setWorkStatus(WorkStatus.ERROR);
+            ec.setOnboardinHttpStatus(e.status());
             userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.ERROR)).collect(Collectors.toList()));
         } finally {
             ecConnector.save(ec);
