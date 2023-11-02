@@ -1,8 +1,4 @@
-BusinessName;TaxCode;RegisteredOffice;ZipCode;digitalAddress;vatNumber;recipientCode
-2 Circolo Didattico San Giovanni Bosco;80012320729;;;;80012320729;istsc_baee15800a
-3 Istituto Comprensivo Nocera Inferiore;94076720658;;;;94076720658;isticom
-A.F.Formiggini Lliceo Scientifico e Classico;93038940362;;;;93038940362;affs
-ente no Ipa 3;PPPPLT80A01H501V;;;;PPPPLT80A01H501V;rc3
-ente no Ipa 4;05722930657;;;;05722930657;rc4
-ente not found 1;46173700413;;;;46173700413;rc3
-ente not found 2;16792250793;;;;16792250793;rc4
+BusinessName,TaxCode,RegisteredOffice,ZipCode,digitalAddress,vatNumber,recipientCode
+2 Circolo Didattico ''San Giovanni Bosco'',80012320729,,,,80012320729,istsc_baee15800a
+ente no Ipa 3,PPPPLT80A01H501V,,,,PPPPLT80A01H501V,rc3
+ente not found 1,46173700413,,,,46173700413,rc3

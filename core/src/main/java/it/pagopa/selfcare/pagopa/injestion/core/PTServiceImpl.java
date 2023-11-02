@@ -82,17 +82,18 @@ class PTServiceImpl implements PTService {
         try {
             externalApiConnector.autoApprovalOnboarding("PT", onboarding);
             pt.setWorkStatus(WorkStatus.DONE);
-            users.forEach(user -> user.setWorkStatus(WorkStatus.DONE));
+            userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.DONE)).collect(Collectors.toList()));
         } catch (FeignException e) {
-            if (e.getMessage().equalsIgnoreCase(WorkStatus.NOT_FOUND_IN_REGISTRY.getValue())){
+            if (e.status() == 404){
                 log.error("Error while migrating PT: TaxCode {} not found in registry", MaskData.maskData(pt.getTaxCode()), e);
                 pt.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY);
                 userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY)).collect(Collectors.toList()));
+            } else {
+                log.error("Error while migrating PT for tax code: " + MaskData.maskData(pt.getTaxCode()), e);
+                pt.setWorkStatus(WorkStatus.ERROR);
+                pt.setOnboardinHttpStatus(e.status());
+                userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.ERROR)).collect(Collectors.toList()));
             }
-            log.error("Error while migrating PT for tax code: " + MaskData.maskData(pt.getTaxCode()), e);
-            pt.setWorkStatus(WorkStatus.ERROR);
-            pt.setOnboardinHttpStatus(e.status());
-            userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.ERROR)).collect(Collectors.toList()));
         } finally {
             ptConnector.save(pt);
             userConnector.saveAll(userToSave);

@@ -25,6 +25,7 @@ public class ECMapper {
         ec.setOrigin(entity.getOrigin());
         ec.setRegisteredOffice(entity.getRegisteredOffice());
         ec.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
+        ec.setOnboardingHttpStatus(ec.getOnboardingHttpStatus());
 
         return ec;
     }
@@ -45,7 +46,7 @@ public class ECMapper {
         entity.setOrigin(ec.getOrigin());
         entity.setRegisteredOffice(ec.getRegisteredOffice());
         entity.setWorkStatus(ec.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : ec.getWorkStatus().name());
-
+        entity.setOnboardingHttpStatus(ec.getOnboardingHttpStatus());
         return entity;
     }
 }

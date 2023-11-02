@@ -65,7 +65,7 @@ class ECServiceImpl implements ECService {
             }
         } while (Boolean.TRUE.equals(hasNext));
 
-        log.info("Completed migration of PT");
+        log.info("Completed migration of EC");
     }
 
     private void onboardEc(EC ec) {
@@ -79,17 +79,18 @@ class ECServiceImpl implements ECService {
         try {
             externalApiConnector.autoApprovalOnboarding("EC", onboarding);
             ec.setWorkStatus(WorkStatus.DONE);
-            users.forEach(user -> user.setWorkStatus(WorkStatus.DONE));
+            userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.DONE)).collect(Collectors.toList()));
         } catch (FeignException e) {
-            if (e.getMessage().equalsIgnoreCase(WorkStatus.NOT_FOUND_IN_REGISTRY.getValue())){
+            if (e.status() == 404){
                 log.error("Error while migrating EC: TaxCode {} not found in registry", MaskData.maskData(ec.getTaxCode()), e);
                 ec.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY);
                 userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY)).collect(Collectors.toList()));
+            } else {
+                log.error("Error while migrating EC for tax code: " + MaskData.maskData(ec.getTaxCode()), e);
+                ec.setWorkStatus(WorkStatus.ERROR);
+                ec.setOnboardingHttpStatus(e.status());
+                userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.ERROR)).collect(Collectors.toList()));
             }
-            log.error("Error while migrating EC for tax code: " + MaskData.maskData(ec.getTaxCode()), e);
-            ec.setWorkStatus(WorkStatus.ERROR);
-            ec.setOnboardinHttpStatus(e.status());
-            userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.ERROR)).collect(Collectors.toList()));
         } finally {
             ecConnector.save(ec);
             userConnector.saveAll(userToSave);

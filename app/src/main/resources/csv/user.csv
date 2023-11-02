@@ -1,14 +1,7 @@
-Name;Surname;Email;TaxCode;Status;Institution TaxCode;Role
-Paolo;De Santis;paolo.desantis@istruzione.it;CNCGPP80A01H501J;TRUE;80012320729;RP
-Paolo;De Santis;paolo.desantis@istruzione.it;STRSRR80A01H501S;FALSE;94076720658;RT
-Bruno;Maria Serena;saic8bu00x@istruzione.it;BRNMSR76E69F839D;TRUE;94076720658;RP
-Paolo;De Santis;paolo.desantis@istruzione.it;DSNPLA64L01A252Y;FALSE;93038940362;RT
-Paolo;De Santis;paolo.desantis@istruzione.it;STRCRT80A01H501E;FALSE;93038940362;RP
-Paolo;De Santis;paolo.desantis@istruzione.it;CIACIA80A01H501X;TRUE;PPPPLT80A01H501V;RT
-Paolo;De Santis;paolo.desantis@istruzione.it;SRFBRD80A01E256Z;FALSE;PPPPLT80A01H501V;RP
-Paolo;De Santis;paolo.desantis@istruzione.it;DNIDNI80A01H501G;FALSE;05722930657;RT
-Paolo;De Santis;paolo.desantis@istruzione.it;NNVFNC80A01H501G;FALSE;05722930657;RP
-Paolo;De Santis;paolo.desantis@istruzione.it;VRDGPP80A01H501U;FALSE;46173700413;RT
-Paolo;De Santis;paolo.desantis@istruzione.it;MNTGNE96A01C352S;FALSE;46173700413;RP
-Paolo;De Santis;paolo.desantis@istruzione.it;CCRMCT06A03A433H;FALSE;16792250793;RT
-Paolo;De Santis;paolo.desantis@istruzione.it;NGRGPP88A01C352B;FALSE;16792250793;RP
+Name,Surname,Email,TaxCode,Status,Institution TaxCode,Role
+Luca,Argentero,luca.argentero@istruzione.it,RGNLCU80A01F839I,TRUE,80012320729,RP
+Luca,Argentero,luca.argentero@istruzione.it,RGNLCU80A01F839I,FALSE,PPPPLT80A01H501V,RP
+Antonio,Tatti,antonio.tatti@istruzione.it,TTTNTN80A01F839Z,FALSE,46173700413,RT
+Paolo,Ponzi,paolo.ponzi@istruzione.it,PNZPLA80A01F205X,FALSE,46173700413,RP
+Antonio,Tatti,antonio.tatti@istruzione.it,TTTNTN80A01F839Z,FALSE,01501320442,RP
+Luca,Argentero,luca.argentero@istruzione.it,RGNLCU80A01F839I,FALSE,01113570442,RP

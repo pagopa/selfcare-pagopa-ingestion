@@ -27,7 +27,7 @@ public class PTMapper {
         pt.setOrigin(entity.getOrigin());
         pt.setRegisteredOffice(entity.getRegisteredOffice());
         pt.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
-
+        pt.setOnboardinHttpStatus(entity.getOnboardinHttpStatus());
         return pt;
     }
 
@@ -46,7 +46,7 @@ public class PTMapper {
         entity.setOrigin(pt.getOrigin());
         entity.setRegisteredOffice(pt.getRegisteredOffice());
         entity.setWorkStatus(pt.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : pt.getWorkStatus().name());
-
+        entity.setOnboardinHttpStatus(pt.getOnboardinHttpStatus());
         return entity;
     }
 

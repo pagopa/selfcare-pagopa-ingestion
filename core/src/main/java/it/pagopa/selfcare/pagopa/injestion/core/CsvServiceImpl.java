@@ -20,7 +20,7 @@ public class CsvServiceImpl implements CsvService {
         try {
             StringReader stringReader = new StringReader(new String(csvData, StandardCharsets.UTF_8));
             CsvToBeanBuilder<T> csvToBeanBuilder = new CsvToBeanBuilder<>(stringReader);
-            csvToBeanBuilder.withSeparator(';');
+            csvToBeanBuilder.withSeparator(',');
             csvToBeanBuilder.withSkipLines(1);
             csvToBeanBuilder.withType(csvClass);
 
@@ -38,7 +38,7 @@ public class CsvServiceImpl implements CsvService {
 
             StringReader stringReader = new StringReader(new String(fileInputStream.readAllBytes(), StandardCharsets.UTF_8));
             CsvToBeanBuilder<T> csvToBeanBuilder = new CsvToBeanBuilder<>(stringReader);
-            csvToBeanBuilder.withSeparator(';');
+            csvToBeanBuilder.withSeparator(',');
             csvToBeanBuilder.withSkipLines(1);
             csvToBeanBuilder.withType(csvClass);
 
