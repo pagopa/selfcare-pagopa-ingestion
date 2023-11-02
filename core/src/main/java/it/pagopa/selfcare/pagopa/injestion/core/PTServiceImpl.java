@@ -5,6 +5,7 @@ import it.pagopa.selfcare.pagopa.injestion.api.mongo.PTConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.UserConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.ExternalApiConnector;
 import it.pagopa.selfcare.pagopa.injestion.constant.WorkStatus;
+import it.pagopa.selfcare.pagopa.injestion.exception.ResourceNotFoundException;
 import it.pagopa.selfcare.pagopa.injestion.mapper.PTMapper;
 import it.pagopa.selfcare.pagopa.injestion.model.csv.PTModel;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.*;
@@ -72,9 +73,15 @@ class PTServiceImpl implements PTService {
 
 
     private void onboardPt(PT pt) {
-        List<User> users = userConnector.findAllByInstitutionTaxCode(pt.getTaxCode());
-        AutoApprovalOnboarding onboarding = constructOnboardingDto(pt, users);
-        processMigratePT(pt, onboarding, users);
+        try {
+            User user = userConnector.findManagerByInstitutionTaxCodeAndRole(pt.getTaxCode(), Role.RP);
+            AutoApprovalOnboarding onboarding = constructOnboardingDto(pt, List.of(user));
+            processMigratePT(pt, onboarding, List.of(user));
+        } catch (ResourceNotFoundException e){
+            pt.setWorkStatus(WorkStatus.MANAGER_NOT_FOUND);
+            ptConnector.save(pt);
+        }
+
     }
 
     private void processMigratePT(PT pt, AutoApprovalOnboarding onboarding, List<User> users) {

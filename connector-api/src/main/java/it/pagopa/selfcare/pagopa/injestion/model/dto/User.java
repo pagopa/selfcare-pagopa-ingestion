@@ -20,5 +20,6 @@ public class User {
     private String institutionTaxCode;
     private String productRole;
     private WorkStatus workStatus;
+    private Integer onboardingHttpStatus;
 
 }

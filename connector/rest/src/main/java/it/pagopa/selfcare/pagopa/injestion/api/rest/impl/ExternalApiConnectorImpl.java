@@ -6,6 +6,7 @@ import it.pagopa.selfcare.pagopa.injestion.api.rest.model.external.DelegationReq
 import it.pagopa.selfcare.pagopa.injestion.api.rest.model.internal.AutoApprovalOnboardingRequest;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.AutoApprovalOnboarding;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.Delegation;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.OnboardingUserRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,12 @@ public class ExternalApiConnectorImpl implements ExternalApiConnector {
     public void autoApprovalOnboarding(String injectionInstitutionType, AutoApprovalOnboarding request) {
         log.info("autoApprovalOnboarding");
         externalApiRestClient.autoApprovalOnboarding(injectionInstitutionType, createRequestOnboarding(request));
+    }
+
+    @Override
+    public void onboardingUser(OnboardingUserRequest request) {
+        log.info("START - onboardingOperators");
+        externalApiRestClient.onboardingUsers(request);
     }
 
     private AutoApprovalOnboardingRequest createRequestOnboarding(AutoApprovalOnboarding request) {

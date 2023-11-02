@@ -5,6 +5,7 @@ import it.pagopa.selfcare.pagopa.injestion.api.mongo.ECConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.mongo.UserConnector;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.ExternalApiConnector;
 import it.pagopa.selfcare.pagopa.injestion.constant.WorkStatus;
+import it.pagopa.selfcare.pagopa.injestion.exception.ResourceNotFoundException;
 import it.pagopa.selfcare.pagopa.injestion.mapper.ECMapper;
 import it.pagopa.selfcare.pagopa.injestion.model.csv.ECModel;
 import it.pagopa.selfcare.pagopa.injestion.model.dto.*;
@@ -69,9 +70,14 @@ class ECServiceImpl implements ECService {
     }
 
     private void onboardEc(EC ec) {
-        List<User> users = userConnector.findAllByInstitutionTaxCode(ec.getTaxCode());
-        AutoApprovalOnboarding onboarding = constructOnboardingDto(ec, users);
-        processMigrateEC(ec, onboarding, users);
+        try {
+            User user = userConnector.findManagerByInstitutionTaxCodeAndRole(ec.getTaxCode(), Role.RP);
+            AutoApprovalOnboarding onboarding = constructOnboardingDto(ec, List.of(user));
+            processMigrateEC(ec, onboarding, List.of(user));
+        } catch (ResourceNotFoundException e) {
+            ec.setWorkStatus(WorkStatus.MANAGER_NOT_FOUND);
+            ecConnector.save(ec);
+        }
     }
 
     private void processMigrateEC(EC ec, AutoApprovalOnboarding onboarding, List<User> users) {
@@ -81,7 +87,7 @@ class ECServiceImpl implements ECService {
             ec.setWorkStatus(WorkStatus.DONE);
             userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.DONE)).collect(Collectors.toList()));
         } catch (FeignException e) {
-            if (e.status() == 404){
+            if (e.status() == 404) {
                 log.error("Error while migrating EC: TaxCode {} not found in registry", MaskData.maskData(ec.getTaxCode()), e);
                 ec.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY);
                 userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY)).collect(Collectors.toList()));

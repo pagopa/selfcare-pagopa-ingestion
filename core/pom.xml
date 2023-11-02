@@ -2,18 +2,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>selc-pagopa-injestion</artifactId>
+        <artifactId>selc-pagopa-ingestion</artifactId>
         <groupId>it.pagopa.selfcare</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>selc-pagopa-injestion-core</artifactId>
+    <artifactId>selc-pagopa-ingestion-core</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>it.pagopa.selfcare</groupId>
-            <artifactId>selc-pagopa-injestion-connector-api</artifactId>
+            <artifactId>selc-pagopa-ingestion-connector-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.opencsv</groupId>

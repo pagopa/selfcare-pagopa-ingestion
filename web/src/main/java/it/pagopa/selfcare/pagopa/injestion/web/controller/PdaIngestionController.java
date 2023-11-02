@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/injection", produces = MediaType.APPLICATION_JSON_VALUE)
-@Api(tags = "injection")
-public class PartyMigrationController {
+@RequestMapping(value = "/ingestion", produces = MediaType.APPLICATION_JSON_VALUE)
+@Api(tags = "ingestion")
+public class PdaIngestionController {
 
     private final ECService ecService;
     private final PTService ptService;
@@ -24,7 +24,7 @@ public class PartyMigrationController {
     private final UserService userService;
     private static final String COMPLETE = "Elaborazione completata";
 
-    public PartyMigrationController(
+    public PdaIngestionController(
             ECService ecService,
             PTService ptService,
             DelegationService delegationService,
@@ -61,6 +61,14 @@ public class PartyMigrationController {
         ptService.migratePT(status);
         return ResponseEntity.ok().body(COMPLETE);
     }
+    @PostMapping("/user")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "", notes = "${swagger.injection.api.pt}")
+    public ResponseEntity<String> onboardingUsers(@RequestParam("status") String status) {
+        userService.migrateUser(status);
+        return ResponseEntity.ok().body(COMPLETE);
+    }
+
 
     @PostMapping("/delegation")
     @ResponseStatus(HttpStatus.OK)

@@ -10,7 +10,7 @@
         <!-- lookup parent from repository -->
     </parent>
 
-    <artifactId>selc-pagopa-injestion</artifactId>
+    <artifactId>selc-pagopa-ingestion</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>selc-pagopa-injestion</name>
 

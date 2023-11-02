@@ -4,4 +4,5 @@ public interface UserService {
 
     void persistUser();
 
+    void migrateUser(String status);
 }

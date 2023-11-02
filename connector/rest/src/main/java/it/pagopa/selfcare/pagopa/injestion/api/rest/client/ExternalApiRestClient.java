@@ -2,6 +2,7 @@ package it.pagopa.selfcare.pagopa.injestion.api.rest.client;
 
 import it.pagopa.selfcare.pagopa.injestion.api.rest.model.external.DelegationRequest;
 import it.pagopa.selfcare.pagopa.injestion.api.rest.model.internal.AutoApprovalOnboardingRequest;
+import it.pagopa.selfcare.pagopa.injestion.model.dto.OnboardingUserRequest;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -21,5 +22,10 @@ public interface ExternalApiRestClient {
     @ResponseBody
     void autoApprovalOnboarding(@PathVariable("injectionInstitutionType") String injectionInstitutionType,
                                 @RequestBody AutoApprovalOnboardingRequest request);
+
+    @PostMapping(value = "${rest-client.external-api.onboardingOperator.path}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    void onboardingUsers(@RequestBody OnboardingUserRequest request);
+
 
 }

@@ -12,6 +12,7 @@ public enum WorkStatus {
     TO_SEND("TO_SEND"),
     ERROR("ERROR"),
     NOT_FOUND_IN_REGISTRY("NOT_FOUND_IN_REGISTRY"),
+    MANAGER_NOT_FOUND("MANAGER_NOT_FOUND"),
     DONE("DONE");
 
     private final String value;

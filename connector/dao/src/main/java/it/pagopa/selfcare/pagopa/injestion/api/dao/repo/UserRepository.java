@@ -12,9 +12,9 @@ import java.util.List;
 public interface UserRepository extends MongoRepository<UserEntity, String>, MongoCustomConnector {
 
     @Query(value = "{'workStatus': ?0}")
-    List<UserEntity> findAllByStatus(String workStatus, Pageable pageable);
+    List<UserEntity> findAllByStatus(String status, Pageable pageable);
 
-    @Query(value = "{'institutionTaxCode': ?0}")
-    List<UserEntity> findAllByInstitutionTaxCode(String institutionTaxCode);
+    @Query(value = "{'institutionTaxCode': ?0, 'role': ?1}")
+    List<UserEntity> findAllByInstitutionTaxCodeAndRole(String institutionTaxCode, String role);
 
 }
