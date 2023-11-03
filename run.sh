@@ -45,4 +45,4 @@ mwIDAQAB
 #-----END PUBLIC KEY-----"
 
 
-java -jar ./target/selc-pagopa-injestion-1.0-SNAPSHOT-FATJAR.jar
+java -jar ./target/selc-pagopa-ingestion-1.0-SNAPSHOT-FATJAR.jar

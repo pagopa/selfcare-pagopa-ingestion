@@ -1,7 +1,7 @@
-package it.pagopa.selfcare.pagopa.injestion.web.config;
+package it.pagopa.selfcare.pagopa.ingestion.web.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.pagopa.selfcare.pagopa.injestion.core.*;
+import it.pagopa.selfcare.pagopa.ingestion.core.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 })
 @EnableOpenApi
 @EnableWebMvc
-@ComponentScan(basePackages = "it.pagopa.selfcare.pagopa.injestion.web.controller")
+@ComponentScan(basePackages = "it.pagopa.selfcare.pagopa.ingestion.web.controller")
 @TestPropertySource(locations = "classpath:config/application.yml")
 class SwaggerConfigTest {
 

@@ -12,9 +12,9 @@
 
     <artifactId>selc-pagopa-ingestion</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>selc-pagopa-injestion</name>
+    <name>selc-pagopa-ingestion</name>
 
-    <description>Microservice to manage Self Care PagoPa Injestion</description>
+    <description>Microservice to manage Self Care PagoPa Ingestion</description>
 
     <properties>
         <selc-commons.version>2.4.9</selc-commons.version>
@@ -24,27 +24,27 @@
         <dependencies>
             <dependency>
                 <groupId>it.pagopa.selfcare</groupId>
-                <artifactId>selc-pagopa-injestion-connector-rest</artifactId>
+                <artifactId>selc-pagopa-ingestion-connector-rest</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>it.pagopa.selfcare</groupId>
-                <artifactId>selc-pagopa-injestion-connector-dao</artifactId>
+                <artifactId>selc-pagopa-ingestion-connector-dao</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>it.pagopa.selfcare</groupId>
-                <artifactId>selc-pagopa-injestion-connector-api</artifactId>
+                <artifactId>selc-pagopa-ingestion-connector-api</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>it.pagopa.selfcare</groupId>
-                <artifactId>selc-pagopa-injestion-core</artifactId>
+                <artifactId>selc-pagopa-ingestion-core</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>it.pagopa.selfcare</groupId>
-                <artifactId>selc-pagopa-injestion-web</artifactId>
+                <artifactId>selc-pagopa-ingestion-web</artifactId>
                 <version>1.0-SNAPSHOT</version>
             </dependency>
             <dependency>

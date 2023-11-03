@@ -1,4 +1,4 @@
-# selfcare-pagopa-injestion
+# selfcare-pagopa-ingestion
 A web application having the purpose to migrate party data through REST services.
 
 It has been implemented in order to transfer ([portal-name](repo?) data towards [selfcare-ms-core](https://github.com/pagopa/selfcare-ms-core).<br />

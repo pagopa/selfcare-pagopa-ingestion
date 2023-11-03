@@ -33,7 +33,7 @@
         <!--test purpose-->
         <dependency>
             <groupId>it.pagopa.selfcare</groupId>
-            <artifactId>selc-pagopa-injestion-connector-rest</artifactId>
+            <artifactId>selc-pagopa-ingestion-connector-rest</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
