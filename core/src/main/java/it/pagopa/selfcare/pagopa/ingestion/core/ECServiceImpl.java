@@ -3,7 +3,7 @@ package it.pagopa.selfcare.pagopa.ingestion.core;
 import feign.FeignException;
 import it.pagopa.selfcare.pagopa.ingestion.api.mongo.ECConnector;
 import it.pagopa.selfcare.pagopa.ingestion.api.mongo.UserConnector;
-import it.pagopa.selfcare.pagopa.ingestion.api.rest.ExternalApiConnector;
+import it.pagopa.selfcare.pagopa.ingestion.api.rest.InternalApiConnector;
 import it.pagopa.selfcare.pagopa.ingestion.constant.WorkStatus;
 import it.pagopa.selfcare.pagopa.ingestion.exception.ResourceNotFoundException;
 import it.pagopa.selfcare.pagopa.ingestion.mapper.ECMapper;
@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ class ECServiceImpl implements ECService {
     private final MigrationService migrationService;
     private final ECConnector ecConnector;
     private final UserConnector userConnector;
-    private final ExternalApiConnector externalApiConnector;
+    private final InternalApiConnector internalApiConnector;
     private final String csvPath;
     private final int pageSize;
 
@@ -36,13 +37,13 @@ class ECServiceImpl implements ECService {
             MigrationService migrationService,
             ECConnector ecConnector,
             UserConnector userConnector,
-            ExternalApiConnector externalApiConnector,
+            InternalApiConnector internalApiConnector,
             @Value("${app.pageSize}") int pageSize,
             @Value("${app.local.ec}") String csvPath) {
         this.migrationService = migrationService;
         this.ecConnector = ecConnector;
         this.userConnector = userConnector;
-        this.externalApiConnector = externalApiConnector;
+        this.internalApiConnector = internalApiConnector;
         this.pageSize = pageSize;
         this.csvPath = csvPath;
     }
@@ -72,8 +73,13 @@ class ECServiceImpl implements ECService {
     private void onboardEc(EC ec) {
         try {
             User user = userConnector.findManagerByInstitutionTaxCodeAndRole(ec.getTaxCode(), Role.RP);
-            AutoApprovalOnboarding onboarding = constructOnboardingDto(ec, List.of(user));
-            processMigrateEC(ec, onboarding, List.of(user));
+            if(StringUtils.hasText(user.getTaxCode())){
+                AutoApprovalOnboarding onboarding = constructOnboardingDto(ec, List.of(user));
+                processMigrateEC(ec, onboarding, List.of(user));
+            }else{
+                ec.setWorkStatus(WorkStatus.EMPTY_MANAGER_CF);
+                ecConnector.save(ec);
+            }
         } catch (ResourceNotFoundException e) {
             ec.setWorkStatus(WorkStatus.MANAGER_NOT_FOUND);
             ecConnector.save(ec);
@@ -83,7 +89,7 @@ class ECServiceImpl implements ECService {
     private void processMigrateEC(EC ec, AutoApprovalOnboarding onboarding, List<User> users) {
         List<User> userToSave = new ArrayList<>();
         try {
-            externalApiConnector.autoApprovalOnboarding("EC", onboarding);
+            internalApiConnector.autoApprovalOnboarding("EC", onboarding);
             ec.setWorkStatus(WorkStatus.DONE);
             userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.DONE)).collect(Collectors.toList()));
         } catch (FeignException e) {
@@ -95,6 +101,7 @@ class ECServiceImpl implements ECService {
                 log.error("Error while migrating EC for tax code: " + MaskData.maskData(ec.getTaxCode()), e);
                 ec.setWorkStatus(WorkStatus.ERROR);
                 ec.setOnboardingHttpStatus(e.status());
+                ec.setOnboardingMessage(e.getMessage());
                 userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.ERROR)).collect(Collectors.toList()));
             }
         } finally {

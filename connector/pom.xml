@@ -21,6 +21,10 @@
             <groupId>it.pagopa.selfcare</groupId>
             <artifactId>selc-pagopa-ingestion-connector-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>it.pagopa.selfcare</groupId>
+            <artifactId>selc-commons-connector-rest</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

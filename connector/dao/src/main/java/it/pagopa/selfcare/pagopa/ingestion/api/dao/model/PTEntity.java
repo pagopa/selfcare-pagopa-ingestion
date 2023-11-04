@@ -26,6 +26,7 @@ public class PTEntity {
     private Origin origin;
     private String originId;
     private int onboardinHttpStatus;
+    private String onboardingMessage;
     private String workStatus;
 
 }

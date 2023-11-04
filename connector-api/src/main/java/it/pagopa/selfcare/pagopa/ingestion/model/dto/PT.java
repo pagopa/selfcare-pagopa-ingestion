@@ -21,6 +21,7 @@ public class PT {
     private String recipientCode;
     private Origin origin;
     private int onboardinHttpStatus;
+    private String onboardingMessage;
     private WorkStatus workStatus;
 
 }

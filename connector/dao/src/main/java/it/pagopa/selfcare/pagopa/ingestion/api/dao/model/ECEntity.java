@@ -24,7 +24,6 @@ public class ECEntity {
     private String recipientCode;
     private String workStatus;
     private int onboardingHttpStatus;
-    private Origin origin;
-    private String originId;
+    private String onboardingMessage;
 
 }

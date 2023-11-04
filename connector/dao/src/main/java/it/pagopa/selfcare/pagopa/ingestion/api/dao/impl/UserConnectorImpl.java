@@ -69,4 +69,12 @@ public class UserConnectorImpl implements UserConnector {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Manager for institution %s not found", institutionTaxCode)));
     }
 
+    @Override
+    public User findManagerByPtTaxCodeAndRole(String ptTaxCode, Role role) {
+        return repository.findAllByPtTaxCodeTaxCodeAndRole(ptTaxCode, role.name())
+                .stream()
+                .findFirst()
+                .map(UserMapper::entityToDto)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Manager for institution %s not found", ptTaxCode)));
+    }
 }

@@ -2,7 +2,7 @@ package it.pagopa.selfcare.pagopa.ingestion.core;
 
 import feign.FeignException;
 import it.pagopa.selfcare.pagopa.ingestion.api.mongo.ECPTRelationshipConnector;
-import it.pagopa.selfcare.pagopa.ingestion.api.rest.ExternalApiConnector;
+import it.pagopa.selfcare.pagopa.ingestion.api.rest.InternalApiConnector;
 import it.pagopa.selfcare.pagopa.ingestion.constant.WorkStatus;
 import it.pagopa.selfcare.pagopa.ingestion.mapper.ECPTRelationshipMapper;
 import it.pagopa.selfcare.pagopa.ingestion.model.csv.ECPTRelationshipModel;
@@ -23,7 +23,7 @@ class DelegationServiceImpl implements DelegationService {
 
     private final MigrationService migrationService;
     private final ECPTRelationshipConnector ecptRelationshipConnector;
-    private final ExternalApiConnector externalApiConnector;
+    private final InternalApiConnector internalApiConnector;
 
     @Value("${app.local.ecptrelationship}")
     private String csvPath;
@@ -34,10 +34,10 @@ class DelegationServiceImpl implements DelegationService {
     public DelegationServiceImpl(
             MigrationService migrationService,
             ECPTRelationshipConnector ecptRelationshipConnector,
-            ExternalApiConnector externalApiConnector) {
+            InternalApiConnector internalApiConnector) {
         this.migrationService = migrationService;
         this.ecptRelationshipConnector = ecptRelationshipConnector;
-        this.externalApiConnector = externalApiConnector;
+        this.internalApiConnector = internalApiConnector;
     }
     @Override
     public void persistECPTRelationship() {
@@ -64,7 +64,7 @@ class DelegationServiceImpl implements DelegationService {
     private void migrateECPTRelationship(ECPTRelationship ecptRelationship) {
         Delegation delegation = createDelegation(ecptRelationship);
         try {
-            externalApiConnector.createDelegation(delegation);
+            internalApiConnector.createDelegation(delegation);
             ecptRelationship.setWorkStatus(WorkStatus.DONE);
         }catch (FeignException e){
             ecptRelationship.setWorkStatus(WorkStatus.ERROR);

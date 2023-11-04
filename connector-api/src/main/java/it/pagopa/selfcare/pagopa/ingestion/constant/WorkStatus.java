@@ -13,6 +13,7 @@ public enum WorkStatus {
     ERROR("ERROR"),
     NOT_FOUND_IN_REGISTRY("NOT_FOUND_IN_REGISTRY"),
     MANAGER_NOT_FOUND("MANAGER_NOT_FOUND"),
+    EMPTY_MANAGER_CF("EMPTY_MANAGER_CF"),
     DONE("DONE");
 
     private final String value;

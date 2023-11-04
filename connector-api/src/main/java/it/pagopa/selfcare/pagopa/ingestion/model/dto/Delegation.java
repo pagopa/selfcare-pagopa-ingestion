@@ -17,5 +17,6 @@ public class Delegation {
     private String institutionToName;
     private String productId;
     private DelegationType type;
+    private String onboardingMessage;
 
 }

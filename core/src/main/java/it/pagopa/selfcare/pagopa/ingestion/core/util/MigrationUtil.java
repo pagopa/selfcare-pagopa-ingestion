@@ -73,7 +73,7 @@ public class MigrationUtil {
         delegation.setFrom(ecptRelationship.getEnteIndirettoCF());
         delegation.setTo(ecptRelationship.getIntermediarioPTCF());
         delegation.setInstitutionFromName(ecptRelationship.getEnteIndirettoRagioneSociale());
-        delegation.setInstitutionToName(ecptRelationship.getEnteIndirettoRagioneSociale());
+        delegation.setInstitutionToName(ecptRelationship.getIntermediarioPTRagioneSociale());
         delegation.setProductId(PROD_PAGOPA.getValue());
         delegation.setType(DelegationType.PT);
         return delegation;

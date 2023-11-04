@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/ingestion", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/swagger-resources/ingestion", produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(tags = "ingestion")
 public class PdaIngestionController {
 
@@ -35,13 +35,34 @@ public class PdaIngestionController {
         this.userService = userService;
     }
 
-    @PostMapping("/persist")
+    @PostMapping("/persist/relationship")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "", notes = "${swagger.injection.api.persistFromCsv}")
-    public ResponseEntity<String> persistFromCsv() {
-        ecService.persistEC();
-        ptService.persistPT();
+    public ResponseEntity<String> persistRelationshipFromCsv() {
         delegationService.persistECPTRelationship();
+        return ResponseEntity.ok().body(COMPLETE);
+    }
+
+    @PostMapping("/persist/ec")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "", notes = "${swagger.injection.api.persistFromCsv}")
+    public ResponseEntity<String> persistEcFromCsv() {
+        ecService.persistEC();
+        return ResponseEntity.ok().body(COMPLETE);
+    }
+
+    @PostMapping("/persist/pt")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "", notes = "${swagger.injection.api.persistFromCsv}")
+    public ResponseEntity<String> persistPtFromCsv() {
+        ptService.persistPT();
+        return ResponseEntity.ok().body(COMPLETE);
+    }
+
+    @PostMapping("/persist/user")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "", notes = "${swagger.injection.api.persistFromCsv}")
+    public ResponseEntity<String> persistUserFromCsv() {
         userService.persistUser();
         return ResponseEntity.ok().body(COMPLETE);
     }

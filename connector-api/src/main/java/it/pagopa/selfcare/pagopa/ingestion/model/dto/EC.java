@@ -22,5 +22,6 @@ public class EC {
     private Origin origin;
     private WorkStatus workStatus;
     private int onboardingHttpStatus;
+    private String onboardingMessage;
 
 }

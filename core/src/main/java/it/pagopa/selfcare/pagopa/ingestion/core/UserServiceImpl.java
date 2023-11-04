@@ -2,7 +2,7 @@ package it.pagopa.selfcare.pagopa.ingestion.core;
 
 import feign.FeignException;
 import it.pagopa.selfcare.pagopa.ingestion.api.mongo.UserConnector;
-import it.pagopa.selfcare.pagopa.ingestion.api.rest.ExternalApiConnector;
+import it.pagopa.selfcare.pagopa.ingestion.api.rest.InternalApiConnector;
 import it.pagopa.selfcare.pagopa.ingestion.constant.WorkStatus;
 import it.pagopa.selfcare.pagopa.ingestion.mapper.UserMapper;
 import it.pagopa.selfcare.pagopa.ingestion.model.csv.UserModel;
@@ -27,19 +27,19 @@ class UserServiceImpl implements UserService {
     private final String csvPath;
     private final int pageSize;
 
-    private final ExternalApiConnector externalApiConnector;
+    private final InternalApiConnector internalApiConnector;
 
     public UserServiceImpl(
             MigrationService migrationService,
             UserConnector userConnector,
             @Value("${app.local.user}") String csvPath,
             @Value("${app.pageSize}") int pageSize,
-            ExternalApiConnector externalApiConnector) {
+            InternalApiConnector internalApiConnector) {
         this.migrationService = migrationService;
         this.userConnector = userConnector;
         this.csvPath = csvPath;
         this.pageSize = pageSize;
-        this.externalApiConnector = externalApiConnector;
+        this.internalApiConnector = internalApiConnector;
     }
 
     @Override
@@ -69,7 +69,7 @@ class UserServiceImpl implements UserService {
         map.forEach((institutionId, userList) -> {
             OnboardingUserRequest request = new OnboardingUserRequest(institutionId, userList);
             try {
-                externalApiConnector.onboardingUser(request);
+                internalApiConnector.onboardingUser(request);
                 users.forEach(user -> user.setWorkStatus(WorkStatus.DONE));
             } catch (FeignException e) {
                 users.forEach(user -> {

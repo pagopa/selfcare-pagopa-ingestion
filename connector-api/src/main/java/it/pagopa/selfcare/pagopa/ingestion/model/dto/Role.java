@@ -7,8 +7,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Arrays;
 
 public enum Role {
-    RT("RT"),
-    RP("RP");
+    RT("referente tecnico"),
+    RP("referente pagamenti");
 
     private final String value;
 

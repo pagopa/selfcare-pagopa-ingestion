@@ -22,10 +22,10 @@ public class ECMapper {
         ec.setTaxCode(entity.getTaxCode());
         ec.setVatNumber(entity.getVatNumber());
         ec.setZipCode(entity.getZipCode());
-        ec.setOrigin(entity.getOrigin());
         ec.setRegisteredOffice(entity.getRegisteredOffice());
         ec.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
-        ec.setOnboardingHttpStatus(ec.getOnboardingHttpStatus());
+        ec.setOnboardingHttpStatus(entity.getOnboardingHttpStatus());
+        ec.setOnboardingMessage(entity.getOnboardingMessage());
 
         return ec;
     }
@@ -43,10 +43,10 @@ public class ECMapper {
         entity.setTaxCode(ec.getTaxCode());
         entity.setVatNumber(ec.getVatNumber());
         entity.setZipCode(ec.getZipCode());
-        entity.setOrigin(ec.getOrigin());
         entity.setRegisteredOffice(ec.getRegisteredOffice());
         entity.setWorkStatus(ec.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : ec.getWorkStatus().name());
         entity.setOnboardingHttpStatus(ec.getOnboardingHttpStatus());
+        entity.setOnboardingMessage(ec.getOnboardingMessage());
         return entity;
     }
 }

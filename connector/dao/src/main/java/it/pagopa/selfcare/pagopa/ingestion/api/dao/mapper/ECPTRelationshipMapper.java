@@ -21,6 +21,8 @@ public class ECPTRelationshipMapper {
         ecptRelationship.setEnteIndirettoCF(entity.getEnteIndirettoCF());
         ecptRelationship.setEnteIndirettoRagioneSociale(entity.getEnteIndirettoRagioneSociale());
         ecptRelationship.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
+        ecptRelationship.setCreateHttpStatus(entity.getCreateHttpStatus());
+        ecptRelationship.setCreateMessage(entity.getCreateMessage());
 
         return ecptRelationship;
     }
@@ -37,6 +39,8 @@ public class ECPTRelationshipMapper {
         entity.setIntermediarioPTRagioneSociale(ecptRelationship.getIntermediarioPTRagioneSociale());
         entity.setEnteIndirettoRagioneSociale(ecptRelationship.getEnteIndirettoRagioneSociale());
         entity.setWorkStatus(ecptRelationship.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : ecptRelationship.getWorkStatus().name());
+        entity.setCreateHttpStatus(ecptRelationship.getCreateHttpStatus());
+        entity.setCreateMessage(ecptRelationship.getCreateMessage());
 
         return entity;
     }

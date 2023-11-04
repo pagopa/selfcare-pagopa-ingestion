@@ -18,5 +18,6 @@ public class ECPTRelationship {
     private String intermediarioPTCF;
     private WorkStatus workStatus;
     private int createHttpStatus;
+    private String createMessage;
 
 }

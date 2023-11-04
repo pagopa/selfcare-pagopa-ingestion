@@ -29,6 +29,9 @@ public class UserModel {
     private String institutionTaxCode;
 
     @CsvBindByPosition(position = 6)
+    private String ptTaxCode;
+
+    @CsvBindByPosition(position = 7)
     private String role;
 
 }

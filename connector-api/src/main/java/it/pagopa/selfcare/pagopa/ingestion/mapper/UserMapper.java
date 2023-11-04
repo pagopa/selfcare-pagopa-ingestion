@@ -17,10 +17,11 @@ public class UserMapper {
             user.setCorrelationId(userModel.getTaxCode() + "#" + userModel.getInstitutionTaxCode());
             user.setTaxCode(userModel.getTaxCode());
             user.setInstitutionTaxCode(userModel.getInstitutionTaxCode());
+            user.setPtTaxCode(userModel.getPtTaxCode());
             user.setName(userModel.getName());
             user.setSurname(userModel.getSurname());
             if(!StringUtils.isBlank(userModel.getRole())) {
-                user.setRole(Role.valueOf(userModel.getRole()));
+                user.setRole(Role.fromValue(userModel.getRole()));
             }
             user.setStatus(userModel.getStatus());
             user.setEmail(userModel.getEmail());

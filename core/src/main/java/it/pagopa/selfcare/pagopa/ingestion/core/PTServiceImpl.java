@@ -3,7 +3,7 @@ package it.pagopa.selfcare.pagopa.ingestion.core;
 import feign.FeignException;
 import it.pagopa.selfcare.pagopa.ingestion.api.mongo.PTConnector;
 import it.pagopa.selfcare.pagopa.ingestion.api.mongo.UserConnector;
-import it.pagopa.selfcare.pagopa.ingestion.api.rest.ExternalApiConnector;
+import it.pagopa.selfcare.pagopa.ingestion.api.rest.InternalApiConnector;
 import it.pagopa.selfcare.pagopa.ingestion.constant.WorkStatus;
 import it.pagopa.selfcare.pagopa.ingestion.exception.ResourceNotFoundException;
 import it.pagopa.selfcare.pagopa.ingestion.mapper.PTMapper;
@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ class PTServiceImpl implements PTService {
     private final MigrationService migrationService;
     private final PTConnector ptConnector;
     private final UserConnector userConnector;
-    private final ExternalApiConnector externalApiConnector;
+    private final InternalApiConnector internalApiConnector;
     private final String csvPath;
     private final int pageSize;
 
@@ -37,13 +38,13 @@ class PTServiceImpl implements PTService {
             MigrationService migrationService,
             PTConnector ptConnector,
             UserConnector userConnector,
-            ExternalApiConnector externalApiConnector,
+            InternalApiConnector internalApiConnector,
             @Value("${app.pageSize}") int pageSize,
             @Value("${app.local.pt}") String csvPath) {
         this.migrationService = migrationService;
         this.ptConnector = ptConnector;
         this.userConnector = userConnector;
-        this.externalApiConnector = externalApiConnector;
+        this.internalApiConnector = internalApiConnector;
         this.pageSize = pageSize;
         this.csvPath = csvPath;
     }
@@ -74,9 +75,14 @@ class PTServiceImpl implements PTService {
 
     private void onboardPt(PT pt) {
         try {
-            User user = userConnector.findManagerByInstitutionTaxCodeAndRole(pt.getTaxCode(), Role.RP);
-            AutoApprovalOnboarding onboarding = constructOnboardingDto(pt, List.of(user));
-            processMigratePT(pt, onboarding, List.of(user));
+            User user = userConnector.findManagerByPtTaxCodeAndRole(pt.getTaxCode(), Role.RP);
+            if(StringUtils.hasText(user.getTaxCode())){
+                AutoApprovalOnboarding onboarding = constructOnboardingDto(pt, List.of(user));
+                processMigratePT(pt, onboarding, List.of(user));
+            }else{
+                pt.setWorkStatus(WorkStatus.EMPTY_MANAGER_CF);
+                ptConnector.save(pt);
+            }
         } catch (ResourceNotFoundException e){
             pt.setWorkStatus(WorkStatus.MANAGER_NOT_FOUND);
             ptConnector.save(pt);
@@ -87,7 +93,7 @@ class PTServiceImpl implements PTService {
     private void processMigratePT(PT pt, AutoApprovalOnboarding onboarding, List<User> users) {
         List<User> userToSave = new ArrayList<>();
         try {
-            externalApiConnector.autoApprovalOnboarding("PT", onboarding);
+            internalApiConnector.autoApprovalOnboarding("PT", onboarding);
             pt.setWorkStatus(WorkStatus.DONE);
             userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.DONE)).collect(Collectors.toList()));
         } catch (FeignException e) {
@@ -99,6 +105,7 @@ class PTServiceImpl implements PTService {
                 log.error("Error while migrating PT for tax code: " + MaskData.maskData(pt.getTaxCode()), e);
                 pt.setWorkStatus(WorkStatus.ERROR);
                 pt.setOnboardinHttpStatus(e.status());
+                pt.setOnboardingMessage(e.getMessage());
                 userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.ERROR)).collect(Collectors.toList()));
             }
         } finally {

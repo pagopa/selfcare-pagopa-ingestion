@@ -1,0 +1,43 @@
+name,surname,email,taxcode,status,ec_taxcode,pt_taxCode,role
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,01813730387,,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,,,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,93038940362,,referente pagamenti
+Antonio,Cunzio,benedetta.delvecchio@nttdata.com,,FALSE,05300141214,,referente pagamenti
+Umberto,Accettullo,benedetta.delvecchio@nttdata.com,,FALSE,80044460634,,referente pagamenti
+Umberto,Accettullo,benedetta.delvecchio@nttdata.com,,FALSE,80018680639,,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,95501020010,,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,08699411214,,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,06360270018,,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,02286490962,,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,91015980062,,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,02979860273,,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,00115370553,,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,03795470248,,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,01168310496,,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,94076720658,,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,03021250844,,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,03051890832,,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,03051890832,,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,02516300460,,referente pagamenti
+Paolo,De Santis,paolo.desantis@istruzione.it,DSNPLA64L01A252Y,TRUE,,,referente tecnico
+Paolo,De Santis,paolo.desantis@istruzione.it,DSNPLA64L01A252Y,TRUE,94076720658,,referente tecnico
+Paolo,De Santis,paolo.desantis@istruzione.it,DSNPLA64L01A252Y,TRUE,93038940362,,referente tecnico
+Maria Rosaria,Napoletano,mariarosaria.napoletano@csi.it,NPLMRS67E52A509W,TRUE,06360270018,,referente tecnico
+Maria Rosaria,Napoletano,mariarosaria.napoletano@csi.it,NPLMRS67E52A509W,TRUE,95501020010,,referente tecnico
+Sergio,Coppola,sergio.coppola@eng.it,CPPSRG70D21L219P,TRUE,91015980062,,referente tecnico
+Sergio,Coppola,sergio.coppola@eng.it,CPPSRG70D21L219P,TRUE,02979860273,,referente tecnico
+Francesco,Raiti,francesco.raiti@advancedsystems.it,RTAFNC66D01I754S,TRUE,01168310496,,referente tecnico
+Monica,Rollandi,monica.rollandi@padigitale.it,RLLMNC69C56C621E,TRUE,95044230654,,referente tecnico
+Fausto,Vicari,fvicari@argosoft.it,VCRFST58T19H163D,TRUE,94076720658,,referente tecnico
+Marco,Lupi,marco.lupi@nord-com.it,LPUMCL63E26F205A,TRUE,03051890832,,referente tecnico
+Rosanna,Sglavo,servizionodopagamenti@progettiesoluzioni.it,SGLRNN64E64F205I,TRUE,02286490962,,referente tecnico
+Silvia,Spinazzola,bp_convenzioni@posteitaliane.it,SPNSLV78T41H501X,TRUE,01168310496,,referente tecnico
+Giuseppe,Formaro,giuseppe.formaro@sintax.eu,FRMGPP79E28B774G,TRUE,02516300460,,referente tecnico
+Laura,Torini,laura.torini@nexigroup.com,TRNLRA78H55E463A,TRUE,03795470248,,referente tecnico
+Gennaro,Romano,gennaro.romano@regione.campania.it,RMNGNR67C24F839N,TRUE,08699411214,,referente tecnico
+Gennaro,Romano,gennaro.romano@regione.campania.it,RMNGNR67C24F839N,TRUE,95044230654,,referente tecnico
+Andrea,Anghinolfi,andrea.anghinolfi@argentea.it,NGHNDR66S15H223S,TRUE,03051890832,,referente tecnico
+Daniele,Pietrobelli,daniele.pietrobelli@eng.it,PTRDNL73P22H501K,TRUE,03021250844,,referente tecnico
+Daniele,Pietrobelli,daniele.pietrobelli@eng.it,PTRDNL73P22H501K,TRUE,95044230654,,referente tecnico
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,,01113570442,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,,01501320442,referente pagamenti

@@ -28,6 +28,7 @@ public class PTMapper {
         pt.setRegisteredOffice(entity.getRegisteredOffice());
         pt.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
         pt.setOnboardinHttpStatus(entity.getOnboardinHttpStatus());
+        pt.setOnboardingMessage(entity.getOnboardingMessage());
         return pt;
     }
 
@@ -47,19 +48,8 @@ public class PTMapper {
         entity.setRegisteredOffice(pt.getRegisteredOffice());
         entity.setWorkStatus(pt.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : pt.getWorkStatus().name());
         entity.setOnboardinHttpStatus(pt.getOnboardinHttpStatus());
+        entity.setOnboardingMessage(pt.getOnboardingMessage());
         return entity;
-    }
-
-    public static List<PTEntity> dtoListToEntityList(List<PT> ptList) {
-        return ptList.stream()
-                .map(PTMapper::dtoToEntity)
-                .collect(Collectors.toList());
-    }
-
-    public static List<PT> entityListToDtoList(List<PTEntity> entityList) {
-        return entityList.stream()
-                .map(PTMapper::entityToDto)
-                .collect(Collectors.toList());
     }
 
 }
