@@ -22,7 +22,7 @@ public class PdaIngestionController {
     private final PTService ptService;
     private final DelegationService delegationService;
     private final UserService userService;
-    private static final String COMPLETE = "Elaborazione completata";
+    private static final String COMPLETE = "Richiesta presa in carico";
 
     public PdaIngestionController(
             ECService ecService,

@@ -10,6 +10,7 @@ import it.pagopa.selfcare.pagopa.ingestion.model.dto.Delegation;
 import it.pagopa.selfcare.pagopa.ingestion.model.dto.ECPTRelationship;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -40,12 +41,14 @@ class DelegationServiceImpl implements DelegationService {
         this.internalApiConnector = internalApiConnector;
     }
     @Override
+    @Async
     public void persistECPTRelationship() {
         migrationService.migrateEntities(ECPTRelationshipModel.class, csvPath, ecptRelationshipConnector::save, ECPTRelationshipMapper::convertModelToDto);
     }
 
 
     @Override
+    @Async
     public void migrateECPTRelationship() {
         log.info("Starting migration of ECPTRelationship");
         int page = 0;

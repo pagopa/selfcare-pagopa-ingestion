@@ -12,6 +12,7 @@ import it.pagopa.selfcare.pagopa.ingestion.model.dto.*;
 import it.pagopa.selfcare.pagopa.ingestion.utils.MaskData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -49,11 +50,13 @@ class ECServiceImpl implements ECService {
     }
 
     @Override
+    @Async
     public void persistEC() {
         migrationService.migrateEntities(ECModel.class, csvPath, ecConnector::save, ECMapper::convertModelToDto);
     }
 
     @Override
+    @Async
     public void migrateEC(String status) {
         log.info("Starting migration of EC");
         int page = 0;

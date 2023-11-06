@@ -12,6 +12,7 @@ import it.pagopa.selfcare.pagopa.ingestion.model.dto.*;
 import it.pagopa.selfcare.pagopa.ingestion.utils.MaskData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -50,6 +51,7 @@ class PTServiceImpl implements PTService {
     }
 
     @Override
+    @Async
     public void persistPT() {
         migrationService.migrateEntities(PTModel.class, csvPath, ptConnector::save, PTMapper::convertModelToDto);
 
@@ -57,6 +59,7 @@ class PTServiceImpl implements PTService {
 
 
     @Override
+    @Async
     public void migratePT(String status) {
         log.info("Starting migration of PT");
         int page = 0;

@@ -10,6 +10,7 @@ import it.pagopa.selfcare.pagopa.ingestion.model.dto.OnboardingUserRequest;
 import it.pagopa.selfcare.pagopa.ingestion.model.dto.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -43,11 +44,13 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Async
     public void persistUser() {
         migrationService.migrateEntities(UserModel.class, csvPath, userConnector::save, UserMapper::convertModelToDto);
     }
 
     @Override
+    @Async
     public void migrateUser(String status) {
         log.info("Starting migration of User");
         int page = 0;
