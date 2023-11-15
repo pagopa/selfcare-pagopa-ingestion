@@ -13,11 +13,13 @@ public class OnboardingUserRequest {
     private String institutionTaxCode;
     private String productId;
     private List<UserToOnboard> users;
+    private Boolean sendCreateUserNotificationEmail;
 
     public OnboardingUserRequest(String institutionTaxCode, List<User> users) {
         this.institutionTaxCode = institutionTaxCode;
         this.users = toUserToOnboard(users);
         productId = PROD_PAGOPA.getValue();
+        sendCreateUserNotificationEmail = Boolean.FALSE;
     }
 
     private List<UserToOnboard> toUserToOnboard(List<User> users) {
@@ -28,6 +30,7 @@ public class OnboardingUserRequest {
             userToOnboard.setEmail(user.getEmail());
             userToOnboard.setTaxCode(user.getTaxCode());
             userToOnboard.setRole(user.getRole() == Role.RP ? PartyRole.MANAGER : PartyRole.OPERATOR);
+            userToOnboard.setProductRole(user.getRole() == Role.RP ? "admin" : "operator");
             return userToOnboard;
         }).collect(Collectors.toList());
     }

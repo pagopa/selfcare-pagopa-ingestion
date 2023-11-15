@@ -94,8 +94,8 @@ public class PdaIngestionController {
     @PostMapping("/delegation")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "", notes = "${swagger.injection.api.delegation}")
-    public ResponseEntity<String> createDelegation() {
-        delegationService.migrateECPTRelationship();
+    public ResponseEntity<String> createDelegation(@RequestParam("status") String status) {
+        delegationService.migrateECPTRelationship(status);
         return ResponseEntity.ok().body(COMPLETE);
     }
 

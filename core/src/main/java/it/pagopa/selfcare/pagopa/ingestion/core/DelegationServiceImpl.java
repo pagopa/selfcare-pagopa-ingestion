@@ -49,12 +49,12 @@ class DelegationServiceImpl implements DelegationService {
 
     @Override
     @Async
-    public void migrateECPTRelationship() {
+    public void migrateECPTRelationship(String status) {
         log.info("Starting migration of ECPTRelationship");
         int page = 0;
         boolean hasNext = true;
         do {
-            List<ECPTRelationship> ecptRelationships = ecptRelationshipConnector.findAllByStatus(page, pageSize, WorkStatus.NOT_WORKED.name());
+            List<ECPTRelationship> ecptRelationships = ecptRelationshipConnector.findAllByStatus(page, pageSize, status);
             if (!CollectionUtils.isEmpty(ecptRelationships)) {
                 ecptRelationships.forEach(this::migrateECPTRelationship);
             } else {
@@ -69,9 +69,11 @@ class DelegationServiceImpl implements DelegationService {
         try {
             internalApiConnector.createDelegation(delegation);
             ecptRelationship.setWorkStatus(WorkStatus.DONE);
+            ecptRelationship.setCreateHttpStatus(200);
         }catch (FeignException e){
             ecptRelationship.setWorkStatus(WorkStatus.ERROR);
             ecptRelationship.setCreateHttpStatus(e.status());
+            ecptRelationship.setCreateMessage(e.getMessage());
         }
         ecptRelationshipConnector.save(ecptRelationship);
     }

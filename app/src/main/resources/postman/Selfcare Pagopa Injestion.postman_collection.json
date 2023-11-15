@@ -1,0 +1,241 @@
+{
+	"info": {
+		"_postman_id": "1b115229-1a36-4f5f-b360-ae4dda4181d4",
+		"name": "Selfcare Pagopa Injestion",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "persist EC",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/swagger-resources/ingestion/persist/ec",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"swagger-resources",
+						"ingestion",
+						"persist",
+						"ec"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "persist PT",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/swagger-resources/ingestion/persist/pt",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"swagger-resources",
+						"ingestion",
+						"persist",
+						"pt"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "persist Delegation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/swagger-resources/ingestion/persist/relationship",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"swagger-resources",
+						"ingestion",
+						"persist",
+						"relationship"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "persist User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/swagger-resources/ingestion/persist/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"swagger-resources",
+						"ingestion",
+						"persist",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "migrate EC",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/swagger-resources/ingestion/ec?status=NOT_WORKED",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"swagger-resources",
+						"ingestion",
+						"ec"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "NOT_WORKED"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "migrate PT",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/swagger-resources/ingestion/pt?status=NOT_WORKED",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"swagger-resources",
+						"ingestion",
+						"pt"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "NOT_WORKED"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "migrate Delegation",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/swagger-resources/ingestion/delegation?status=NOT_WORKED",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"swagger-resources",
+						"ingestion",
+						"delegation"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "NOT_WORKED"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "migrate User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/swagger-resources/ingestion/user?status=NOT_WORKED",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"swagger-resources",
+						"ingestion",
+						"user"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "NOT_WORKED"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

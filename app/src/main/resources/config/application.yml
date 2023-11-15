@@ -35,7 +35,7 @@ logging:
     additional-info: ",%X{X-Client-Ip:-}]"
 
 app:
-  pageSize: ${PAGE_SIZE:50}
+  pageSize: ${PAGE_SIZE:250}
   local:
     csv: ${LOCAL_CSV:true}
     ec: csv/EC.csv

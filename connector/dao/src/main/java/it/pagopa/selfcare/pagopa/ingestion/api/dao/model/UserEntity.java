@@ -22,8 +22,8 @@ public class UserEntity {
     private String taxCode;
     private String status;
     private String institutionTaxCode;
-    private String ptTaxCode;
     private String role;
     private String workStatus;
-
+    private String onboardingMessage;
+    private Integer onboardingHttpStatus;
 }

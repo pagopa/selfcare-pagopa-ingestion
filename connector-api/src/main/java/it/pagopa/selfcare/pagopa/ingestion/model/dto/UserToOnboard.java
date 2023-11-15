@@ -10,4 +10,5 @@ public class UserToOnboard {
     private String name;
     private String surname;
     private String email;
+    private String productRole;
 }

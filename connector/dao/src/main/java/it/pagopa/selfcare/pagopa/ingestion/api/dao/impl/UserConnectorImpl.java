@@ -1,13 +1,10 @@
 package it.pagopa.selfcare.pagopa.ingestion.api.dao.impl;
 
-import it.pagopa.selfcare.pagopa.ingestion.api.dao.mapper.ECMapper;
 import it.pagopa.selfcare.pagopa.ingestion.api.dao.mapper.UserMapper;
 import it.pagopa.selfcare.pagopa.ingestion.api.dao.model.UserEntity;
 import it.pagopa.selfcare.pagopa.ingestion.api.dao.repo.UserRepository;
-import it.pagopa.selfcare.pagopa.ingestion.api.dao.utils.MaskData;
 import it.pagopa.selfcare.pagopa.ingestion.api.mongo.UserConnector;
 import it.pagopa.selfcare.pagopa.ingestion.exception.ResourceNotFoundException;
-import it.pagopa.selfcare.pagopa.ingestion.model.dto.EC;
 import it.pagopa.selfcare.pagopa.ingestion.model.dto.Role;
 import it.pagopa.selfcare.pagopa.ingestion.model.dto.User;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +32,7 @@ public class UserConnectorImpl implements UserConnector {
     public User save(User user) {
         UserEntity entity = UserMapper.dtoToEntity(user);
         UserEntity savedEntity = repository.save(entity);
-        log.info("Salvato User con correlationId: {}", it.pagopa.selfcare.pagopa.ingestion.utils.MaskData.maskData(savedEntity.getCorrelationId()));
+        log.info("Salvato User con correlationId: {}", savedEntity.getCorrelationId());
         return UserMapper.entityToDto(savedEntity);
     }
 
@@ -69,12 +66,4 @@ public class UserConnectorImpl implements UserConnector {
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("Manager for institution %s not found", institutionTaxCode)));
     }
 
-    @Override
-    public User findManagerByPtTaxCodeAndRole(String ptTaxCode, Role role) {
-        return repository.findAllByPtTaxCodeTaxCodeAndRole(ptTaxCode, role.name())
-                .stream()
-                .findFirst()
-                .map(UserMapper::entityToDto)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format("Manager for institution %s not found", ptTaxCode)));
-    }
 }

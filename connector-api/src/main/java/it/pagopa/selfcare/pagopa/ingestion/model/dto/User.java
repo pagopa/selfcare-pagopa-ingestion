@@ -18,9 +18,8 @@ public class User {
     private String email;
     private String status;
     private String institutionTaxCode;
-    private String ptTaxCode;
     private String productRole;
     private WorkStatus workStatus;
     private Integer onboardingHttpStatus;
-
+    private String onboardingMessage;
 }

@@ -4,6 +4,6 @@ public interface DelegationService {
 
     void persistECPTRelationship();
 
-    void migrateECPTRelationship();
+    void migrateECPTRelationship(String status);
 
 }

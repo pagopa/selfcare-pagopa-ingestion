@@ -9,8 +9,6 @@ public interface UserConnector {
 
     User findManagerByInstitutionTaxCodeAndRole(String taxCode, Role role);
 
-    User findManagerByPtTaxCodeAndRole(String taxCode, Role role);
-
     User save(User user);
 
     List<User> saveAll(List<User> users);

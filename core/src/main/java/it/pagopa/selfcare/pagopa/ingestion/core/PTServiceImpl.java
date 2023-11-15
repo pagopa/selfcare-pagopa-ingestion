@@ -9,17 +9,13 @@ import it.pagopa.selfcare.pagopa.ingestion.exception.ResourceNotFoundException;
 import it.pagopa.selfcare.pagopa.ingestion.mapper.PTMapper;
 import it.pagopa.selfcare.pagopa.ingestion.model.csv.PTModel;
 import it.pagopa.selfcare.pagopa.ingestion.model.dto.*;
-import it.pagopa.selfcare.pagopa.ingestion.utils.MaskData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static it.pagopa.selfcare.pagopa.ingestion.core.util.MigrationUtil.constructOnboardingDto;
 
@@ -78,10 +74,10 @@ class PTServiceImpl implements PTService {
 
     private void onboardPt(PT pt) {
         try {
-            User user = userConnector.findManagerByPtTaxCodeAndRole(pt.getTaxCode(), Role.RP);
-            if(StringUtils.hasText(user.getTaxCode())){
+            User user = userConnector.findManagerByInstitutionTaxCodeAndRole(pt.getTaxCode(), Role.RP);
+            if(!user.getTaxCode().equalsIgnoreCase("NO_TAXCODE")){
                 AutoApprovalOnboarding onboarding = constructOnboardingDto(pt, List.of(user));
-                processMigratePT(pt, onboarding, List.of(user));
+                processMigratePT(pt, onboarding, user);
             }else{
                 pt.setWorkStatus(WorkStatus.EMPTY_MANAGER_CF);
                 ptConnector.save(pt);
@@ -93,27 +89,33 @@ class PTServiceImpl implements PTService {
 
     }
 
-    private void processMigratePT(PT pt, AutoApprovalOnboarding onboarding, List<User> users) {
-        List<User> userToSave = new ArrayList<>();
+    private void processMigratePT(PT pt, AutoApprovalOnboarding onboarding, User user) {
         try {
             internalApiConnector.autoApprovalOnboarding("PT", onboarding);
             pt.setWorkStatus(WorkStatus.DONE);
-            userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.DONE)).collect(Collectors.toList()));
+            pt.setOnboardinHttpStatus(200);
+            user.setWorkStatus(WorkStatus.DONE);
         } catch (FeignException e) {
             if (e.status() == 404){
-                log.error("Error while migrating PT: TaxCode {} not found in registry", MaskData.maskData(pt.getTaxCode()), e);
+                log.error("Error while migrating PT: TaxCode {} not found in registry", pt.getTaxCode(), e);
                 pt.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY);
-                userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY)).collect(Collectors.toList()));
+                user.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY);
+            } else if (e.status() == 409) {
+                log.error("Error while migrating PT: product already onboarded for TaxCode {}", pt.getTaxCode(), e);
+                pt.setWorkStatus(WorkStatus.ALREADY_ONBOARDED);
+                pt.setOnboardinHttpStatus(e.status());
+                pt.setOnboardingMessage(e.getMessage());
+                user.setWorkStatus(WorkStatus.NOT_WORKED);
             } else {
-                log.error("Error while migrating PT for tax code: " + MaskData.maskData(pt.getTaxCode()), e);
+                log.error("Error while migrating PT for tax code: " + pt.getTaxCode(), e);
                 pt.setWorkStatus(WorkStatus.ERROR);
                 pt.setOnboardinHttpStatus(e.status());
                 pt.setOnboardingMessage(e.getMessage());
-                userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.ERROR)).collect(Collectors.toList()));
+                user.setWorkStatus(WorkStatus.ERROR);
             }
         } finally {
             ptConnector.save(pt);
-            userConnector.saveAll(userToSave);
+            userConnector.save(user);
         }
     }
 }

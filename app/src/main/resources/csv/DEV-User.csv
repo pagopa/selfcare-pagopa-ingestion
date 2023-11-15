@@ -1,6 +1,5 @@
 name,surname,email,taxcode,status,ec_taxcode,pt_taxCode,role
 Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,01813730387,,referente pagamenti
-Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,,,referente pagamenti
 Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,93038940362,,referente pagamenti
 Antonio,Cunzio,benedetta.delvecchio@nttdata.com,,FALSE,05300141214,,referente pagamenti
 Umberto,Accettullo,benedetta.delvecchio@nttdata.com,,FALSE,80044460634,,referente pagamenti
@@ -17,9 +16,7 @@ Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,0116
 Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,94076720658,,referente pagamenti
 Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,03021250844,,referente pagamenti
 Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,03051890832,,referente pagamenti
-Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,03051890832,,referente pagamenti
 Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,02516300460,,referente pagamenti
-Paolo,De Santis,paolo.desantis@istruzione.it,DSNPLA64L01A252Y,TRUE,,,referente tecnico
 Paolo,De Santis,paolo.desantis@istruzione.it,DSNPLA64L01A252Y,TRUE,94076720658,,referente tecnico
 Paolo,De Santis,paolo.desantis@istruzione.it,DSNPLA64L01A252Y,TRUE,93038940362,,referente tecnico
 Maria Rosaria,Napoletano,mariarosaria.napoletano@csi.it,NPLMRS67E52A509W,TRUE,06360270018,,referente tecnico
@@ -41,3 +38,11 @@ Daniele,Pietrobelli,daniele.pietrobelli@eng.it,PTRDNL73P22H501K,TRUE,03021250844
 Daniele,Pietrobelli,daniele.pietrobelli@eng.it,PTRDNL73P22H501K,TRUE,95044230654,,referente tecnico
 Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,,01113570442,referente pagamenti
 Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,,01501320442,referente pagamenti
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,,05722930657,referente pagamenti
+Daniele,Pietrobelli,daniele.pietrobelli@eng.it,PTRDNL73P22H501K,TRUE,,05722930657,referente tecnico
+Benedetta,Delvecchio,benedetta.delvecchio@nttdata.com,DLVBDT92A41F205C,TRUE,,PPPPLT80A01H501V,referente pagamenti
+Rocky,Balboa,rocky.balboa@selfcare.com,BLBRKY67C30H501B,TRUE,,PPPPLT80A01H501V,referente tecnico
+Sigmund,Freud,sigmund.freud@selfcare.com,FRDSMN80A01F205Z,TRUE,01333214631,,referente pagamenti
+Frida,Kahlo,frida.kahlo@selfcare.com,KHLFRD70L47F205Q,TRUE,01333214631,,referente tecnico
+Sigmund,Freud,sigmund.freud@selfcare.com,FRDSMN80A01F205Z,TRUE,01113570442,,referente tecnico
+Frida,Kahlo,frida.kahlo@selfcare.com,KHLFRD70L47F205Q,TRUE,01113570442,,referente tecnico

@@ -16,6 +16,4 @@ public interface UserRepository extends MongoRepository<UserEntity, String>, Mon
 
     @Query(value = "{'institutionTaxCode': ?0, 'role': ?1}")
     List<UserEntity> findAllByInstitutionTaxCodeAndRole(String institutionTaxCode, String role);
-    @Query(value = "{'ptTaxCode': ?0, 'role': ?1}")
-    List<UserEntity> findAllByPtTaxCodeTaxCodeAndRole(String ptTaxCode, String name);
 }

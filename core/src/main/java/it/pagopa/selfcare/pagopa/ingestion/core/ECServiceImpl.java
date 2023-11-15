@@ -9,17 +9,13 @@ import it.pagopa.selfcare.pagopa.ingestion.exception.ResourceNotFoundException;
 import it.pagopa.selfcare.pagopa.ingestion.mapper.ECMapper;
 import it.pagopa.selfcare.pagopa.ingestion.model.csv.ECModel;
 import it.pagopa.selfcare.pagopa.ingestion.model.dto.*;
-import it.pagopa.selfcare.pagopa.ingestion.utils.MaskData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static it.pagopa.selfcare.pagopa.ingestion.core.util.MigrationUtil.*;
 
@@ -76,9 +72,9 @@ class ECServiceImpl implements ECService {
     private void onboardEc(EC ec) {
         try {
             User user = userConnector.findManagerByInstitutionTaxCodeAndRole(ec.getTaxCode(), Role.RP);
-            if(StringUtils.hasText(user.getTaxCode())){
+            if(!user.getTaxCode().equalsIgnoreCase("NO_TAXCODE")){
                 AutoApprovalOnboarding onboarding = constructOnboardingDto(ec, List.of(user));
-                processMigrateEC(ec, onboarding, List.of(user));
+                processMigrateEC(ec, onboarding, user);
             }else{
                 ec.setWorkStatus(WorkStatus.EMPTY_MANAGER_CF);
                 ecConnector.save(ec);
@@ -89,27 +85,33 @@ class ECServiceImpl implements ECService {
         }
     }
 
-    private void processMigrateEC(EC ec, AutoApprovalOnboarding onboarding, List<User> users) {
-        List<User> userToSave = new ArrayList<>();
+    private void processMigrateEC(EC ec, AutoApprovalOnboarding onboarding, User user) {
         try {
             internalApiConnector.autoApprovalOnboarding("EC", onboarding);
             ec.setWorkStatus(WorkStatus.DONE);
-            userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.DONE)).collect(Collectors.toList()));
+            ec.setOnboardingHttpStatus(200);
+            user.setWorkStatus(WorkStatus.DONE);
         } catch (FeignException e) {
             if (e.status() == 404) {
-                log.error("Error while migrating EC: TaxCode {} not found in registry", MaskData.maskData(ec.getTaxCode()), e);
+                log.error("Error while migrating EC: TaxCode {} not found in registry", ec.getTaxCode(), e);
                 ec.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY);
-                userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY)).collect(Collectors.toList()));
+                user.setWorkStatus(WorkStatus.NOT_FOUND_IN_REGISTRY);
+            } else if (e.status() == 409) {
+                log.error("Error while migrating EC: product already onboarded for TaxCode {}", ec.getTaxCode(), e);
+                ec.setWorkStatus(WorkStatus.ALREADY_ONBOARDED);
+                ec.setOnboardingHttpStatus(e.status());
+                ec.setOnboardingMessage(e.getMessage());
+                user.setWorkStatus(WorkStatus.NOT_WORKED);
             } else {
-                log.error("Error while migrating EC for tax code: " + MaskData.maskData(ec.getTaxCode()), e);
+                log.error("Error while migrating EC for tax code: " + ec.getTaxCode(), e);
                 ec.setWorkStatus(WorkStatus.ERROR);
                 ec.setOnboardingHttpStatus(e.status());
                 ec.setOnboardingMessage(e.getMessage());
-                userToSave.addAll(users.stream().peek(user -> user.setWorkStatus(WorkStatus.ERROR)).collect(Collectors.toList()));
+                user.setWorkStatus(WorkStatus.ERROR);
             }
         } finally {
             ecConnector.save(ec);
-            userConnector.saveAll(userToSave);
+            userConnector.save(user);
         }
     }
 }

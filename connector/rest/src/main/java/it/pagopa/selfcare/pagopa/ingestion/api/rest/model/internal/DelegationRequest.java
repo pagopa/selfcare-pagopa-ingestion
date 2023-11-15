@@ -11,11 +11,11 @@ import javax.validation.constraints.NotNull;
 public class DelegationRequest {
 
     @NotBlank
-    @JsonProperty("from")
+    @JsonProperty("fromTaxCode")
     private String from;
 
     @NotBlank
-    @JsonProperty("to")
+    @JsonProperty("toTaxCode")
     private String to;
 
     @NotBlank

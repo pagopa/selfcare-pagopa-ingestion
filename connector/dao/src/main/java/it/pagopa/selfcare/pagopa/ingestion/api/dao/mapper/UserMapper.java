@@ -26,9 +26,9 @@ public class UserMapper {
         user.setSurname(entity.getSurname());
         user.setStatus(entity.getStatus());
         user.setInstitutionTaxCode(entity.getInstitutionTaxCode());
-        user.setPtTaxCode(entity.getPtTaxCode());
         user.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
-
+        user.setOnboardingHttpStatus(entity.getOnboardingHttpStatus());
+        user.setOnboardingMessage(entity.getOnboardingMessage());
         return user;
     }
 
@@ -48,8 +48,9 @@ public class UserMapper {
         entity.setStatus(user.getStatus());
         entity.setSurname(user.getSurname());
         entity.setInstitutionTaxCode(user.getInstitutionTaxCode());
-        entity.setPtTaxCode(user.getPtTaxCode());
         entity.setWorkStatus(user.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : user.getWorkStatus().name());
+        entity.setOnboardingMessage(user.getOnboardingMessage());
+        entity.setOnboardingHttpStatus(user.getOnboardingHttpStatus());
         return entity;
     }
 }

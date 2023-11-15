@@ -69,20 +69,26 @@ class UserServiceImpl implements UserService {
 
     private void onboardUser(List<User> users) {
         Map<String, List<User>> map = users.stream().collect(groupingBy(User::getInstitutionTaxCode));
-        map.forEach((institutionId, userList) -> {
-            OnboardingUserRequest request = new OnboardingUserRequest(institutionId, userList);
-            try {
-                internalApiConnector.onboardingUser(request);
-                users.forEach(user -> user.setWorkStatus(WorkStatus.DONE));
-            } catch (FeignException e) {
-                users.forEach(user -> {
-                    user.setWorkStatus(WorkStatus.ERROR);
-                    user.setOnboardingHttpStatus(e.status());
-                });
-            }
-            userConnector.saveAll(users);
-        });
+        map.forEach(this::onboardingAndUpdateUser);
     }
 
+    @Async
+    private void onboardingAndUpdateUser(String institutionId, List<User> users) {
+        OnboardingUserRequest request = new OnboardingUserRequest(institutionId, users);
+        try {
+            internalApiConnector.onboardingUser(request);
+            users.forEach(user -> {
+                user.setWorkStatus(WorkStatus.DONE);
+                user.setOnboardingHttpStatus(200);
+            });
+        } catch (FeignException e) {
+            users.forEach(user -> {
+                user.setWorkStatus(WorkStatus.ERROR);
+                user.setOnboardingHttpStatus(e.status());
+                user.setOnboardingMessage(e.getMessage());
+            });
+        }
+        userConnector.saveAll(users);
+    }
 
 }
