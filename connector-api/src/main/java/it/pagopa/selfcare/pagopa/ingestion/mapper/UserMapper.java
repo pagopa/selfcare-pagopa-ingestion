@@ -15,14 +15,16 @@ public class UserMapper {
         User user = null;
         if(userModel != null){
             user = new User();
-            user.setInstitutionTaxCode(!StringUtils.isEmpty(userModel.getInstitutionTaxCode()) ? userModel.getInstitutionTaxCode() : userModel.getPtTaxCode());
+            boolean isPtUser = !StringUtils.isEmpty(userModel.getPtTaxCode());
+            user.setInstitutionTaxCode(isPtUser ? userModel.getPtTaxCode() : userModel.getInstitutionTaxCode());
             user.setTaxCode(!StringUtils.isEmpty(userModel.getTaxCode()) ? userModel.getTaxCode() : "NO_TAXCODE");
             user.setCorrelationId(user.getTaxCode() + "#" + user.getInstitutionTaxCode());
 
             user.setName(userModel.getName());
             user.setSurname(userModel.getSurname());
             if(!StringUtils.isBlank(userModel.getRole())) {
-                user.setRole(Role.fromValue(userModel.getRole()));
+
+                user.setRole(isPtUser ? Role.RP : Role.fromValue(userModel.getRole()));
             }
             user.setWorkStatus(user.getTaxCode().equalsIgnoreCase("NO_TAXCODE") ? WorkStatus.EMPTY_USER_CF : null);
             user.setEmail(userModel.getEmail());
