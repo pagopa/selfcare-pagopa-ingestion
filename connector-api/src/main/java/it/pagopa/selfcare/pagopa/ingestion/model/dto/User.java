@@ -1,5 +1,6 @@
 package it.pagopa.selfcare.pagopa.ingestion.model.dto;
 
+import it.pagopa.selfcare.commons.base.security.PartyRole;
 import it.pagopa.selfcare.pagopa.ingestion.constant.WorkStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,4 +23,6 @@ public class User {
     private WorkStatus workStatus;
     private Integer onboardingHttpStatus;
     private String onboardingMessage;
+    private PartyRole onboardingRole;
+    private String onboardingProductRole;
 }

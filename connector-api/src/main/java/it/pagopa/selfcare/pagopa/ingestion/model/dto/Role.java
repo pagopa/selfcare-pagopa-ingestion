@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 public enum Role {
     RT("referente tecnico"),
+    RTD("referente tecnico delegato"),
     RP("referente pagamenti");
 
     private final String value;

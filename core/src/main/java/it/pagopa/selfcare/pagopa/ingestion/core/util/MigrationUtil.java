@@ -59,7 +59,7 @@ public class MigrationUtil {
                         userToSend.setName(user.getName());
                         userToSend.setSurname(user.getSurname());
                         userToSend.setEmail(user.getEmail());
-                        userToSend.setRole(user.getRole() == Role.RP ? PartyRole.MANAGER : PartyRole.OPERATOR);
+                        userToSend.setRole(PartyRole.MANAGER);
                         return userToSend;
                     }).collect(Collectors.toList());
         }

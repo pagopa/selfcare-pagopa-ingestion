@@ -26,4 +26,6 @@ public class UserEntity {
     private String workStatus;
     private String onboardingMessage;
     private Integer onboardingHttpStatus;
+    private String onboardingRole;
+    private String onboardingProductRole;
 }

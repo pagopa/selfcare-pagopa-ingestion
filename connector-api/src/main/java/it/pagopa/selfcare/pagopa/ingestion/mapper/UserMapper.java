@@ -1,5 +1,6 @@
 package it.pagopa.selfcare.pagopa.ingestion.mapper;
 
+import it.pagopa.selfcare.commons.base.security.PartyRole;
 import it.pagopa.selfcare.pagopa.ingestion.constant.WorkStatus;
 import it.pagopa.selfcare.pagopa.ingestion.model.csv.UserModel;
 import it.pagopa.selfcare.pagopa.ingestion.model.dto.Role;
@@ -23,12 +24,23 @@ public class UserMapper {
             user.setName(userModel.getName());
             user.setSurname(userModel.getSurname());
             if(!StringUtils.isBlank(userModel.getRole())) {
-
-                user.setRole(isPtUser ? Role.RP : Role.fromValue(userModel.getRole()));
+                // Ruolo dal csv
+                user.setRole(Role.fromValue(userModel.getRole()));
+                // Ruoli su ms-core
+                user.setOnboardingRole(isPtUser ? getPtOnboardingRole(user.getRole()) : getEcOnboardingRole(user.getRole()));
+                user.setOnboardingProductRole(user.getOnboardingRole() == PartyRole.MANAGER ? "admin" : "operator");
             }
             user.setWorkStatus(user.getTaxCode().equalsIgnoreCase("NO_TAXCODE") ? WorkStatus.EMPTY_USER_CF : null);
             user.setEmail(userModel.getEmail());
         }
         return user;
+    }
+
+    private static PartyRole getEcOnboardingRole(Role role) {
+        return role == Role.RP ? PartyRole.MANAGER : PartyRole.OPERATOR;
+    }
+
+    private static PartyRole getPtOnboardingRole(Role role) {
+         return role == Role.RT ? PartyRole.MANAGER : PartyRole.OPERATOR;
     }
 }

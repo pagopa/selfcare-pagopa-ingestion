@@ -29,9 +29,17 @@ public class OnboardingUserRequest {
             userToOnboard.setSurname(user.getSurname());
             userToOnboard.setEmail(user.getEmail());
             userToOnboard.setTaxCode(user.getTaxCode());
-            userToOnboard.setRole(user.getRole() == Role.RP ? PartyRole.MANAGER : PartyRole.OPERATOR);
-            userToOnboard.setProductRole(user.getRole() == Role.RP ? "admin" : "operator");
+            userToOnboard.setRole(user.getOnboardingRole());
+            userToOnboard.setProductRole(user.getOnboardingProductRole());
             return userToOnboard;
         }).collect(Collectors.toList());
+    }
+
+    private PartyRole getEcOnboardingRole(Role role) {
+        return role == Role.RP ? PartyRole.MANAGER : PartyRole.OPERATOR;
+    }
+
+    private PartyRole getPtOnboardingRole(Role role) {
+        return role == Role.RT ? PartyRole.MANAGER : PartyRole.OPERATOR;
     }
 }

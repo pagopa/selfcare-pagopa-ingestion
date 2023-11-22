@@ -74,7 +74,7 @@ class PTServiceImpl implements PTService {
 
     private void onboardPt(PT pt) {
         try {
-            User user = userConnector.findManagerByInstitutionTaxCodeAndRole(pt.getTaxCode(), Role.RP);
+            User user = userConnector.findManagerByInstitutionTaxCodeAndRole(pt.getTaxCode(), Role.RT);
             if(!user.getTaxCode().equalsIgnoreCase("NO_TAXCODE")){
                 AutoApprovalOnboarding onboarding = constructOnboardingDto(pt, List.of(user));
                 processMigratePT(pt, onboarding, user);

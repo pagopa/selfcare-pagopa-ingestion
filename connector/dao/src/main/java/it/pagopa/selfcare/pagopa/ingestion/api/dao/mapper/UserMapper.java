@@ -1,5 +1,6 @@
 package it.pagopa.selfcare.pagopa.ingestion.api.dao.mapper;
 
+import it.pagopa.selfcare.commons.base.security.PartyRole;
 import it.pagopa.selfcare.pagopa.ingestion.api.dao.model.UserEntity;
 import it.pagopa.selfcare.pagopa.ingestion.model.dto.Role;
 import it.pagopa.selfcare.pagopa.ingestion.model.dto.User;
@@ -29,6 +30,8 @@ public class UserMapper {
         user.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
         user.setOnboardingHttpStatus(entity.getOnboardingHttpStatus());
         user.setOnboardingMessage(entity.getOnboardingMessage());
+        user.setOnboardingRole(PartyRole.valueOf(entity.getOnboardingRole()));
+        user.setOnboardingProductRole(entity.getOnboardingProductRole());
         return user;
     }
 
@@ -51,6 +54,8 @@ public class UserMapper {
         entity.setWorkStatus(user.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : user.getWorkStatus().name());
         entity.setOnboardingMessage(user.getOnboardingMessage());
         entity.setOnboardingHttpStatus(user.getOnboardingHttpStatus());
+        entity.setOnboardingRole(user.getOnboardingRole().toString());
+        entity.setOnboardingProductRole(user.getOnboardingProductRole());
         return entity;
     }
 }
