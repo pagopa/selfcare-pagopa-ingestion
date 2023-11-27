@@ -5,7 +5,6 @@ import it.pagopa.selfcare.pagopa.ingestion.api.dao.model.ECEntity;
 import it.pagopa.selfcare.pagopa.ingestion.api.dao.repo.ECRepository;
 import it.pagopa.selfcare.pagopa.ingestion.api.mongo.ECConnector;
 import it.pagopa.selfcare.pagopa.ingestion.model.dto.EC;
-import it.pagopa.selfcare.pagopa.ingestion.utils.MaskData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
@@ -39,7 +38,7 @@ public class ECConnectorImpl implements ECConnector {
     public EC save(EC ec) {
         final ECEntity entity = ECMapper.dtoToEntity(ec);
         ECEntity savedEntity = repository.save(entity);
-        log.info("Salvato EC con taxCode: {}", MaskData.maskData(savedEntity.getTaxCode()));
+        log.info("Salvato EC con taxCode: {}", savedEntity.getTaxCode());
         return ECMapper.entityToDto(savedEntity);
     }
 }

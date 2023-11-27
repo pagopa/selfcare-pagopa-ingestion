@@ -23,5 +23,6 @@ public class EC {
     private WorkStatus workStatus;
     private int onboardingHttpStatus;
     private String onboardingMessage;
+    private String batchId;
 
 }

@@ -46,8 +46,8 @@ public class PdaIngestionController {
     @PostMapping("/persist/ec")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "", notes = "${swagger.injection.api.persistFromCsv}")
-    public ResponseEntity<String> persistEcFromCsv() {
-        ecService.persistEC();
+    public ResponseEntity<String> persistEcFromCsv(@RequestParam("batchId") String batchId) {
+        ecService.persistEC(batchId);
         return ResponseEntity.ok().body(COMPLETE);
     }
 

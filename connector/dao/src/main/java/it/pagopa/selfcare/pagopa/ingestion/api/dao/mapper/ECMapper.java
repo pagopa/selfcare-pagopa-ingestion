@@ -26,7 +26,7 @@ public class ECMapper {
         ec.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
         ec.setOnboardingHttpStatus(entity.getOnboardingHttpStatus());
         ec.setOnboardingMessage(entity.getOnboardingMessage());
-
+        ec.setBatchId(entity.getBatchId());
         return ec;
     }
 
@@ -47,6 +47,7 @@ public class ECMapper {
         entity.setWorkStatus(ec.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : ec.getWorkStatus().name());
         entity.setOnboardingHttpStatus(ec.getOnboardingHttpStatus());
         entity.setOnboardingMessage(ec.getOnboardingMessage());
+        entity.setBatchId(ec.getBatchId());
         return entity;
     }
 }

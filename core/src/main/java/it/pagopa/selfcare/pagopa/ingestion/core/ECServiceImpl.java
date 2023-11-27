@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -47,7 +48,11 @@ class ECServiceImpl implements ECService {
 
     @Override
     @Async
-    public void persistEC() {
+    public void persistEC(String batchId) {
+        if(StringUtils.hasText(batchId)) {
+            migrationService.migrateEntitiesWithBatchId(ECModel.class, csvPath, ecConnector::save, ECMapper::convertModelToDtoWithBatchId, batchId);
+        }
+
         migrationService.migrateEntities(ECModel.class, csvPath, ecConnector::save, ECMapper::convertModelToDto);
     }
 

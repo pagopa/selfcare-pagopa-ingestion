@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -26,6 +27,14 @@ class MigrationServiceImpl implements MigrationService {
         log.info(String.format("Completed migration of %s %s", models.size(), modelClass.getSimpleName()));
     }
 
+    @Override
+    public <T, D> void migrateEntitiesWithBatchId(Class<T> modelClass, String filePath, Consumer<D> saveFunction, BiFunction<T, String, D> convertFunction, String batchId) {
+        log.info("Starting migration of " + modelClass.getSimpleName());
+        List<T> models = getEntities(modelClass, filePath);
+        saveEntitiesParallel(models, saveFunction, convertFunction, batchId);
+        log.info(String.format("Completed migration of %s %s", models.size(), modelClass.getSimpleName()));
+    }
+
     private <T> List<T> getEntities(Class<T> modelClass, String file) {
         return csvService.readItemsFromCsv(modelClass, file);
     }
@@ -33,6 +42,13 @@ class MigrationServiceImpl implements MigrationService {
     private <T, D> void saveEntitiesParallel(List<T> models, Consumer<D> saveFunction, Function<T, D> convertFunction) {
         CompletableFuture<Void> allOf = CompletableFuture.allOf(models.stream()
                 .map(model -> CompletableFuture.runAsync(() -> saveFunction.accept(convertFunction.apply(model)))).toArray(CompletableFuture[]::new));
+
+        allOf.join();
+    }
+
+    private <T, D> void saveEntitiesParallel(List<T> models, Consumer<D> saveFunction, BiFunction<T, String, D> convertFunction, String batchId) {
+        CompletableFuture<Void> allOf = CompletableFuture.allOf(models.stream()
+                .map(model -> CompletableFuture.runAsync(() -> saveFunction.accept(convertFunction.apply(model, batchId)))).toArray(CompletableFuture[]::new));
 
         allOf.join();
     }

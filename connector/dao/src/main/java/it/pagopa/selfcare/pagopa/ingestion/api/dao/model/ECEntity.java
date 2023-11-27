@@ -1,6 +1,5 @@
 package it.pagopa.selfcare.pagopa.ingestion.api.dao.model;
 
-import it.pagopa.selfcare.commons.base.utils.Origin;
 import lombok.Data;
 import lombok.experimental.FieldNameConstants;
 import org.springframework.data.annotation.Id;
@@ -25,5 +24,5 @@ public class ECEntity {
     private String workStatus;
     private int onboardingHttpStatus;
     private String onboardingMessage;
-
+    private String batchId;
 }
