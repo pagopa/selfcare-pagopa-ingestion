@@ -51,9 +51,9 @@ class ECServiceImpl implements ECService {
     public void persistEC(String batchId) {
         if(StringUtils.hasText(batchId)) {
             migrationService.migrateEntitiesWithBatchId(ECModel.class, csvPath, ecConnector::save, ECMapper::convertModelToDtoWithBatchId, batchId);
-        }
-
+        } else {
         migrationService.migrateEntities(ECModel.class, csvPath, ecConnector::save, ECMapper::convertModelToDto);
+        }
     }
 
     @Override
