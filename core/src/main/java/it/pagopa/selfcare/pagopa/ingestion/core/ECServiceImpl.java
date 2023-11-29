@@ -5,6 +5,7 @@ import it.pagopa.selfcare.pagopa.ingestion.api.mongo.ECConnector;
 import it.pagopa.selfcare.pagopa.ingestion.api.mongo.UserConnector;
 import it.pagopa.selfcare.pagopa.ingestion.api.rest.InternalApiConnector;
 import it.pagopa.selfcare.pagopa.ingestion.constant.WorkStatus;
+import it.pagopa.selfcare.pagopa.ingestion.core.util.ParallelUtil;
 import it.pagopa.selfcare.pagopa.ingestion.exception.ResourceNotFoundException;
 import it.pagopa.selfcare.pagopa.ingestion.mapper.ECMapper;
 import it.pagopa.selfcare.pagopa.ingestion.model.csv.ECModel;
@@ -65,7 +66,7 @@ class ECServiceImpl implements ECService {
         do {
             List<EC> ecList = ecConnector.findAllByStatus(page, pageSize, status);
             if (!CollectionUtils.isEmpty(ecList)) {
-                ecList.parallelStream().forEach(this::onboardEc);
+                ParallelUtil.runParallel(5, () -> ecList.parallelStream().forEach(this::onboardEc));
             } else {
                 hasNext = false;
             }
