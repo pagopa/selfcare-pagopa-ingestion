@@ -38,7 +38,7 @@ app:
   pageSize: ${PAGE_SIZE:250}
   local:
     csv: ${LOCAL_CSV:true}
-    ec: csv/EC-Data-8.csv
+    ec: csv/EC-Data-9.csv
     pt: csv/PT-Data.csv
     ecptrelationship: csv/Delegations-Data-1.csv
     user: csv/User-Data.csv
