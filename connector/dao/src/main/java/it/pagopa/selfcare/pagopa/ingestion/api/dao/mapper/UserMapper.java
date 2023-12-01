@@ -32,6 +32,9 @@ public class UserMapper {
         user.setOnboardingMessage(entity.getOnboardingMessage());
         user.setOnboardingRole(PartyRole.valueOf(entity.getOnboardingRole()));
         user.setOnboardingProductRole(entity.getOnboardingProductRole());
+        if(entity.getBatchId() != null) {
+            user.setBatchId(entity.getBatchId());
+        }
         return user;
     }
 
@@ -56,6 +59,9 @@ public class UserMapper {
         entity.setOnboardingHttpStatus(user.getOnboardingHttpStatus());
         entity.setOnboardingRole(user.getOnboardingRole().toString());
         entity.setOnboardingProductRole(user.getOnboardingProductRole());
+        if(user.getBatchId() != null) {
+            entity.setBatchId(user.getBatchId());
+        }
         return entity;
     }
 }

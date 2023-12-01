@@ -62,8 +62,8 @@ public class PdaIngestionController {
     @PostMapping("/persist/user")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "", notes = "${swagger.injection.api.persistFromCsv}")
-    public ResponseEntity<String> persistUserFromCsv() {
-        userService.persistUser();
+    public ResponseEntity<String> persistUserFromCsv(@RequestParam("batchId") String batchId) {
+        userService.persistUser(batchId);
         return ResponseEntity.ok().body(COMPLETE);
     }
 

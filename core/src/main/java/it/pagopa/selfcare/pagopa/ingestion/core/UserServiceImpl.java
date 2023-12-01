@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -45,10 +46,13 @@ class UserServiceImpl implements UserService {
 
     @Override
     @Async
-    public void persistUser() {
-        migrationService.migrateEntities(UserModel.class, csvPath, userConnector::save, UserMapper::convertModelToDto);
+    public void persistUser(String batchId) {
+        if (StringUtils.hasText(batchId)) {
+            migrationService.migrateEntitiesWithBatchId(UserModel.class, csvPath, userConnector::save, UserMapper::convertModelToDtoWithBatchId, batchId);
+        } else {
+            migrationService.migrateEntities(UserModel.class, csvPath, userConnector::save, UserMapper::convertModelToDto);
+        }
     }
-
     @Override
     @Async
     public void migrateUser(String status) {

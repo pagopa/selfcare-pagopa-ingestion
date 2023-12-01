@@ -25,4 +25,5 @@ public class User {
     private String onboardingMessage;
     private PartyRole onboardingRole;
     private String onboardingProductRole;
+    private String batchId;
 }

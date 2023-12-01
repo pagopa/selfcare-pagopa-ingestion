@@ -28,4 +28,5 @@ public class UserEntity {
     private Integer onboardingHttpStatus;
     private String onboardingRole;
     private String onboardingProductRole;
+    private String batchId;
 }
