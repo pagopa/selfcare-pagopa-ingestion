@@ -2,7 +2,7 @@ package it.pagopa.selfcare.pagopa.ingestion.core;
 
 public interface DelegationService {
 
-    void persistECPTRelationship();
+    void persistECPTRelationship(String batchId);
 
     void migrateECPTRelationship(String status);
 

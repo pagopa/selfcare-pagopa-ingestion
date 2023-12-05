@@ -23,5 +23,6 @@ public class ECPTRelationshipEntity {
     private String workStatus;
     private int createHttpStatus;
     private String createMessage;
+    private String batchId;
 
 }

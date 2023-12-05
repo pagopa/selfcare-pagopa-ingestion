@@ -38,15 +38,15 @@ public class PdaIngestionController {
     @PostMapping("/persist/relationship")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "", notes = "${swagger.injection.api.persistFromCsv}")
-    public ResponseEntity<String> persistRelationshipFromCsv() {
-        delegationService.persistECPTRelationship();
+    public ResponseEntity<String> persistRelationshipFromCsv(@RequestParam(value = "batchId", required = false) String batchId) {
+        delegationService.persistECPTRelationship(batchId);
         return ResponseEntity.ok().body(COMPLETE);
     }
 
     @PostMapping("/persist/ec")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "", notes = "${swagger.injection.api.persistFromCsv}")
-    public ResponseEntity<String> persistEcFromCsv(@RequestParam("batchId") String batchId) {
+    public ResponseEntity<String> persistEcFromCsv(@RequestParam(value = "batchId", required = false) String batchId) {
         ecService.persistEC(batchId);
         return ResponseEntity.ok().body(COMPLETE);
     }
@@ -62,7 +62,7 @@ public class PdaIngestionController {
     @PostMapping("/persist/user")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "", notes = "${swagger.injection.api.persistFromCsv}")
-    public ResponseEntity<String> persistUserFromCsv(@RequestParam("batchId") String batchId) {
+    public ResponseEntity<String> persistUserFromCsv(@RequestParam(value = "batchId", required = false) String batchId) {
         userService.persistUser(batchId);
         return ResponseEntity.ok().body(COMPLETE);
     }

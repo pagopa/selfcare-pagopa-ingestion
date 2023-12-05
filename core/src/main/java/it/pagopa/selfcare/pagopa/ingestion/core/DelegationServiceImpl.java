@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -42,8 +43,12 @@ class DelegationServiceImpl implements DelegationService {
     }
     @Override
     @Async
-    public void persistECPTRelationship() {
-        migrationService.migrateEntities(ECPTRelationshipModel.class, csvPath, ecptRelationshipConnector::save, ECPTRelationshipMapper::convertModelToDto);
+    public void persistECPTRelationship(String batchId) {
+        if(StringUtils.hasText(batchId)) {
+            migrationService.migrateEntitiesWithBatchId(ECPTRelationshipModel.class, csvPath, ecptRelationshipConnector::save, ECPTRelationshipMapper::convertModelToDtoWithBatchId, batchId);
+        } else {
+            migrationService.migrateEntities(ECPTRelationshipModel.class, csvPath, ecptRelationshipConnector::save, ECPTRelationshipMapper::convertModelToDto);
+        }
     }
 
 

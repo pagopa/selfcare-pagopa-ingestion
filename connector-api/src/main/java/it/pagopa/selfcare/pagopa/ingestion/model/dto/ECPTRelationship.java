@@ -19,5 +19,6 @@ public class ECPTRelationship {
     private WorkStatus workStatus;
     private int createHttpStatus;
     private String createMessage;
+    private String batchId;
 
 }

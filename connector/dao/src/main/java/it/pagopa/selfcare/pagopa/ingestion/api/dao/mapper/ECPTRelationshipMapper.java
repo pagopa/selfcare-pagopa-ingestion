@@ -5,6 +5,7 @@ import it.pagopa.selfcare.pagopa.ingestion.model.dto.ECPTRelationship;
 import it.pagopa.selfcare.pagopa.ingestion.constant.WorkStatus;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.util.StringUtils;
 
 @RequiredArgsConstructor(access = AccessLevel.NONE)
 public class ECPTRelationshipMapper {
@@ -23,7 +24,9 @@ public class ECPTRelationshipMapper {
         ecptRelationship.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
         ecptRelationship.setCreateHttpStatus(entity.getCreateHttpStatus());
         ecptRelationship.setCreateMessage(entity.getCreateMessage());
-
+        if(StringUtils.hasText(entity.getBatchId())) {
+            ecptRelationship.setBatchId(entity.getBatchId());
+        }
         return ecptRelationship;
     }
 
@@ -41,6 +44,9 @@ public class ECPTRelationshipMapper {
         entity.setWorkStatus(ecptRelationship.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : ecptRelationship.getWorkStatus().name());
         entity.setCreateHttpStatus(ecptRelationship.getCreateHttpStatus());
         entity.setCreateMessage(ecptRelationship.getCreateMessage());
+        if(StringUtils.hasText(ecptRelationship.getBatchId())) {
+            entity.setBatchId(ecptRelationship.getBatchId());
+        }
 
         return entity;
     }

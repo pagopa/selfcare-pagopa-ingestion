@@ -21,4 +21,18 @@ public class ECPTRelationshipMapper {
         }
         return ecIntermediaroPT;
     }
+
+    public static ECPTRelationship convertModelToDtoWithBatchId(ECPTRelationshipModel ecptRelationshipModel, String batchId) {
+        ECPTRelationship ecIntermediaroPT = null;
+        if(ecptRelationshipModel != null){
+            ecIntermediaroPT = new ECPTRelationship();
+            ecIntermediaroPT.setCorrelationId(ecptRelationshipModel.getEnteIndirettoCF() + "#" + ecptRelationshipModel.getIntermediarioPTCF());
+            ecIntermediaroPT.setEnteIndirettoRagioneSociale(ecptRelationshipModel.getEnteIndirettoRagioneSociale());
+            ecIntermediaroPT.setIntermediarioPTCF(ecptRelationshipModel.getIntermediarioPTCF());
+            ecIntermediaroPT.setEnteIndirettoCF(ecptRelationshipModel.getEnteIndirettoCF());
+            ecIntermediaroPT.setIntermediarioPTRagioneSociale(ecptRelationshipModel.getIntermediarioPTRagioneSociale());
+            ecIntermediaroPT.setBatchId(batchId);
+        }
+        return ecIntermediaroPT;
+    }
 }
