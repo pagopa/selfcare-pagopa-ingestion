@@ -4,6 +4,7 @@ import feign.FeignException;
 import it.pagopa.selfcare.pagopa.ingestion.api.mongo.ECPTRelationshipConnector;
 import it.pagopa.selfcare.pagopa.ingestion.api.rest.InternalApiConnector;
 import it.pagopa.selfcare.pagopa.ingestion.constant.WorkStatus;
+import it.pagopa.selfcare.pagopa.ingestion.core.util.ParallelUtil;
 import it.pagopa.selfcare.pagopa.ingestion.mapper.ECPTRelationshipMapper;
 import it.pagopa.selfcare.pagopa.ingestion.model.csv.ECPTRelationshipModel;
 import it.pagopa.selfcare.pagopa.ingestion.model.dto.Delegation;
@@ -61,7 +62,7 @@ class DelegationServiceImpl implements DelegationService {
         do {
             List<ECPTRelationship> ecptRelationships = ecptRelationshipConnector.findAllByStatus(page, pageSize, status);
             if (!CollectionUtils.isEmpty(ecptRelationships)) {
-                ecptRelationships.forEach(this::migrateECPTRelationship);
+                ParallelUtil.runParallel(8, () -> ecptRelationships.parallelStream().forEachOrdered(this::migrateECPTRelationship));
             } else {
                 hasNext = false;
             }
