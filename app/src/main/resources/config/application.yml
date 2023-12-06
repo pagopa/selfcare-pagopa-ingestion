@@ -41,4 +41,4 @@ app:
     ec: csv/EC-Data-12.csv
     pt: csv/PT-Data.csv
     ecptrelationship: csv/Delegations-Data-11.csv
-    user: csv/User-Troppi-Duplicati.csv
+    user: csv/User-Fittizio.csv
