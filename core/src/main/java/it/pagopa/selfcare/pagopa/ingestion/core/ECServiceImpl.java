@@ -66,7 +66,8 @@ class ECServiceImpl implements ECService {
         do {
             List<EC> ecList = ecConnector.findAllByStatus(page, pageSize, status);
             if (!CollectionUtils.isEmpty(ecList)) {
-                ParallelUtil.runParallel(10, () -> ecList.parallelStream().forEach(this::onboardEc));
+                //ParallelUtil.runParallel(1, () -> ecList.parallelStream().forEach(this::onboardEc));
+                ecList.forEach(this::onboardEc);
             } else {
                 hasNext = false;
             }

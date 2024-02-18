@@ -62,7 +62,8 @@ class DelegationServiceImpl implements DelegationService {
         do {
             List<ECPTRelationship> ecptRelationships = ecptRelationshipConnector.findAllByStatus(page, pageSize, status);
             if (!CollectionUtils.isEmpty(ecptRelationships)) {
-                ParallelUtil.runParallel(8, () -> ecptRelationships.parallelStream().forEachOrdered(this::migrateECPTRelationship));
+                ecptRelationships.forEach(this::migrateECPTRelationship);
+                //ParallelUtil.runParallel(2, () -> ecptRelationships.parallelStream().forEach(this::migrateECPTRelationship));
             } else {
                 hasNext = false;
             }

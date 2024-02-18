@@ -38,7 +38,7 @@ app:
   pageSize: ${PAGE_SIZE:250}
   local:
     csv: ${LOCAL_CSV:true}
-    ec: csv/EC-Data-12.csv
+    ec: csv/ec_delta_corretto.csv
     pt: csv/PT-Da-Aggiungere.csv
-    ecptrelationship: csv/Delegations-Data-11.csv
-    user: csv/User-PT-Da-Aggiungere.csv
+    ecptrelationship: csv/deleghe_delta_corretto.csv
+    user: csv/user_delta_corretto.csv
