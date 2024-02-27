@@ -1,5 +1,7 @@
 package it.pagopa.selfcare.pagopa.ingestion.api.rest.client;
 
+import it.pagopa.selfcare.pagopa.ingestion.api.rest.config.InternalInterceptorConfig;
+import it.pagopa.selfcare.pagopa.ingestion.api.rest.model.external.CreatedAtRequest;
 import it.pagopa.selfcare.pagopa.ingestion.api.rest.model.internal.DelegationRequest;
 import it.pagopa.selfcare.pagopa.ingestion.api.rest.model.internal.AutoApprovalOnboardingRequest;
 import it.pagopa.selfcare.pagopa.ingestion.model.dto.OnboardingUserRequest;
@@ -11,7 +13,7 @@ import javax.validation.Valid;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@FeignClient(name = "${rest-client.internal-api.serviceCode}", url = "${rest-client.internal-api.base-url}")
+@FeignClient(name = "${rest-client.internal-api.serviceCode}", url = "${rest-client.internal-api.base-url}", configuration = InternalInterceptorConfig.class)
 public interface InternalApiRestClient {
 
     @PostMapping(value = "${rest-client.internal-api.createDelegation.path}", consumes = APPLICATION_JSON_VALUE)
@@ -27,5 +29,7 @@ public interface InternalApiRestClient {
     @ResponseBody
     void onboardingUsers(@RequestBody OnboardingUserRequest request);
 
-
+    @PutMapping(value = "${rest-client.internal-api.updateCreatedAt.path}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    void updateCreatedAt(@PathVariable("institutionId") String institutionId, @RequestBody  CreatedAtRequest request);
 }

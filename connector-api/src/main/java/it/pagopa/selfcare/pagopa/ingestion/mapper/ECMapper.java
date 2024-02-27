@@ -1,9 +1,13 @@
 package it.pagopa.selfcare.pagopa.ingestion.mapper;
 
+import it.pagopa.selfcare.pagopa.ingestion.model.csv.ECAdesioneModel;
 import it.pagopa.selfcare.pagopa.ingestion.model.csv.ECModel;
 import it.pagopa.selfcare.pagopa.ingestion.model.dto.EC;
+import it.pagopa.selfcare.pagopa.ingestion.model.dto.EcAdesione;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+
+import static it.pagopa.selfcare.pagopa.ingestion.utils.Utils.convertStringToDate;
 
 @RequiredArgsConstructor(access = AccessLevel.NONE)
 public class ECMapper {
@@ -39,5 +43,22 @@ public class ECMapper {
             ec.setBatchId(batchId);
         }
         return ec;
+    }
+
+    public static EcAdesione convertModelToDto(ECAdesioneModel ecAdesioneModel) {
+        return convertModelToDtoWithBatchId(ecAdesioneModel, null);
+    }
+
+    public static EcAdesione convertModelToDtoWithBatchId(ECAdesioneModel ecAdesioneModel, String batchId) {
+        EcAdesione ecAdesione = null;
+        if(ecAdesioneModel!= null){
+            ecAdesione = new EcAdesione();
+            ecAdesione.setId(ecAdesioneModel.getTaxCode());
+            ecAdesione.setTaxCode(ecAdesioneModel.getTaxCode());
+            ecAdesione.setBusinessName(ecAdesioneModel.getBusinessName());
+            ecAdesione.setDateOfJoining(ecAdesioneModel.getDateOfJoining());
+            ecAdesione.setBatchId(batchId);
+        }
+        return ecAdesione;
     }
 }

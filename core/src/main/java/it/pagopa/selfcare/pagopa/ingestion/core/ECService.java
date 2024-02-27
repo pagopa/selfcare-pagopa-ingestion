@@ -6,4 +6,8 @@ public interface ECService {
 
     void migrateEC(String status);
 
+    void persistECAdesione(String batchId);
+
+    void migrateECAdesione(String status);
+
 }

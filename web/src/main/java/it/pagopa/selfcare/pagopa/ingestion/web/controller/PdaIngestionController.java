@@ -67,6 +67,14 @@ public class PdaIngestionController {
         return ResponseEntity.ok().body(COMPLETE);
     }
 
+    @PostMapping("/persist/ec-adesione")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "", notes = "${swagger.injection.api.persistFromCsv}")
+    public ResponseEntity<String> persistEcAdesioneFromCsv(@RequestParam(value = "batchId", required = false) String batchId) {
+        ecService.persistECAdesione(batchId);
+        return ResponseEntity.ok().body(COMPLETE);
+    }
+
     @PostMapping("/ec")
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "", notes = "${swagger.injection.api.ec}")
@@ -99,5 +107,11 @@ public class PdaIngestionController {
         return ResponseEntity.ok().body(COMPLETE);
     }
 
-
+    @PostMapping("/ec-adesione")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "", notes = "${swagger.injection.api.ec}")
+    public ResponseEntity<String> onboardingEcAdesione(@RequestParam("status") String status) {
+        ecService.migrateECAdesione(status);
+        return ResponseEntity.ok().body(COMPLETE);
+    }
 }

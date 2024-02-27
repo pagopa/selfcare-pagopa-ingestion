@@ -1,14 +1,22 @@
 package it.pagopa.selfcare.pagopa.ingestion.api.rest.impl;
 
+import feign.FeignException;
 import it.pagopa.selfcare.pagopa.ingestion.api.rest.InternalApiConnector;
 import it.pagopa.selfcare.pagopa.ingestion.api.rest.client.InternalApiRestClient;
+import it.pagopa.selfcare.pagopa.ingestion.api.rest.model.external.CreatedAtRequest;
 import it.pagopa.selfcare.pagopa.ingestion.api.rest.model.internal.DelegationRequest;
 import it.pagopa.selfcare.pagopa.ingestion.api.rest.model.internal.AutoApprovalOnboardingRequest;
+import it.pagopa.selfcare.pagopa.ingestion.exception.ResourceNotFoundException;
 import it.pagopa.selfcare.pagopa.ingestion.model.dto.AutoApprovalOnboarding;
 import it.pagopa.selfcare.pagopa.ingestion.model.dto.Delegation;
+import it.pagopa.selfcare.pagopa.ingestion.model.dto.InstitutionsResponse;
 import it.pagopa.selfcare.pagopa.ingestion.model.dto.OnboardingUserRequest;
+import it.pagopa.selfcare.pagopa.ingestion.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 
 @Slf4j
@@ -36,6 +44,20 @@ public class InternalApiConnectorImpl implements InternalApiConnector {
     public void onboardingUser(OnboardingUserRequest request) {
         log.info("START - onboardingOperators");
         internalApiRestClient.onboardingUsers(request);
+    }
+
+    @Override
+    public void updateCreatedAt(String institutionId, String dateOfJoining) {
+        log.info("START - updateCreatedAt");
+        internalApiRestClient.updateCreatedAt(institutionId, buildCreatedAtRequest(dateOfJoining));
+    }
+
+    private CreatedAtRequest buildCreatedAtRequest(String dateOfJoining) {
+        CreatedAtRequest createdAtRequest = new CreatedAtRequest();
+        createdAtRequest.setCreatedAt(Utils.convertToOffsetDateTime(dateOfJoining));
+        createdAtRequest.setActivatedAt(Utils.convertToOffsetDateTime(dateOfJoining));
+        createdAtRequest.setProductId("prod-pagopa");
+        return createdAtRequest;
     }
 
     private AutoApprovalOnboardingRequest createRequestOnboarding(AutoApprovalOnboarding request) {

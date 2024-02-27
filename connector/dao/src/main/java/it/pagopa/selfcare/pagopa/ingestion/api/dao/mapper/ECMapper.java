@@ -1,8 +1,10 @@
 package it.pagopa.selfcare.pagopa.ingestion.api.dao.mapper;
 
 import it.pagopa.selfcare.pagopa.ingestion.api.dao.model.ECEntity;
+import it.pagopa.selfcare.pagopa.ingestion.api.dao.model.EcAdesioneEntity;
 import it.pagopa.selfcare.pagopa.ingestion.model.dto.EC;
 import it.pagopa.selfcare.pagopa.ingestion.constant.WorkStatus;
+import it.pagopa.selfcare.pagopa.ingestion.model.dto.EcAdesione;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -49,5 +51,41 @@ public class ECMapper {
         entity.setOnboardingMessage(ec.getOnboardingMessage());
         entity.setBatchId(ec.getBatchId());
         return entity;
+    }
+
+    public static EcAdesioneEntity dtoToEntity(EcAdesione ecAdesione) {
+        if (ecAdesione == null) {
+            return null;
+        }
+
+        EcAdesioneEntity entity = new EcAdesioneEntity();
+        entity.setId(ecAdesione.getId());
+        entity.setBusinessName(ecAdesione.getBusinessName());
+        entity.setTaxCode(ecAdesione.getTaxCode());
+        entity.setInstitutionId(ecAdesione.getInstitutionId());
+        entity.setDateOfJoining(ecAdesione.getDateOfJoining());
+        entity.setWorkStatus(ecAdesione.getWorkStatus() == null ? WorkStatus.NOT_WORKED.name() : ecAdesione.getWorkStatus().name());
+        entity.setHttpStatus(ecAdesione.getHttpStatus());
+        entity.setHttpMessage(ecAdesione.getHttpMessage());
+        entity.setBatchId(ecAdesione.getBatchId());
+        return entity;
+    }
+
+    public static EcAdesione entityToDto(EcAdesioneEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        EcAdesione ecAdesione = new EcAdesione();
+        ecAdesione.setId(entity.getId());
+        ecAdesione.setBusinessName(entity.getBusinessName());
+        ecAdesione.setTaxCode(entity.getTaxCode());
+        ecAdesione.setDateOfJoining(entity.getDateOfJoining());
+        ecAdesione.setInstitutionId(entity.getInstitutionId());
+        ecAdesione.setWorkStatus(entity.getWorkStatus() == null ? null : WorkStatus.fromValue(entity.getWorkStatus()));
+        ecAdesione.setHttpStatus(entity.getHttpStatus());
+        ecAdesione.setHttpMessage(entity.getHttpMessage());
+        ecAdesione.setBatchId(entity.getBatchId());
+        return ecAdesione;
     }
 }

@@ -42,3 +42,4 @@ app:
     pt: csv/PT-Da-Aggiungere.csv
     ecptrelationship: csv/deleghe_delta_corretto.csv
     user: csv/user_delta_corretto.csv
+    ecAdesione: csv/test_dev_adesione.csv

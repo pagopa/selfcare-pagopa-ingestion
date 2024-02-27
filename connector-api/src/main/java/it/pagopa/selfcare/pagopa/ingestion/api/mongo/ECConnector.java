@@ -9,4 +9,6 @@ public interface ECConnector {
     List<EC> findAllByStatus(int page, int pageSize, String status);
 
     EC save(EC ec);
+
+
 }
